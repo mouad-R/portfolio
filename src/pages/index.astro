@@ -19,7 +19,7 @@ import { SITE, METADATA, I18N } from 'astrowind:config';
 import favIconSvg from '~/assets/favicons/favicon.svg';
 
 const metadata = {
-  title: 'AstroWind — Free template for creating websites with Astro + Tailwind CSS',
+  title: 'Mouad Rouini — Creative Producer & Motion Specialist',
   ignoreTitleTemplate: true,
 };
 
@@ -54,34 +54,41 @@ const structuredData = [
   <StructuredData slot="head" schema={structuredData} />
   <!-- Hero Widget ******************* -->
 
-  <Hero
-    tagline="Free & open source"
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Get template',
-        href: 'https://github.com/arthelokyo/astrowind',
-        target: '_blank',
-        icon: 'tabler:download',
-      },
-      { text: 'Learn more', href: '#features' },
-    ]}
-    image={{ src: '~/assets/images/hero-image.png', alt: 'AstroWind Hero Image' }}
-  >
-    <Fragment slot="title">
-      Free template for <span class="hidden xl:inline">creating websites with</span>
-      <span class="text-accent dark:text-white"> Astro v7</span> + Tailwind CSS
-    </Fragment>
+<Hero
+  tagline="Creative Producer & Motion Specialist"
+  actions={[
+    {
+      variant: 'primary',
+      text: 'Watch Showreel',
+      href: '#showreel',
+      icon: 'tabler:player-play',
+    },
+    { text: 'Explore Works', href: '#featured' },
+  ]}
+>
+  <Fragment slot="title">
+    Crafting high-impact motion, <br />
+    <span class="text-accent dark:text-white highlight">cinematic visuals</span> & spatial concepts.
+  </Fragment>
 
-    <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        <span class="font-semibold">AstroWind</span> is a free, customizable and production-ready template for Astro v7 +
-        Tailwind CSS v4.</span
-      >
-      <span class="block mb-1 sm:hidden font-bold text-blue-600">AstroWind: Production-ready.</span>
-      Suitable for Startups, Small Business, SaaS websites, Professional Portfolios, Marketing websites, Landing Pages & Blogs.
-    </Fragment>
-  </Hero>
+  <Fragment slot="subtitle">
+    End-to-end creative production for visionary brands and agencies — turning complex ideas into compelling visual narratives.
+  </Fragment>
+</Hero>
+
+<!-- مشغل فيديو الشاو ريل -->
+<section id="showreel" class="relative max-w-6xl mx-auto px-4 sm:px-6 my-12">
+  <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-gray-800 bg-neutral-950 flex items-center justify-center">
+    <iframe
+      class="w-full h-full"
+      src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?controls=1&rel=0"
+      title="Showreel"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+</section>
 
   <!-- SocialProof Widget ************ -->
 
