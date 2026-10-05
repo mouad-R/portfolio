@@ -9,22 +9,22 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: Mouad Rouini — Senior Motion Designer & Visual Director
+    template: '%s — Mouad Rouini'
+  description: 'Senior Motion Designer & Visual Director specialized in rhythm-driven motion design, broadcast identities, 3D CGI, and high-fidelity visual storytelling.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: Mouad Rouini
     images:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: '@mouadrouini'
+    site: '@mouadrouini'
     cardType: summary_large_image
 
 i18n:
@@ -33,8 +33,7 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
-    postsPerPage: 8
+    isEnabled: false
 
     post:
       isEnabled: true

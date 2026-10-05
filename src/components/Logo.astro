@@ -1,12 +1,54 @@
 ---
 import { Image } from 'astro:assets';
 import myLogo from '~/assets/icons/logo.svg';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  framed?: boolean;
+  class?: string;
+}
+
+const { size = 'sm', framed = true, class: className = '' } = Astro.props;
+
+const sizeConfig = {
+  sm: {
+    frame: 'w-9 h-9 sm:w-10 sm:h-10 p-2',
+    img: 'h-4 sm:h-4.5 w-auto',
+  },
+  md: {
+    frame: 'w-11 h-11 sm:w-12 sm:h-12 p-2.5',
+    img: 'h-6 sm:h-6.5 w-auto',
+  },
+  lg: {
+    frame: 'w-14 h-14 sm:w-16 sm:h-16 p-3',
+    img: 'h-8 sm:h-9 w-auto',
+  },
+};
+
+const current = sizeConfig[size] || sizeConfig.sm;
 ---
 
-<div class="flex items-center">
-  <Image 
-    src={myLogo} 
-    alt="mouad rouini" 
-    class="h-8 md:h-9 w-auto object-contain transition-all duration-200 dark:invert" 
-  />
+<div class:list={['inline-flex items-center justify-center', className]}>
+  {
+    framed ? (
+      <div
+        class:list={[
+          'rounded-full border border-neutral-300/90 dark:border-white/20 bg-neutral-100/70 dark:bg-white/[0.06] backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:border-sky-500/70 hover:scale-105 shadow-sm',
+          current.frame,
+        ]}
+      >
+        <Image
+          src={myLogo}
+          alt="Mouad Rouini"
+          class:list={['object-contain transition-all duration-200 dark:invert', current.img]}
+        />
+      </div>
+    ) : (
+      <Image
+        src={myLogo}
+        alt="Mouad Rouini"
+        class:list={['object-contain transition-all duration-200 dark:invert', current.img]}
+      />
+    )
+  }
 </div>

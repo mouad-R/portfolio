@@ -1,0 +1,56 @@
+---
+interface Props {
+  items?: string[];
+  class?: string;
+}
+
+const {
+  items = [
+    'MOTION SYSTEMS',
+    'BROADCAST IDENTITIES',
+    '60 FPS RHYTHM',
+    '3D LOOKDEV',
+    'ACES COLOR PIPELINE',
+    'CINEMATOGRAPHY',
+    'KINETIC TYPOGRAPHY',
+    'DAVINCI RESOLVE',
+    'SOUND DESIGNED',
+  ],
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    'relative w-full overflow-hidden border-y border-neutral-200/80 dark:border-white/10 bg-white/40 dark:bg-neutral-950/40 backdrop-blur-md py-3.5 select-none group',
+    className,
+  ]}
+  aria-hidden="true"
+>
+  <div class="flex w-max animate-[marquee_26s_linear_infinite] group-hover:[animation-play-state:paused]">
+    <div class="flex shrink-0 items-center gap-8 pr-8">
+      {
+        items.map((item) => (
+          <div class="flex items-center gap-6">
+            <span class="text-xs sm:text-sm font-mono tracking-widest font-semibold uppercase text-neutral-800 dark:text-neutral-200">
+              {item}
+            </span>
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.8)]" />
+          </div>
+        ))
+      }
+    </div>
+    <div class="flex shrink-0 items-center gap-8 pr-8">
+      {
+        items.map((item) => (
+          <div class="flex items-center gap-6">
+            <span class="text-xs sm:text-sm font-mono tracking-widest font-semibold uppercase text-neutral-800 dark:text-neutral-200">
+              {item}
+            </span>
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.8)]" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

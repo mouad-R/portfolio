@@ -1,85 +1,135 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Hero from '~/components/widgets/Hero.astro';
 
 const metadata = {
   title: 'Contact — Initiate a Project | Mouad Rouini',
+  description: 'Get in touch for creative direction, motion design, CGI, and post-production commissions.',
 };
 ---
 
 <Layout metadata={metadata}>
   <section class="max-w-4xl mx-auto px-4 sm:px-6 py-20">
-    <!-- العنوان الرئيسي -->
+    <!-- Header -->
     <div class="mb-12">
       <span class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-mono">Get in touch</span>
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mt-2 text-white">Let’s start a conversation.</h1>
-      <p class="mt-4 text-neutral-400 text-lg">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mt-2 text-neutral-900 dark:text-white">
+        Let's start a conversation.
+      </h1>
+      <p class="mt-4 text-neutral-600 dark:text-neutral-400 text-lg">
         Available for creative direction, motion design, and CGI post-production contracts.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-8 border-t border-neutral-900">
-      <!-- معلومات التواصل المباشرة -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+      <!-- Direct contact info -->
       <div class="space-y-8 md:col-span-1">
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500">Direct Email</span>
+          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-500">Direct Email</span>
           <p class="mt-1">
-            <a href="mailto:contact@mouadrouini.space" class="text-white hover:text-sky-600 dark:text-sky-400 transition-colors font-medium">
+            <a
+              href="mailto:contact@mouadrouini.space"
+              class="text-neutral-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors font-medium"
+            >
               contact@mouadrouini.space
             </a>
           </p>
         </div>
 
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500">Location</span>
-          <p class="mt-1 text-white font-medium">Algiers (UTC+1) · Available Worldwide</p>
+          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-500">Location</span>
+          <p class="mt-1 text-neutral-900 dark:text-white font-medium">Algiers (UTC+1) · Available Worldwide</p>
         </div>
 
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500">Follow / Network</span>
-          <div class="mt-2 flex flex-col space-y-2 text-sm text-neutral-400">
-            <a href="https://linkedin.com" target="_blank" class="hover:text-white transition-colors">↗ LinkedIn</a>
-            <a href="https://instagram.com" target="_blank" class="hover:text-white transition-colors">↗ Instagram</a>
-            <a href="https://vimeo.com" target="_blank" class="hover:text-white transition-colors">↗ Vimeo / YouTube</a>
+          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-500">Follow / Network</span>
+          <div class="mt-2 flex flex-col space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+            <a
+              href="https://linkedin.com/in/mouadrouini"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ LinkedIn</a
+            >
+            <a
+              href="https://instagram.com/mouadrouini"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ Instagram</a
+            >
+            <a
+              href="https://behance.net/mouadrouini"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ Behance</a
+            >
+            <a
+              href="https://vimeo.com/mouadrouini"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ Vimeo</a
+            >
           </div>
         </div>
       </div>
 
-      <!-- استمارة رسالة سريعة -->
-      <div class="md:col-span-2 bg-neutral-900/60 p-8 rounded-2xl border border-neutral-800">
-        <form class="space-y-6">
+      <!-- Contact Form -->
+      <div
+        class="md:col-span-2 bg-neutral-50 dark:bg-neutral-900/60 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800"
+      >
+        <form action="https://formsubmit.co/contact@mouadrouini.space" method="POST" class="space-y-6">
+          <!-- Honeypot anti-spam -->
+          <input type="text" name="_honey" style="display:none" />
+          <!-- Disable captcha page -->
+          <input type="hidden" name="_captcha" value="false" />
+          <!-- Redirect after submit -->
+          <input type="hidden" name="_next" value="https://mouadrouini.space/contact?sent=true" />
+
           <div>
-            <label class="block text-xs font-mono uppercase text-neutral-400 mb-2">Your Name</label>
-            <input 
-              type="text" 
-              placeholder="e.g. John Doe" 
-              class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-accent text-sm"
+            <label for="name" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
+              >Your Name</label
+            >
+            <input
+              id="name"
+              type="text"
+              name="name"
+              required
+              placeholder="e.g. John Doe"
+              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-lg px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
             />
           </div>
 
           <div>
-            <label class="block text-xs font-mono uppercase text-neutral-400 mb-2">Email Address</label>
-            <input 
-              type="email" 
-              placeholder="john@studio.com" 
-              class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-accent text-sm"
+            <label for="email" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
+              >Email Address</label
+            >
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              placeholder="john@studio.com"
+              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-lg px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
             />
           </div>
 
           <div>
-            <label class="block text-xs font-mono uppercase text-neutral-400 mb-2">Project Brief & Details</label>
-            <textarea 
-              rows="4" 
-              placeholder="Tell me about the scope, timeline, and vision..." 
-              class="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-accent text-sm"
+            <label for="message" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
+              >Project Brief & Details</label
+            >
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="4"
+              placeholder="Tell me about the scope, timeline, and vision..."
+              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-lg px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
             ></textarea>
           </div>
 
-          <button 
-            type="button" 
-            class="w-full py-3.5 px-6 rounded-lg bg-white text-black font-semibold text-sm hover:bg-neutral-200 transition-colors cursor-pointer"
+          <button
+            type="submit"
+            class="w-full py-3.5 px-6 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold text-sm hover:opacity-90 transition-all cursor-pointer shadow-md"
           >
-            Send Message
+            Send Message →
           </button>
         </form>
       </div>

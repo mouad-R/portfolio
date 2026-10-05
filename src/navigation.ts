@@ -13,12 +13,16 @@ export const headerData = {
       ],
     },
     {
-      text: 'Selected',
-      href: getPermalink('/#selected'),
+      text: 'Services',
+      href: getPermalink('/services'),
     },
     {
-      text: 'How I Can Help',
-      href: getPermalink('/#services'),
+      text: 'Process',
+      href: getPermalink('/process'),
+    },
+    {
+      text: 'About',
+      href: getPermalink('/about'),
     },
     {
       text: 'Contact',
@@ -44,13 +48,20 @@ export const footerData = {
     {
       title: 'Navigation',
       links: [
-        { text: 'Selected Works', href: getPermalink('/#selected') },
-        { text: 'How I Can Help', href: getPermalink('/#services') },
+        { text: 'Services', href: getPermalink('/services') },
+        { text: 'Process', href: getPermalink('/process') },
+        { text: 'About', href: getPermalink('/about') },
         { text: 'Contact', href: getPermalink('/contact') },
       ],
     },
   ],
   secondaryLinks: [],
-  socialLinks: [],
+  socialLinks: [
+    { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://linkedin.com/in/mouadrouini' },
+    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: 'https://instagram.com/mouadrouini' },
+    { ariaLabel: 'Behance', icon: 'tabler:brand-behance', href: 'https://behance.net/mouadrouini' },
+    { ariaLabel: 'Vimeo', icon: 'tabler:brand-vimeo', href: 'https://vimeo.com/mouadrouini' },
+    { ariaLabel: 'Email', icon: 'tabler:mail', href: 'mailto:contact@mouadrouini.space' },
+  ],
   footNote: `© ${new Date().getFullYear()} Mouad Rouini · All rights reserved.`,
 };

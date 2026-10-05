@@ -1,9 +1,16 @@
 ---
-// Cinematic Cyan Waves Atmosphere & Adaptive Cursor
+// Cinematic Atmosphere: Animated Liquid Aurora, Studio Grid, Adaptive Cursor, 3D Tilt & Video Previews
 ---
 
-<!-- خلفية التموجات الضوئية الانسيابية الثابتة -->
-<div class="cinematic-ambient-bg" aria-hidden="true"></div>
+<!-- خلفية التموجات الضوئية الحركية الانسيابية (Living Fluid Aurora) -->
+<div class="cinematic-ambient-bg" aria-hidden="true">
+  <div class="aurora-orb aurora-orb-1"></div>
+  <div class="aurora-orb aurora-orb-2"></div>
+  <div class="aurora-orb aurora-orb-3"></div>
+</div>
+
+<!-- شبكة الاستوديو التقنية الهندسية الدقيقة -->
+<div class="studio-grid-overlay" aria-hidden="true"></div>
 
 <!-- طبقة حبيبات ميكروسكوبية ناعمة لدمج الألوان السينمائية -->
 <div class="film-grain fixed inset-0 pointer-events-none z-[999] select-none" aria-hidden="true"></div>
@@ -33,71 +40,131 @@
   html.dark .text-accent {
     color: rgb(56 189 248) !important;
   }
-  /* 1. خلفية التموجات السينمائية (Cyan Light Streaks) */
+
+  /* 1. خلفية التموجات الحية المتحركة (Living Aurora Mesh) */
   .cinematic-ambient-bg {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: -20;
-    background-attachment: fixed;
-    transition: background 0.5s ease-in-out, opacity 0.5s ease;
+    overflow: hidden;
+    background-color: #f6fafc;
+    transition: background-color 0.6s ease;
   }
-
-  /* الوضع المشرق (Frosty Sky & Soft Cyan Waves) */
-  :root .cinematic-ambient-bg,
-  html:not(.dark) .cinematic-ambient-bg {
-    background-color: #f1f8fc;
-    background-image:
-      linear-gradient(
-        132deg,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(224, 242, 254, 0.88) 18%,
-        rgba(186, 230, 253, 0.7) 36%,
-        rgba(56, 189, 248, 0.38) 52%,
-        rgba(14, 165, 233, 0.28) 68%,
-        rgba(186, 230, 253, 0.6) 82%,
-        rgba(240, 249, 255, 0.95) 100%
-      ),
-      radial-gradient(ellipse 90% 70% at 90% 10%, rgba(56, 189, 248, 0.22), transparent 70%),
-      radial-gradient(ellipse 80% 60% at 10% 90%, rgba(14, 165, 233, 0.15), transparent 70%);
-  }
-
-  /* الوضع الداكن (Deep Oceanic Cyan & Glowing Silk Wave) */
   html.dark .cinematic-ambient-bg {
-    background-color: #040811;
-    background-image:
-      linear-gradient(
-        132deg,
-        rgba(4, 8, 17, 0.98) 0%,
-        rgba(6, 20, 40, 0.92) 16%,
-        rgba(3, 48, 88, 0.72) 34%,
-        rgba(2, 132, 199, 0.32) 50%,
-        rgba(56, 189, 248, 0.28) 64%,
-        rgba(3, 85, 140, 0.42) 78%,
-        rgba(6, 22, 42, 0.88) 90%,
-        rgba(3, 7, 15, 0.98) 100%
-      ),
-      radial-gradient(ellipse 85% 65% at 88% 12%, rgba(56, 189, 248, 0.25), transparent 65%),
-      radial-gradient(ellipse 75% 55% at 12% 88%, rgba(2, 132, 199, 0.22), transparent 60%);
+    background-color: #06080e;
+  }
+
+  .aurora-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(85px);
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  /* Orb 1: Cyan / Electric Sky (أعلى اليمين) */
+  .aurora-orb-1 {
+    top: -15%;
+    right: -10%;
+    width: 65vw;
+    height: 65vw;
+    max-width: 900px;
+    max-height: 900px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.42) 0%, rgba(14, 165, 233, 0.18) 45%, transparent 70%);
+    animation: floatOrb1 22s ease-in-out infinite alternate;
+  }
+  html:not(.dark) .aurora-orb-1 {
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.32) 0%, rgba(186, 230, 253, 0.45) 50%, transparent 70%);
+  }
+
+  /* Orb 2: Deep Oceanic Cobalt (أسفل اليسار) */
+  .aurora-orb-2 {
+    bottom: -15%;
+    left: -10%;
+    width: 70vw;
+    height: 70vw;
+    max-width: 950px;
+    max-height: 950px;
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.38) 0%, rgba(3, 105, 161, 0.15) 50%, transparent 70%);
+    animation: floatOrb2 26s ease-in-out infinite alternate;
+  }
+  html:not(.dark) .aurora-orb-2 {
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, rgba(224, 242, 254, 0.55) 50%, transparent 70%);
+  }
+
+  /* Orb 3: Violet / Neon Indigo Accent (منتصف الشاشة) */
+  .aurora-orb-3 {
+    top: 30%;
+    left: 20%;
+    width: 55vw;
+    height: 55vw;
+    max-width: 750px;
+    max-height: 750px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
+    animation: floatOrb3 24s ease-in-out infinite alternate;
+  }
+  html:not(.dark) .aurora-orb-3 {
+    background: radial-gradient(circle, rgba(147, 197, 253, 0.28) 0%, rgba(199, 210, 254, 0.35) 50%, transparent 70%);
+  }
+
+  @keyframes floatOrb1 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(-14vw, 10vh, 0) scale(1.15) rotate(40deg);
+    }
+    100% {
+      transform: translate3d(8vw, 16vh, 0) scale(0.92) rotate(80deg);
+    }
+  }
+
+  @keyframes floatOrb2 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(16vw, -12vh, 0) scale(1.2) rotate(-40deg);
+    }
+    100% {
+      transform: translate3d(4vw, -20vh, 0) scale(0.9) rotate(-75deg);
+    }
+  }
+
+  @keyframes floatOrb3 {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.95);
+    }
+    50% {
+      transform: translate3d(-10vw, -12vh, 0) scale(1.2);
+    }
+    100% {
+      transform: translate3d(12vw, 10vh, 0) scale(1.05);
+    }
+  }
+
+  /* 2. شبكة الاستوديو الهندسية (Blueprint Grid) */
+  .studio-grid-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -18;
+    background-image: radial-gradient(rgba(14, 165, 233, 0.16) 1px, transparent 1px);
+    background-size: 30px 30px;
+    mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, black 45%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, black 45%, transparent 95%);
+    opacity: 0.65;
+  }
+  html:not(.dark) .studio-grid-overlay {
+    background-image: radial-gradient(rgba(2, 132, 199, 0.08) 1px, transparent 1px);
+    opacity: 0.5;
   }
 
   /* جعل خلفية الصفحة شفافة لتنساب التموجات تحت كل الأقسام */
   body {
     background-color: transparent !important;
     background-image: none !important;
-  }
-
-  /* تحسين شفافية البطاقات لتتفاعل كزجاج مصقول فاخر */
-  html.dark #disciplines a {
-    background-color: rgba(10, 15, 26, 0.75) !important;
-    backdrop-filter: blur(12px) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
-  }
-
-  html:not(.dark) #disciplines a {
-    background-color: rgba(255, 255, 255, 0.82) !important;
-    backdrop-filter: blur(12px) !important;
-    border-color: rgba(0, 0, 0, 0.06) !important;
   }
 
   /* حبيبات الفيلم الدقيقة */
@@ -110,49 +177,58 @@
 </style>
 
 <script>
-  // @ts-nocheck
-  function initCursor() {
+  function initCinematicFeatures() {
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    const cursor = document.getElementById('cinema-cursor');
-    const label = document.getElementById('cursor-label');
-    if (!cursor || !label) return;
+    // 1. Custom Adaptive Cursor
+    const cursorEl = document.getElementById('cinema-cursor');
+    const labelEl = document.getElementById('cursor-label');
 
-    let mouseX = -100;
-    let mouseY = -100;
-    let currentX = -100;
-    let currentY = -100;
-    let isHoveringCard = false;
-    let isHoveringLink = false;
-    let isVisible = false;
+    if (cursorEl && labelEl) {
+      const cursor: HTMLElement = cursorEl;
+      const label: HTMLElement = labelEl;
 
-    const isDark = () => document.documentElement.classList.contains('dark');
+      let mouseX = -100;
+      let mouseY = -100;
+      let currentX = -100;
+      let currentY = -100;
+      let isHoveringCard = false;
+      let isVisible = false;
 
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (!isVisible) {
-        isVisible = true;
-        cursor.style.opacity = '1';
+      const isDark = () => document.documentElement.classList.contains('dark');
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!isVisible) {
+          isVisible = true;
+          cursor.style.opacity = '1';
+        }
+      });
+
+      document.addEventListener('mouseleave', () => {
+        isVisible = false;
+        cursor.style.opacity = '0';
+      });
+
+      function render() {
+        currentX += (mouseX - currentX) * 0.22;
+        currentY += (mouseY - currentY) * 0.22;
+        cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+        requestAnimationFrame(render);
       }
-    });
-
-    document.addEventListener('mouseleave', () => {
-      isVisible = false;
-      cursor.style.opacity = '0';
-    });
-
-    function render() {
-      currentX += (mouseX - currentX) * 0.22;
-      currentY += (mouseY - currentY) * 0.22;
-      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
       requestAnimationFrame(render);
-    }
-    requestAnimationFrame(render);
 
-    function bindInteractions() {
+      function resetCursor() {
+        cursor.style.width = '7px';
+        cursor.style.height = '7px';
+        cursor.style.backgroundColor = isDark() ? 'rgba(56, 189, 248, 0.95)' : 'rgba(2, 132, 199, 0.9)';
+        cursor.style.border = 'none';
+        cursor.style.boxShadow = isDark() ? '0 0 8px rgba(56, 189, 248, 0.6)' : 'none';
+      }
+
       const projectCards = document.querySelectorAll(
-        'a[href*="/cinematography/"], a[href*="/motion/"], a[href*="/3d/"], a[href*="/graphic-design/"], a[href*="/ui-ux/"], #disciplines a'
+        '#selected a, a[href*="/cinematography/"], a[href*="/motion/"], a[href*="/3d/"], a[href*="/graphic-design/"], a[href*="/ui-ux/"]'
       );
 
       projectCards.forEach((card) => {
@@ -184,7 +260,6 @@
       standardLinks.forEach((link) => {
         link.addEventListener('mouseenter', () => {
           if (isHoveringCard) return;
-          isHoveringLink = true;
           cursor.style.width = '20px';
           cursor.style.height = '20px';
           cursor.style.backgroundColor = isDark() ? 'rgba(56, 189, 248, 0.2)' : 'rgba(2, 132, 199, 0.12)';
@@ -193,24 +268,60 @@
 
         link.addEventListener('mouseleave', () => {
           if (isHoveringCard) return;
-          isHoveringLink = false;
           resetCursor();
         });
       });
+
+      resetCursor();
     }
 
-    function resetCursor() {
-      cursor.style.width = '7px';
-      cursor.style.height = '7px';
-      cursor.style.backgroundColor = isDark() ? 'rgba(56, 189, 248, 0.95)' : 'rgba(2, 132, 199, 0.9)';
-      cursor.style.border = 'none';
-      cursor.style.boxShadow = isDark() ? '0 0 8px rgba(56, 189, 248, 0.6)' : 'none';
-    }
+    // 2. 3D Perspective Tilt on Bento & Portfolio Cards
+    const tiltCards = document.querySelectorAll<HTMLElement>('#selected a');
+    tiltCards.forEach((card) => {
+      let rect: DOMRect | null = null;
 
-    resetCursor();
-    bindInteractions();
+      const handleMouseEnter = () => {
+        rect = card.getBoundingClientRect();
+        card.style.transition = 'transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease';
+      };
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!rect) rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xNorm = (x / rect.width - 0.5) * 2;
+        const yNorm = (y / rect.height - 0.5) * 2;
+        card.style.transform = `perspective(1000px) rotateX(${-yNorm * 4}deg) rotateY(${xNorm * 4}deg) translateY(-2px)`;
+      };
+
+      const handleMouseLeave = () => {
+        rect = null;
+        card.style.transition = 'transform 0.5s ease-out, border-color 0.3s ease, box-shadow 0.3s ease';
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+      };
+
+      card.addEventListener('mouseenter', handleMouseEnter);
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+    });
+
+    // 3. Smart Hover Video Previews
+    const hoverContainers = document.querySelectorAll<HTMLElement>('[data-hover-video-container]');
+    hoverContainers.forEach((container) => {
+      const video = container.querySelector<HTMLVideoElement>('video');
+      if (!video) return;
+
+      container.addEventListener('mouseenter', () => {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      });
+
+      container.addEventListener('mouseleave', () => {
+        video.pause();
+      });
+    });
   }
 
-  initCursor();
-  document.addEventListener('astro:page-load', initCursor);
+  initCinematicFeatures();
+  document.addEventListener('astro:page-load', initCinematicFeatures);
 </script>

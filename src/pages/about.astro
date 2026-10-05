@@ -1,294 +1,195 @@
 ---
-import Features2 from '~/components/widgets/Features2.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import Steps2 from '~/components/widgets/Steps2.astro';
-import Team from '~/components/widgets/Team.astro';
-import Timeline from '~/components/widgets/Timeline.astro';
+export const prerender = true;
+
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
-  title: 'About us',
+  title: 'About — Mouad Rouini | Senior Motion Designer & Visual Director',
   description:
-    'About page demo built with AstroWind: hero, stats, feature grids and timelines ready to describe your company.',
+    'Learn about Mouad Rouini — a Senior Motion Designer & Visual Director based in Algiers, specialized in broadcast identities, 3D CGI, and cinematic post-production.',
 };
+
+const timeline = [
+  {
+    year: '2019',
+    title: 'Started Creative Journey',
+    desc: 'Began exploring motion design and video editing, building a foundation in After Effects and Premiere Pro.',
+  },
+  {
+    year: '2021',
+    title: 'First Commercial Projects',
+    desc: 'Delivered first broadcast packages and kinetic branding projects for local agencies and startups.',
+  },
+  {
+    year: '2023',
+    title: 'Expanded into 3D & CGI',
+    desc: 'Integrated Cinema 4D, Octane Render, and Redshift into the pipeline — specializing in photorealistic product visualization.',
+  },
+  {
+    year: '2025',
+    title: 'Full-Pipeline Visual Direction',
+    desc: 'Now offering end-to-end creative direction: concept → storyboard → production → color grading → final delivery.',
+  },
+];
+
+const tools = [
+  { category: 'Motion & Animation', items: ['After Effects', 'Cinema 4D', 'Lottie'] },
+  { category: '3D & Rendering', items: ['Octane Render', 'Redshift', 'Blender'] },
+  { category: 'Color & Edit', items: ['DaVinci Resolve', 'Premiere Pro', 'ACES Pipeline'] },
+  { category: 'Design & Prototype', items: ['Figma', 'Illustrator', 'Photoshop'] },
+];
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
+  <!-- Hero -->
+  <section class="relative pt-20 pb-16 md:pt-32 md:pb-20 max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-start">
+      <!-- Text -->
+      <div class="md:col-span-3">
+        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-4 font-bold"
+          >About Me</span
+        >
+        <h1
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white tracking-tight leading-tight mb-6"
+        >
+          Creative problem‑solver with a passion for motion&nbsp;&&nbsp;light.
+        </h1>
+        <div class="space-y-4 text-neutral-600 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+          <p>
+            I'm <strong class="text-neutral-900 dark:text-white">Mouad Rouini</strong> — a Senior Motion Designer & Visual
+            Director based in Algiers, Algeria. I specialize in crafting rhythm‑driven motion graphics, broadcast identities,
+            and high‑fidelity CGI visuals that bridge dynamic 2D/3D animation with cinematic post‑production.
+          </p>
+          <p>
+            My work spans commercial title sequences, kinetic typography systems, photorealistic product renders, and
+            full‑pipeline color grading — always with an obsessive focus on pacing, detail, and visual storytelling.
+          </p>
+          <p>
+            I believe great motion design is more than movement — it's rhythm, emotion, and precision working together
+            to make brands unforgettable.
+          </p>
+        </div>
 
-  <Hero
-    tagline="About us"
-    image={{
-      src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Caos Image',
-    }}
-  >
-    <Fragment slot="title">
-      Elevate your online presence with our <br />
-      <span class="text-sky-600 dark:text-sky-400 dark:text-white"> Beautiful Website Templates</span>
-    </Fragment>
+        <div class="flex items-center gap-4 mt-8">
+          <a
+            href="/contact"
+            class="px-6 py-3 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+          >
+            Work With Me →
+          </a>
+          <a
+            href="/#selected"
+            class="px-6 py-3 rounded-xl border border-neutral-300/80 dark:border-white/15 text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
+          >
+            View Portfolio ↓
+          </a>
+        </div>
+      </div>
 
-    <Fragment slot="subtitle">
-      Donec efficitur, ipsum quis congue luctus, mauris magna convallis mauris, eu auctor nisi lectus non augue. Donec
-      quis lorem non massa vulputate efficitur ac at turpis. Sed tincidunt ex a nunc convallis, et lobortis nisi tempus.
-      Suspendisse vitae nisi eget tortor luctus maximus sed non lectus.
-    </Fragment>
-  </Hero>
+      <!-- Photo placeholder -->
+      <div class="md:col-span-2">
+        <div
+          class="aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center"
+        >
+          <div class="text-center px-6">
+            <div
+              class="w-20 h-20 rounded-full bg-neutral-200 dark:bg-neutral-800 mx-auto mb-4 flex items-center justify-center"
+            >
+              <span class="text-2xl">MR</span>
+            </div>
+            <p class="text-xs text-neutral-500 font-mono uppercase tracking-wider">Professional Photo</p>
+            <p class="text-[10px] text-neutral-400 mt-1">Replace with your headshot</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Stats Widget ****************** -->
+  <!-- Timeline -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-10">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
+        >Journey</span
+      >
+      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">Career Timeline</h2>
+    </div>
 
-  <Stats
-    title="Statistics about us"
-    stats={[
-      { title: 'Offices', amount: '4' },
-      { title: 'Employees', amount: '248' },
-      { title: 'Templates', amount: '12' },
-      { title: 'Awards', amount: '24' },
-    ]}
-  />
+    <div class="relative">
+      <!-- Vertical line -->
+      <div class="absolute left-[7px] top-2 bottom-2 w-px bg-neutral-200 dark:bg-neutral-800"></div>
 
-  <!-- Features3 Widget ************** -->
+      <div class="space-y-10">
+        {
+          timeline.map((item, i) => (
+            <div class="relative pl-8 intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
+              <div
+                class:list={[
+                  'absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2',
+                  i === timeline.length - 1
+                    ? 'border-sky-500 bg-sky-500/20'
+                    : 'border-neutral-400 dark:border-neutral-600 bg-page',
+                ]}
+              />
+              <span class="text-xs font-mono text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider block mb-1">
+                {item.year}
+              </span>
+              <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-1">{item.title}</h3>
+              <p class="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">{item.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-  <Features3
-    title="Our templates"
-    subtitle="Etiam scelerisque, enim eget vestibulum luctus, nibh mauris blandit nulla, nec vestibulum risus justo ut enim. Praesent lacinia diam et ante imperdiet euismod."
-    columns={3}
-    isBeforeContent={true}
-    items={[
-      {
-        title: 'Educational',
-        description:
-          'Morbi faucibus luctus quam, sit amet aliquet felis tempor id. Cras augue massa, ornare quis dignissim a, molestie vel nulla.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Interior Design',
-        description:
-          'Vivamus porttitor, tortor convallis aliquam pretium, turpis enim consectetur elit, vitae egestas purus erat ac nunc nulla.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Photography',
-        description:
-          'Duis sed lectus in nisl vehicula porttitor eget quis odio. Aliquam erat volutpat. Nulla eleifend nulla id sem fermentum.',
-        icon: 'tabler:template',
-      },
-    ]}
-  />
+  <!-- Tools & Stack -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-10">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
+        >Stack</span
+      >
+      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Tools & Technologies
+      </h2>
+    </div>
 
-  <!-- Features3 Widget ************** -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        tools.map((group) => (
+          <div class="p-6 rounded-2xl bg-white/60 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200 dark:border-white/10 intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
+            <h3 class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 font-bold mb-4">
+              {group.category}
+            </h3>
+            <ul class="space-y-2">
+              {group.items.map((tool) => (
+                <li class="text-sm text-neutral-700 dark:text-neutral-300 font-medium">{tool}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 
-  <Features3
-    columns={3}
-    isAfterContent={true}
-    items={[
-      {
-        title: 'E-commerce',
-        description:
-          'Rutrum non odio at vehicula. Proin ipsum justo, dignissim in vehicula sit amet, dignissim id quam. Sed ac tincidunt sapien.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Blog',
-        description:
-          'Nullam efficitur volutpat sem sed fringilla. Suspendisse et enim eu orci volutpat laoreet ac vitae libero.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Business',
-        description:
-          'Morbi et elit finibus, facilisis justo ut, pharetra ipsum. Donec efficitur, ipsum quis congue luctus, mauris magna.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Branding',
-        description:
-          'Suspendisse vitae nisi eget tortor luctus maximus sed non lectus. Cras malesuada pretium placerat. Nullam venenatis dolor a ante rhoncus.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Medical',
-        description:
-          'Vestibulum malesuada lacus id nibh posuere feugiat. Nam volutpat nulla a felis ultrices, id suscipit mauris congue. In hac habitasse platea dictumst.',
-        icon: 'tabler:template',
-      },
-      {
-        title: 'Fashion Design',
-        description:
-          'Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus.',
-        icon: 'tabler:template',
-      },
-    ]}
-    image={{
-      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      alt: 'Colorful Image',
-    }}
-  />
-
-  <!-- Steps2 Widget ****************** -->
-
-  <Steps2
-    title="Our values"
-    subtitle="Maecenas eu tellus eget est scelerisque lacinia et a diam. Aliquam velit lorem, vehicula id fermentum et, rhoncus et purus. Nulla facilisi. Vestibulum malesuada lacus."
-    items={[
-      {
-        title: 'Customer-centric approach',
-        description:
-          'Donec id nibh neque. Quisque et fermentum tortor. Fusce vitae dolor a mauris dignissim commodo. Ut eleifend luctus condimentum.',
-      },
-      {
-        title: 'Constant Improvement',
-        description:
-          'Phasellus laoreet fermentum venenatis. Vivamus dapibus pulvinar arcu eget mattis. Fusce eget mauris leo.',
-      },
-      {
-        title: 'Ethical Practices',
-        description:
-          'Vestibulum imperdiet libero et lectus molestie, et maximus augue porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-      },
-    ]}
-  />
-
-  <!-- Timeline Widget **************** -->
-
-  <Timeline
-    id="history"
-    tagline="Our story"
-    title="Achievements"
-    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla, sed porttitor est nibh at nulla."
-    layout="alternate"
-    items={[
-      {
-        date: '2019',
-        title: 'The first template',
-        description: 'Nam malesuada urna in enim imperdiet tincidunt. Phasellus non tincidunt nisi, at elementum mi.',
-        icon: 'tabler:rocket',
-      },
-      {
-        date: '2021',
-        title: 'Global reach',
-        description:
-          'Cras semper nulla leo, eget laoreet erat cursus sed. Praesent faucibus massa in purus iaculis dictum.',
-        icon: 'tabler:globe',
-      },
-      {
-        date: '2023',
-        title: 'Positive customer feedback and reviews',
-        description:
-          'Phasellus lacinia cursus velit, eu malesuada magna pretium eu. Etiam aliquet tellus purus, blandit lobortis ex rhoncus vitae.',
-        icon: 'tabler:message-star',
-      },
-      {
-        date: '2026',
-        title: 'Awards and recognition as industry experts',
-        description: 'Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci.',
-        icon: 'tabler:award',
-        highlight: true,
-      },
-    ]}
-  />
-
-  <!-- Team Widget ******************** -->
-
-  <Team
-    id="team"
-    tagline="The people"
-    title="Meet the team"
-    subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla."
-    members={[
-      {
-        name: 'Alicia Rivera',
-        role: 'Founder & CEO',
-        image: {
-          src: 'https://images.unsplash.com/photo-1618835962148-cf177563c6c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=930&q=80',
-          alt: 'Alicia Rivera',
-        },
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        socials: [
-          { icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/', ariaLabel: 'LinkedIn' },
-          { icon: 'tabler:brand-x', href: 'https://x.com/', ariaLabel: 'X' },
-        ],
-      },
-      {
-        name: 'Daniel Okafor',
-        role: 'Lead developer',
-        image: {
-          src: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-          alt: 'Daniel Okafor',
-        },
-        bio: 'Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla.',
-        socials: [{ icon: 'tabler:brand-github', href: 'https://github.com/', ariaLabel: 'GitHub' }],
-      },
-      {
-        name: 'Mei Tanaka',
-        role: 'Product designer',
-        image: {
-          src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-          alt: 'Mei Tanaka',
-        },
-        bio: 'Sed porttitor est nibh at nulla. Cras semper nulla leo, eget laoreet erat.',
-        socials: [{ icon: 'tabler:brand-dribbble', href: 'https://dribbble.com/', ariaLabel: 'Dribbble' }],
-      },
-      {
-        name: 'Jonas Weber',
-        role: 'Customer success',
-        image: {
-          src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-          alt: 'Jonas Weber',
-        },
-        bio: 'Praesent faucibus massa in purus iaculis dictum.',
-        socials: [{ icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/', ariaLabel: 'LinkedIn' }],
-      },
-    ]}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Our locations"
-    tagline="Find us"
-    columns={4}
-    items={[
-      {
-        title: 'EE.UU',
-        description: '1234 Lorem Ipsum St, 12345, Miami',
-      },
-      {
-        title: 'Spain',
-        description: '5678 Lorem Ipsum St, 56789, Madrid',
-      },
-      {
-        title: 'Australia',
-        description: '9012 Lorem Ipsum St, 90123, Sydney',
-      },
-      {
-        title: 'Brazil',
-        description: '3456 Lorem Ipsum St, 34567, São Paulo',
-      },
-    ]}
-  />
-
-  <!-- Features2 Widget ************** -->
-
-  <Features2
-    title="Technical Support"
-    tagline="Contact us"
-    columns={2}
-    items={[
-      {
-        title: 'Chat with us',
-        description:
-          'Integer luctus laoreet libero, auctor varius purus rutrum sit amet. Ut nec molestie nisi, quis eleifend mi.',
-        icon: 'tabler:messages',
-      },
-      {
-        title: 'Call us',
-        description:
-          'Mauris faucibus finibus orci, in posuere elit viverra non. In hac habitasse platea dictumst. Cras lobortis metus a hendrerit congue.',
-        icon: 'tabler:headset',
-      },
-    ]}
-  />
+  <!-- CTA -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+    <div
+      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700"
+    >
+      <div class="max-w-xl">
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
+          Interested in working together?
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-300 text-sm">
+          Open for commercial direction, motion commissions, and full‑pipeline visual production.
+        </p>
+      </div>
+      <a
+        href="/contact"
+        class="flex-shrink-0 px-7 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+      >
+        Get in Touch ↗
+      </a>
+    </div>
+  </section>
 </Layout>

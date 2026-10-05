@@ -2,10 +2,12 @@
 export const prerender = true;
 
 import Layout from '~/layouts/PageLayout.astro';
+import Marquee from '~/components/common/Marquee.astro';
 
 const metadata = {
   title: 'Mouad Rouini — Senior Motion Designer & Visual Director',
-  description: 'Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling.',
+  description:
+    'Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling.',
 };
 
 const disciplines = [
@@ -25,6 +27,7 @@ const disciplines = [
     specs: 'ARRI / RED · 2.39:1 · DaVinci Wide Gamut',
     href: '/cinematography',
     image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80',
+    video: '/projects/saad/1.webm',
     gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
   },
   {
@@ -79,34 +82,97 @@ const services = [
 ---
 
 <Layout metadata={metadata}>
+  <!-- Structured Data -->
+  <Fragment slot="head">
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            name: 'Mouad Rouini',
+            url: 'https://mouadrouini.space',
+          },
+          {
+            '@type': 'Person',
+            name: 'Mouad Rouini',
+            url: 'https://mouadrouini.space',
+            jobTitle: 'Senior Motion Designer & Visual Director',
+            description:
+              'Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling.',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Algiers',
+              addressCountry: 'DZ',
+            },
+            sameAs: [
+              'https://linkedin.com/in/mouadrouini',
+              'https://instagram.com/mouadrouini',
+              'https://behance.net/mouadrouini',
+              'https://vimeo.com/mouadrouini',
+            ],
+          },
+        ],
+      })}
+    />
+  </Fragment>
+
+  <!-- Ambient Backdrop Glow -->
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[650px] pointer-events-none overflow-hidden -z-10"
+  >
+    <div
+      class="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[700px] sm:w-[1000px] h-[500px] bg-gradient-to-b from-sky-500/15 via-blue-600/5 to-transparent blur-3xl rounded-full"
+    >
+    </div>
+  </div>
+
   <!-- Hero Section -->
-  <section class="relative pt-20 pb-16 md:pt-32 md:pb-24 max-w-6xl mx-auto px-4 sm:px-6">
+  <section class="relative pt-20 pb-12 md:pt-32 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6">
     <div class="max-w-4xl">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-8 shadow-sm">
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-8 shadow-sm"
+      >
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium">
+        <span
+          class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+        >
           Available for Direction & Commercial Commissions
         </span>
       </div>
 
-      <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] mb-6 transition-colors">
+      <h1
+        class="text-4xl sm:text-6xl md:text-7xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] mb-6 transition-colors"
+      >
         Senior Motion Designer & Visual Director.
       </h1>
 
-      <p class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 max-w-2xl leading-relaxed mb-8 font-normal transition-colors">
-        Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling — bridging dynamic 2D/3D animation with cinematic post-production.
+      <p
+        class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 max-w-2xl leading-relaxed mb-8 font-normal transition-colors"
+      >
+        Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling —
+        bridging dynamic 2D/3D animation with cinematic post-production.
       </p>
 
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="#showreel"
+          class="px-6 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md flex items-center gap-2"
+        >
+          <span>Watch Showreel</span>
+          <span class="text-base">▶</span>
+        </a>
         <a
           href="#selected"
-          class="px-6 py-3 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+          class="px-6 py-3.5 rounded-xl border border-neutral-300/80 bg-white/70 dark:border-white/15 dark:bg-neutral-900/50 backdrop-blur-md text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
         >
-          View Motion & Works ↓
+          View Works ↓
         </a>
         <a
           href="/contact"
-          class="px-6 py-3 rounded-xl border border-neutral-300/80 bg-white/70 dark:border-white/15 dark:bg-neutral-900/50 backdrop-blur-md text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
+          class="px-6 py-3.5 rounded-xl border border-transparent text-sky-600 dark:text-sky-400 font-semibold text-xs tracking-wider uppercase hover:underline transition-all"
         >
           Initiate Collaboration →
         </a>
@@ -114,109 +180,224 @@ const services = [
     </div>
   </section>
 
+  <!-- Kinetic Typography Marquee -->
+  <Marquee class="my-6 md:my-10" />
+
+  <!-- Featured Showreel Section -->
+  <section id="showreel" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <div
+      class="relative rounded-3xl overflow-hidden border border-neutral-200/80 dark:border-white/10 bg-neutral-950 shadow-2xl group intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700"
+    >
+      <!-- Glow backlight on hover -->
+      <div
+        class="absolute -inset-1 bg-gradient-to-r from-sky-600/30 via-indigo-600/20 to-cyan-500/30 rounded-3xl blur-2xl opacity-40 group-hover:opacity-75 transition duration-1000 -z-10"
+      >
+      </div>
+
+      <!-- Video Container -->
+      <div class="relative aspect-video w-full overflow-hidden bg-neutral-950 flex items-center justify-center">
+        <img
+          src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=85"
+          alt="Mouad Rouini Showreel 2026"
+          class="w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-75 transition-all duration-700 ease-out"
+          loading="eager"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/50"></div>
+
+        <!-- Top Badges with Audio Equalizer -->
+        <div class="absolute top-4 sm:top-8 left-4 sm:left-8 right-4 sm:right-8 flex items-center justify-between z-10">
+          <div
+            class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-black/65 border border-white/20 backdrop-blur-md shadow-lg"
+          >
+            <!-- Animated Soundwave Bars -->
+            <div class="flex items-end gap-1 h-3.5" aria-hidden="true">
+              <span
+                class="w-0.5 bg-emerald-400 rounded-full animate-[soundwave_0.8s_ease-in-out_infinite] [animation-delay:0.1s]"
+              ></span>
+              <span
+                class="w-0.5 bg-sky-400 rounded-full animate-[soundwave_0.8s_ease-in-out_infinite] [animation-delay:0.35s]"
+              ></span>
+              <span
+                class="w-0.5 bg-cyan-300 rounded-full animate-[soundwave_0.8s_ease-in-out_infinite] [animation-delay:0.2s]"
+              ></span>
+              <span
+                class="w-0.5 bg-emerald-400 rounded-full animate-[soundwave_0.8s_ease-in-out_infinite] [animation-delay:0.45s]"
+              ></span>
+            </div>
+            <span class="text-[10px] sm:text-[11px] font-mono text-white/95 uppercase tracking-widest font-semibold">
+              Reel 2026 // Motion Direction
+            </span>
+          </div>
+
+          <span
+            class="text-[10px] sm:text-[11px] font-mono text-neutral-300 hidden sm:inline-block px-3 py-1 rounded-full bg-black/60 border border-white/15 backdrop-blur-md"
+          >
+            4K UHD · 60 FPS · 01:24
+          </span>
+        </div>
+
+        <!-- Center Play Button -->
+        <a
+          href="/motion/brand-ident"
+          class="relative z-10 flex flex-col items-center group/play cursor-pointer"
+          aria-label="Play Showreel"
+        >
+          <div
+            class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white text-black flex items-center justify-center pl-1 shadow-2xl group-hover/play:scale-110 group-hover/play:bg-sky-400 group-hover/play:text-black transition-all duration-300"
+          >
+            <svg class="w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"></path>
+            </svg>
+          </div>
+          <span
+            class="mt-4 text-xs font-mono uppercase tracking-widest text-white/90 font-medium group-hover/play:text-sky-300 transition-colors"
+          >
+            Play Motion Reel ↗
+          </span>
+        </a>
+
+        <!-- Bottom Technical Specs -->
+        <div
+          class="absolute bottom-4 sm:bottom-6 left-4 sm:left-8 right-4 sm:right-8 flex flex-wrap items-center justify-between gap-3 text-white/90 z-10"
+        >
+          <p class="text-xs sm:text-sm font-medium">Commercial Title Sequences, 3D Lookdev & Kinetic Branding</p>
+          <div class="flex items-center gap-2 text-[10px] sm:text-[11px] font-mono text-neutral-400">
+            <span>ACES Color</span>
+            <span>·</span>
+            <span>Cinema 4D / Octane</span>
+            <span>·</span>
+            <span>After Effects</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Selected Works Bento Grid -->
-  <section id="selected" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-sky-200/50 dark:border-white/10">
+  <section
+    id="selected"
+    class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200/80 dark:border-white/10"
+  >
     <div class="flex items-end justify-between mb-10">
       <div>
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold">Index</span>
+        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
+          >Index</span
+        >
         <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">
           Selected Disciplines
         </h2>
       </div>
-      <span class="text-xs font-mono text-neutral-500 hidden sm:block">
-        [ 05 DISCIPLINES // MOTION-FIRST ]
-      </span>
+      <span class="text-xs font-mono text-neutral-500 hidden sm:block"> [ 05 DISCIPLINES // MOTION-FIRST ] </span>
     </div>
 
-    <!-- The Bento Grid -->
+    <!-- The Bento Grid with 3D Tilt & Video Hover -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      {disciplines.map((item) => (
-        <a
-          href={item.href}
-          class={`group relative overflow-hidden rounded-2xl border border-neutral-200/80 dark:border-white/10 bg-neutral-950 flex flex-col justify-between p-6 transition-all duration-500 hover:border-sky-400/80 dark:hover:border-sky-400/80 shadow-md hover:shadow-xl ${item.gridSpan}`}
-        >
-          <div class="absolute inset-0 z-0 overflow-hidden">
-            <img
-              src={item.image}
-              alt={item.title}
-              class="w-full h-full object-cover opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700 ease-out"
-              loading="lazy"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30 group-hover:from-black/80 transition-colors duration-500"></div>
-          </div>
-
-          <div class="relative z-10 flex items-center justify-between">
-            <div class="inline-flex items-center gap-2">
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/90 backdrop-blur-md border border-white/15 uppercase tracking-wider font-semibold">
-                {item.num}
-              </span>
-              <span class="text-[11px] font-mono uppercase tracking-wider text-neutral-300 font-medium">
-                {item.category}
-              </span>
+      {
+        disciplines.map((item) => (
+          <a
+            href={item.href}
+            data-hover-video-container={item.video ? 'true' : undefined}
+            class={`group relative overflow-hidden rounded-2xl border border-neutral-200/80 dark:border-white/10 bg-neutral-950 flex flex-col justify-between p-6 transition-all duration-500 hover:border-sky-400/80 dark:hover:border-sky-400/80 shadow-md hover:shadow-2xl ${item.gridSpan} intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700`}
+          >
+            <div class="absolute inset-0 z-0 overflow-hidden">
+              <img
+                src={item.image}
+                alt={item.title}
+                class="w-full h-full object-cover opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700 ease-out"
+                loading="lazy"
+              />
+              {item.video && (
+                <video
+                  src={item.video}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-85 transition-opacity duration-500 pointer-events-none"
+                />
+              )}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30 group-hover:from-black/80 transition-colors duration-500" />
             </div>
 
-            <div class="w-8 h-8 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xs group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300">
-              ↗
-            </div>
-          </div>
+            <div class="relative z-10 flex items-center justify-between">
+              <div class="inline-flex items-center gap-2">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/90 backdrop-blur-md border border-white/15 uppercase tracking-wider font-semibold">
+                  {item.num}
+                </span>
+                <span class="text-[11px] font-mono uppercase tracking-wider text-neutral-300 font-medium">
+                  {item.category}
+                </span>
+              </div>
 
-          <div class="relative z-10 pt-8">
-            <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight mb-1.5 group-hover:text-sky-300 transition-colors duration-300">
-              {item.title}
-            </h3>
-            <p class="text-[11px] font-mono text-neutral-300 tracking-wide uppercase">
-              {item.specs}
-            </p>
-          </div>
-        </a>
-      ))}
+              <div class="w-8 h-8 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xs group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300">
+                ↗
+              </div>
+            </div>
+
+            <div class="relative z-10 pt-8">
+              <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight mb-1.5 group-hover:text-sky-300 transition-colors duration-300">
+                {item.title}
+              </h3>
+              <p class="text-[11px] font-mono text-neutral-300 tracking-wide uppercase">{item.specs}</p>
+            </div>
+          </a>
+        ))
+      }
     </div>
   </section>
 
   <!-- How I Can Help Section -->
-  <section id="services" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-sky-200/50 dark:border-white/10">
+  <section
+    id="services"
+    class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-neutral-200/80 dark:border-white/10"
+  >
     <div class="flex items-end justify-between mb-12">
       <div>
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold">Capabilities</span>
-        <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">
-          How I Can Help
-        </h2>
+        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
+          >Capabilities</span
+        >
+        <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">How I Can Help</h2>
       </div>
-      <span class="text-xs font-mono text-neutral-500 hidden sm:block">
-        [ END-TO-END VISUAL PIPELINE ]
-      </span>
+      <a
+        href="/services"
+        class="text-xs font-mono text-sky-600 dark:text-sky-400 hover:underline uppercase tracking-wider font-semibold hidden sm:block"
+      >
+        [ View All Capabilities → ]
+      </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {services.map((srv) => (
-        <div class="relative p-7 rounded-2xl bg-white/60 dark:bg-[#070d1d]/60 backdrop-blur-xl border border-sky-100/80 dark:border-white/10 shadow-sm flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-mono text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider block mb-4">
-              // {srv.step}
-            </span>
-            <h3 class="text-xl font-bold text-neutral-900 dark:text-white tracking-tight mb-3">
-              {srv.title}
-            </h3>
-            <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6 font-normal">
-              {srv.desc}
-            </p>
-          </div>
-
-          <div class="flex flex-wrap gap-1.5 pt-4 border-t border-neutral-200/60 dark:border-white/10">
-            {srv.tags.map((tag) => (
-              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 dark:bg-white/5 dark:text-neutral-300 border border-sky-100 dark:border-white/10">
-                {tag}
+      {
+        services.map((srv) => (
+          <div class="relative p-7 rounded-2xl bg-white/80 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
+            <div>
+              <span class="text-xs font-mono text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider block mb-4">
+                // {srv.step}
               </span>
-            ))}
+              <h3 class="text-xl font-bold text-neutral-900 dark:text-white tracking-tight mb-3">{srv.title}</h3>
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6 font-normal">
+                {srv.desc}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 pt-4 border-t border-neutral-200/60 dark:border-white/10">
+              {srv.tags.map((tag) => (
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 text-sky-800 dark:bg-white/5 dark:text-neutral-300 border border-sky-100 dark:border-white/10">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </section>
 
   <!-- CTA Banner -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
-    <div class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg">
+    <div
+      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700"
+    >
       <div class="max-w-xl">
         <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
           Have a production or kinetic campaign in development?

@@ -1,101 +1,153 @@
 ---
+export const prerender = true;
+
 import Layout from '~/layouts/PageLayout.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: 'Services — How I Help | Mouad Rouini',
+  title: 'Services — Capabilities & Production | Mouad Rouini',
+  description:
+    'End-to-end visual execution for brands, agencies, and studios: Motion design, 3D CGI lookdev, cinematography, and creative direction.',
 };
+
+const capabilities = [
+  {
+    num: '01',
+    category: 'Motion Design',
+    title: 'Kinetic Motion & Broadcast Packages',
+    desc: 'Dynamic brand identities, kinetic typography, promotional teasers, and broadcast packages crafted with seamless pacing, musical rhythm, and high-energy impact.',
+    tags: [
+      '2D/3D Kinetic Typography',
+      'Brand Identity Systems in Motion',
+      'Social & Commercial Campaigns',
+      'After Effects · 60 FPS',
+    ],
+  },
+  {
+    num: '02',
+    category: '3D & CGI',
+    title: 'Product Visualization & CGI Lookdev',
+    desc: 'Photorealistic materials, studio lighting simulation, and cinematic camera choreography built for commercial packaging, spatial concepts, and luxury brand assets.',
+    tags: [
+      'Photorealistic Packaging & Shading',
+      'Spatial & Architectural Visuals',
+      'Procedural Shading & Lighting',
+      'Cinema 4D · Octane / Redshift',
+    ],
+  },
+  {
+    num: '03',
+    category: 'Post-Production',
+    title: 'Cinematography & Color Suite',
+    desc: 'Precision montage editing and cinematic color grading utilizing custom film emulation transforms and strict delivery standards for broadcast and web.',
+    tags: [
+      'Commercial Montage & Pacing',
+      'Advanced DaVinci Resolve Color Grading',
+      'ACES Color Pipeline',
+      'Sound Design & Synchronization',
+    ],
+  },
+  {
+    num: '04',
+    category: 'Creative Leadership',
+    title: 'Creative Direction & Visual Supervision',
+    desc: 'Supervising media pipelines from initial pitch to final master, leveraging state-of-the-art visual workflows for rapid pre-visualization and flawless delivery.',
+    tags: [
+      'Pipeline & Production Supervision',
+      'Rapid Pre-Visualization & Storyboarding',
+      'Styleframe Concepting',
+      'Technical Feasibility Review',
+    ],
+  },
+];
 ---
 
 <Layout metadata={metadata}>
   <!-- Hero Section -->
-  <Hero
-    tagline="Capabilities & Services"
-    actions={[
-      { variant: 'primary', text: 'Get in Touch', href: '/contact', icon: 'tabler:arrow-right' }
-    ]}
-  >
-    <Fragment slot="title">
-      End-to-end visual execution for <br />
-      <span class="text-sky-600 dark:text-sky-400 dark:text-white highlight">brands, agencies & studios.</span>
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      From initial concept boards to final color-graded delivery — bridging creative direction with technical post-production workflows.
-    </Fragment>
-  </Hero>
-
-  <!-- Services Grid -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      
-      <!-- 1. Motion & Broadcast -->
-      <div class="p-8 rounded-2xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-all">
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400">01 / Motion Design</span>
-        <h3 class="text-2xl font-bold mt-3 mb-4">Kinetic Motion & Broadcast</h3>
-        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-          Dynamic brand identities, kinetic typography, promotional teasers, and broadcast packages crafted with seamless pacing and rhythm.
-        </p>
-        <ul class="text-xs text-neutral-300 space-y-2 border-t border-neutral-800 pt-4 font-mono">
-          <li>+ 2D/3D Kinetic Typography</li>
-          <li>+ Brand Identity Systems in Motion</li>
-          <li>+ Social & Advertising Campaigns</li>
-        </ul>
+  <section class="relative pt-20 pb-16 md:pt-32 md:pb-24 max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="max-w-3xl">
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-6 shadow-sm"
+      >
+        <span
+          class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+        >
+          Capabilities & Deliverables
+        </span>
       </div>
 
-      <!-- 2. 3D & CGI Visualization -->
-      <div class="p-8 rounded-2xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-all">
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400">02 / 3D & CGI</span>
-        <h3 class="text-2xl font-bold mt-3 mb-4">Product Visualization & CGI</h3>
-        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-          Photorealistic materials, studio lighting simulation, and cinematic camera choreography for commercial packaging and spatial concepts.
-        </p>
-        <ul class="text-xs text-neutral-300 space-y-2 border-t border-neutral-800 pt-4 font-mono">
-          <li>+ Photorealistic Packaging & Shading</li>
-          <li>+ Spatial & Architectural Concept Visuals</li>
-          <li>+ High-End Product Commercials</li>
-        </ul>
-      </div>
+      <h1 class="text-4xl sm:text-6xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] mb-6">
+        End-to-end visual execution for <span class="text-sky-600 dark:text-sky-400">brands & studios.</span>
+      </h1>
 
-      <!-- 3. Editing & Color Grading -->
-      <div class="p-8 rounded-2xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-all">
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400">03 / Post-Production</span>
-        <h3 class="text-2xl font-bold mt-3 mb-4">Cinematography & Color Suite</h3>
-        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-          Precision editing and cinematic color grading with custom film emulation transforms and strict delivery standards.
-        </p>
-        <ul class="text-xs text-neutral-300 space-y-2 border-t border-neutral-800 pt-4 font-mono">
-          <li>+ Commercial Montage & Film Pacing</li>
-          <li>+ Advanced DaVinci Resolve Color Grading</li>
-          <li>+ Sound Design & Rhythm Synchronization</li>
-        </ul>
-      </div>
+      <p class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal mb-8">
+        From initial concept boards to final color-graded delivery — bridging creative direction with technical
+        post-production workflows.
+      </p>
 
-      <!-- 4. Production Direction & AI Pipelines -->
-      <div class="p-8 rounded-2xl bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-all">
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400">04 / Leadership</span>
-        <h3 class="text-2xl font-bold mt-3 mb-4">Creative Direction & AI Workflows</h3>
-        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-          Supervising media pipelines from initial pitch to final master, leveraging state-of-the-art generative tools for rapid pre-visualization.
-        </p>
-        <ul class="text-xs text-neutral-300 space-y-2 border-t border-neutral-800 pt-4 font-mono">
-          <li>+ Pipeline & Production Supervision</li>
-          <li>+ Rapid Generative Storyboarding</li>
-          <li>+ Creative Consultation & Technical Feasibility</li>
-        </ul>
+      <div class="flex items-center gap-4">
+        <a
+          href="/contact"
+          class="px-6 py-3 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+        >
+          Initiate Commission →
+        </a>
+        <a
+          href="/process"
+          class="px-6 py-3 rounded-xl border border-neutral-300/80 bg-white/70 dark:border-white/15 dark:bg-neutral-900/50 backdrop-blur-md text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
+        >
+          View Pipeline & Workflow ↓
+        </a>
       </div>
-
     </div>
   </section>
 
-  <!-- Call To Action -->
-  <CallToAction
-    actions={[
-      { variant: 'primary', text: "Let's Talk Business", href: '/contact', icon: 'tabler:mail' }
-    ]}
-  >
-    <Fragment slot="title">Need specialized creative execution for your next campaign?</Fragment>
-    <Fragment slot="subtitle">Let's discuss pipeline requirements, delivery milestones, and creative direction.</Fragment>
-  </CallToAction>
+  <!-- Services Grid -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-neutral-200 dark:border-white/10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {
+        capabilities.map((srv) => (
+          <div class="p-8 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200/90 dark:border-white/10 hover:border-sky-500/50 dark:hover:border-sky-400/50 transition-all shadow-sm hover:shadow-lg flex flex-col justify-between intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 font-bold block mb-3">
+                {srv.num} / {srv.category}
+              </span>
+              <h3 class="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight mb-4">{srv.title}</h3>
+              <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed mb-6 font-normal">{srv.desc}</p>
+            </div>
+
+            <ul class="text-xs text-neutral-700 dark:text-neutral-300 space-y-2 border-t border-neutral-200 dark:border-white/10 pt-4 font-mono">
+              {srv.tags.map((tag) => (
+                <li class="flex items-center gap-2">
+                  <span class="text-sky-500 font-bold">+</span>
+                  <span>{tag}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
+    <div
+      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg"
+    >
+      <div class="max-w-xl">
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
+          Need specialized creative execution for your next campaign?
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-300 text-sm">
+          Let's discuss pipeline requirements, delivery milestones, and creative direction.
+        </p>
+      </div>
+      <a
+        href="/contact"
+        class="flex-shrink-0 px-7 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+      >
+        Let's Talk Business ↗
+      </a>
+    </div>
+  </section>
 </Layout>

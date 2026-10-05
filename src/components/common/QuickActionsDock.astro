@@ -1,0 +1,88 @@
+---
+// Floating dock for quick actions: Copy email, jump to reel, and get in touch
+---
+
+<div
+  id="quick-actions-dock"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-[95vw] transition-all duration-500 opacity-0 translate-y-8 pointer-events-none data-[visible=true]:opacity-100 data-[visible=true]:translate-y-0 data-[visible=true]:pointer-events-auto"
+>
+  <div
+    class="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-full border border-neutral-300/80 dark:border-white/15 bg-white/85 dark:bg-neutral-900/85 backdrop-blur-xl shadow-2xl shadow-sky-500/10 text-xs font-mono"
+  >
+    <!-- Available Beacon -->
+    <div class="hidden sm:flex items-center gap-2 pr-2 border-r border-neutral-200 dark:border-white/10">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span class="text-[11px] text-neutral-600 dark:text-neutral-400 uppercase tracking-wider font-medium"
+        >Available</span
+      >
+    </div>
+
+    <!-- Quick Reel Button -->
+    <a
+      href="/#showreel"
+      class="px-2.5 py-1 rounded-full text-neutral-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors flex items-center gap-1.5 font-medium"
+      aria-label="Jump to Showreel"
+    >
+      <span>Reel</span>
+      <span class="text-[10px]">▶</span>
+    </a>
+
+    <!-- Copy Email Button -->
+    <button
+      id="dock-copy-email"
+      type="button"
+      class="px-2.5 py-1 rounded-full text-neutral-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors flex items-center gap-1.5 cursor-pointer font-medium"
+      title="Copy email to clipboard"
+    >
+      <span id="dock-copy-label">Copy Email</span>
+    </button>
+
+    <!-- Direct Contact Button -->
+    <a
+      href="/contact"
+      class="px-3.5 py-1.5 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold uppercase tracking-wider text-[11px] hover:opacity-90 transition-opacity shadow-sm"
+    >
+      Contact →
+    </a>
+  </div>
+</div>
+
+<script>
+  function initQuickActionsDock() {
+    const dock = document.getElementById('quick-actions-dock');
+    const copyBtn = document.getElementById('dock-copy-email');
+    const copyLabel = document.getElementById('dock-copy-label');
+    if (!dock || !copyBtn || !copyLabel) return;
+
+    // Show dock once user scrolls past 300px
+    const handleScroll = () => {
+      if (window.scrollY > 280) {
+        dock.setAttribute('data-visible', 'true');
+      } else {
+        dock.setAttribute('data-visible', 'false');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    // Copy email handler
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('contact@mouadrouini.space');
+        copyLabel.textContent = 'Copied! ✓';
+        copyLabel.classList.add('text-emerald-500');
+
+        setTimeout(() => {
+          copyLabel.textContent = 'Copy Email';
+          copyLabel.classList.remove('text-emerald-500');
+        }, 2200);
+      } catch {
+        window.location.href = 'mailto:contact@mouadrouini.space';
+      }
+    });
+  }
+
+  initQuickActionsDock();
+  document.addEventListener('astro:page-load', initQuickActionsDock);
+</script>

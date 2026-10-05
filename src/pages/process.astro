@@ -1,0 +1,190 @@
+---
+export const prerender = true;
+
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = {
+  title: 'Process & Pipeline — Mouad Rouini | Creative Direction',
+  description:
+    'An end-to-end look at how projects move from initial concept to high-fidelity motion, CGI, and final color-graded delivery.',
+};
+
+const stages = [
+  {
+    step: '01',
+    phase: 'Discovery & Creative Direction',
+    timeline: 'Phase 1 · Foundation',
+    desc: 'Deconstructing the brand narrative, target audience, and key visual objectives. We establish strict creative guardrails, reference reels, and cinematic moodboards before opening animation software.',
+    deliverables: ['Creative Brief Alignment', 'Moodboards & Reference Reels', 'Visual Tonality & Pacing Guide'],
+    tools: ['Figma', 'Miro', 'Frame.io'],
+  },
+  {
+    step: '02',
+    phase: 'Lookdev & Styleframes',
+    timeline: 'Phase 2 · Concept Art',
+    desc: 'Translating concepts into high-resolution key styleframes. We define color palettes, typography anatomy, lighting schemes, and procedural material shaders to lock the visual identity early.',
+    deliverables: [
+      'Production Styleframes (3-5 Key Frames)',
+      '3D Shading & Texture Tests',
+      'Kinetic Typography Specimens',
+    ],
+    tools: ['Cinema 4D', 'Octane / Redshift', 'Photoshop'],
+  },
+  {
+    step: '03',
+    phase: 'Choreography & Motion Production',
+    timeline: 'Phase 3 · Animation',
+    desc: 'Bringing styleframes to life at 60 FPS. Every frame is paced to audio rhythm, with strict attention to easing curves, secondary motion dynamics, camera depth of field, and procedural simulations.',
+    deliverables: ['Motion Animatic / Rough Cut', 'Full 3D / 2D Asset Simulation', 'Sound Sync & Rhythm Polish'],
+    tools: ['After Effects', 'Cinema 4D', 'Redshift'],
+  },
+  {
+    step: '04',
+    phase: 'Color Grade, Mastering & Delivery',
+    timeline: 'Phase 4 · Post-Production',
+    desc: 'The final cinematic polish. Applying ACES color transforms in DaVinci Resolve, clean grain structuring, audio mastering, and exporting broadcast-ready and multi-aspect web deliverables.',
+    deliverables: [
+      'DaVinci Resolve ACES Color Suite',
+      'ProRes 4444 / 422 HQ Masters',
+      'Web & Social Cutdowns (16:9, 9:16, 1:1)',
+    ],
+    tools: ['DaVinci Resolve Studio', 'Media Encoder'],
+  },
+];
+
+const principles = [
+  {
+    title: 'Rhythm Over Noise',
+    desc: 'Motion should feel musical and intentional. Every transition, bounce, and cut is timed to create subconscious visual satisfaction.',
+  },
+  {
+    title: 'Production Transparency',
+    desc: 'Regular review drops on Frame.io at every milestone ensure you are never surprised by the direction or final delivery.',
+  },
+  {
+    title: 'Precision Craftsmanship',
+    desc: 'Zero tolerance for sloppy easing, aliased edges, or clipped highlights. Delivered at standard 4K/UHD broadcast fidelity.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Section -->
+  <section class="relative pt-20 pb-16 md:pt-32 md:pb-24 max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="max-w-3xl">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-4 font-bold">
+        Workflow & Methodology
+      </span>
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white tracking-tight leading-tight mb-6"
+      >
+        The Pipeline: Concept to Final Frame.
+      </h1>
+      <p class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+        A structured, reliable four-stage production pipeline designed for agencies, commercial studios, and ambitious
+        brands. No guesswork, no missed deadlines.
+      </p>
+    </div>
+  </section>
+
+  <!-- Production Steps -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-neutral-200 dark:border-white/10">
+    <div class="space-y-16">
+      {
+        stages.map((stage) => (
+          <div class="group grid grid-cols-1 md:grid-cols-12 gap-8 items-start p-8 rounded-2xl bg-neutral-50/80 dark:bg-neutral-900/50 border border-neutral-200/80 dark:border-white/10 hover:border-sky-500/50 transition-all duration-300 intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
+            <div class="md:col-span-3">
+              <span class="text-3xl md:text-4xl font-mono font-bold text-sky-600 dark:text-sky-400 block mb-1">
+                //{stage.step}
+              </span>
+              <span class="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                {stage.timeline}
+              </span>
+            </div>
+
+            <div class="md:col-span-9 space-y-6">
+              <div>
+                <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-3">
+                  {stage.phase}
+                </h2>
+                <p class="text-sm md:text-base text-neutral-600 dark:text-neutral-300 leading-relaxed">{stage.desc}</p>
+              </div>
+
+              <div class="pt-4 border-t border-neutral-200 dark:border-white/10">
+                <span class="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 block mb-3 font-semibold">
+                  Milestone Deliverables:
+                </span>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono text-neutral-700 dark:text-neutral-300">
+                  {stage.deliverables.map((item) => (
+                    <li class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 pt-2">
+                <span class="text-[11px] font-mono text-neutral-400 uppercase mr-1">Tools:</span>
+                {stage.tools.map((tool) => (
+                  <span class="text-[10px] font-mono px-2.5 py-1 rounded-md bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-800 dark:text-neutral-300">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Core Production Principles -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-20 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-12">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-2 font-bold">
+        Standards
+      </span>
+      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Core Production Principles
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        principles.map((principle) => (
+          <div class="p-7 rounded-2xl bg-white/70 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-white/10 flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-neutral-900 dark:text-white tracking-tight mb-2">{principle.title}</h3>
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+                {principle.desc}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
+    <div
+      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg"
+    >
+      <div class="max-w-xl">
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
+          Ready to kick off a project?
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-300 text-sm">
+          Send over your project brief or request an initial consultation call.
+        </p>
+      </div>
+      <a
+        href="/contact"
+        class="flex-shrink-0 px-7 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+      >
+        Start a Project →
+      </a>
+    </div>
+  </section>
+</Layout>
