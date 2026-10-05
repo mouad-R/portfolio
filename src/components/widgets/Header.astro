@@ -9,6 +9,10 @@ interface Link {
 }
 
 export interface Props {
+  actions?: any;
+  showRssFeed?: boolean;
+  position?: string;
+  [key: string]: any;
   links?: Link[];
   isSticky?: boolean;
   showToggleTheme?: boolean;
