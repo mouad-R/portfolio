@@ -1,0 +1,215 @@
+---
+// Cinematic Cyan Waves Atmosphere & Adaptive Cursor
+---
+
+<!-- خلفية التموجات الضوئية الانسيابية الثابتة -->
+<div class="cinematic-ambient-bg" aria-hidden="true"></div>
+
+<!-- طبقة حبيبات ميكروسكوبية ناعمة لدمج الألوان السينمائية -->
+<div class="film-grain fixed inset-0 pointer-events-none z-[999] select-none" aria-hidden="true"></div>
+
+<!-- مؤشر الفأرة التفاعلي -->
+<div
+  id="cinema-cursor"
+  class="fixed top-0 left-0 pointer-events-none z-[1000] -translate-x-1/2 -translate-y-1/2 opacity-0 hidden md:flex items-center justify-center rounded-full transition-[width,height,background-color,border-color,box-shadow] duration-200 ease-out select-none will-change-transform"
+  style="width: 8px; height: 8px;"
+>
+  <span
+    id="cursor-label"
+    class="text-[8px] font-mono tracking-widest uppercase font-extrabold opacity-0 transition-opacity duration-150 pointer-events-none"
+  ></span>
+</div>
+
+<style is:global>
+  :root {
+    --aw-color-accent: rgb(2 132 199);
+  }
+  html.dark {
+    --aw-color-accent: rgb(56 189 248);
+  }
+  .text-accent {
+    color: rgb(2 132 199) !important;
+  }
+  html.dark .text-accent {
+    color: rgb(56 189 248) !important;
+  }
+  /* 1. خلفية التموجات السينمائية (Cyan Light Streaks) */
+  .cinematic-ambient-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -20;
+    background-attachment: fixed;
+    transition: background 0.5s ease-in-out, opacity 0.5s ease;
+  }
+
+  /* الوضع المشرق (Frosty Sky & Soft Cyan Waves) */
+  :root .cinematic-ambient-bg,
+  html:not(.dark) .cinematic-ambient-bg {
+    background-color: #f1f8fc;
+    background-image:
+      linear-gradient(
+        132deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(224, 242, 254, 0.88) 18%,
+        rgba(186, 230, 253, 0.7) 36%,
+        rgba(56, 189, 248, 0.38) 52%,
+        rgba(14, 165, 233, 0.28) 68%,
+        rgba(186, 230, 253, 0.6) 82%,
+        rgba(240, 249, 255, 0.95) 100%
+      ),
+      radial-gradient(ellipse 90% 70% at 90% 10%, rgba(56, 189, 248, 0.22), transparent 70%),
+      radial-gradient(ellipse 80% 60% at 10% 90%, rgba(14, 165, 233, 0.15), transparent 70%);
+  }
+
+  /* الوضع الداكن (Deep Oceanic Cyan & Glowing Silk Wave) */
+  html.dark .cinematic-ambient-bg {
+    background-color: #040811;
+    background-image:
+      linear-gradient(
+        132deg,
+        rgba(4, 8, 17, 0.98) 0%,
+        rgba(6, 20, 40, 0.92) 16%,
+        rgba(3, 48, 88, 0.72) 34%,
+        rgba(2, 132, 199, 0.32) 50%,
+        rgba(56, 189, 248, 0.28) 64%,
+        rgba(3, 85, 140, 0.42) 78%,
+        rgba(6, 22, 42, 0.88) 90%,
+        rgba(3, 7, 15, 0.98) 100%
+      ),
+      radial-gradient(ellipse 85% 65% at 88% 12%, rgba(56, 189, 248, 0.25), transparent 65%),
+      radial-gradient(ellipse 75% 55% at 12% 88%, rgba(2, 132, 199, 0.22), transparent 60%);
+  }
+
+  /* جعل خلفية الصفحة شفافة لتنساب التموجات تحت كل الأقسام */
+  body {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+
+  /* تحسين شفافية البطاقات لتتفاعل كزجاج مصقول فاخر */
+  html.dark #disciplines a {
+    background-color: rgba(10, 15, 26, 0.75) !important;
+    backdrop-filter: blur(12px) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  html:not(.dark) #disciplines a {
+    background-color: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(12px) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+  }
+
+  /* حبيبات الفيلم الدقيقة */
+  .film-grain {
+    opacity: 0.022;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+</style>
+
+<script>
+  function initCursor() {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const cursor = document.getElementById('cinema-cursor');
+    const label = document.getElementById('cursor-label');
+    if (!cursor || !label) return;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let currentX = -100;
+    let currentY = -100;
+    let isHoveringCard = false;
+    let isHoveringLink = false;
+    let isVisible = false;
+
+    const isDark = () => document.documentElement.classList.contains('dark');
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!isVisible) {
+        isVisible = true;
+        cursor.style.opacity = '1';
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      isVisible = false;
+      cursor.style.opacity = '0';
+    });
+
+    function render() {
+      currentX += (mouseX - currentX) * 0.22;
+      currentY += (mouseY - currentY) * 0.22;
+      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    function bindInteractions() {
+      const projectCards = document.querySelectorAll(
+        'a[href*="/cinematography/"], a[href*="/motion/"], a[href*="/3d/"], a[href*="/graphic-design/"], a[href*="/ui-ux/"], #disciplines a'
+      );
+
+      projectCards.forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+          isHoveringCard = true;
+          cursor.style.width = '44px';
+          cursor.style.height = '44px';
+          if (isDark()) {
+            cursor.style.backgroundColor = '#ffffff';
+            label.style.color = '#000000';
+            cursor.style.boxShadow = '0 0 18px rgba(56, 189, 248, 0.4)';
+          } else {
+            cursor.style.backgroundColor = '#0369a1';
+            label.style.color = '#ffffff';
+            cursor.style.boxShadow = '0 0 14px rgba(2, 132, 199, 0.25)';
+          }
+          label.textContent = 'VIEW';
+          label.style.opacity = '1';
+        });
+
+        card.addEventListener('mouseleave', () => {
+          isHoveringCard = false;
+          label.style.opacity = '0';
+          resetCursor();
+        });
+      });
+
+      const standardLinks = document.querySelectorAll('header a, footer a, button, .btn');
+      standardLinks.forEach((link) => {
+        link.addEventListener('mouseenter', () => {
+          if (isHoveringCard) return;
+          isHoveringLink = true;
+          cursor.style.width = '20px';
+          cursor.style.height = '20px';
+          cursor.style.backgroundColor = isDark() ? 'rgba(56, 189, 248, 0.2)' : 'rgba(2, 132, 199, 0.12)';
+          cursor.style.border = isDark() ? '1px solid rgba(56, 189, 248, 0.5)' : '1px solid rgba(2, 132, 199, 0.35)';
+        });
+
+        link.addEventListener('mouseleave', () => {
+          if (isHoveringCard) return;
+          isHoveringLink = false;
+          resetCursor();
+        });
+      });
+    }
+
+    function resetCursor() {
+      cursor.style.width = '7px';
+      cursor.style.height = '7px';
+      cursor.style.backgroundColor = isDark() ? 'rgba(56, 189, 248, 0.95)' : 'rgba(2, 132, 199, 0.9)';
+      cursor.style.border = 'none';
+      cursor.style.boxShadow = isDark() ? '0 0 8px rgba(56, 189, 248, 0.6)' : 'none';
+    }
+
+    resetCursor();
+    bindInteractions();
+  }
+
+  initCursor();
+  document.addEventListener('astro:page-load', initCursor);
+</script>

@@ -1,0 +1,146 @@
+---
+export const prerender = true;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { cinemaProjects, type CinemaProject } from '~/data/cinematography';
+
+export function getStaticPaths() {
+  return cinemaProjects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CinemaProject;
+}
+
+const { project } = Astro.props;
+
+const metadata = {
+  title: `${project.title} — Mouad Rouini`,
+};
+---
+
+<Layout metadata={metadata}>
+  <article class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-28">
+    
+    <!-- زر العودة -->
+    <div class="mb-10">
+      <a href="/cinematography" class="text-xs font-mono uppercase text-neutral-400 hover:text-white transition-colors">
+        ← Back to Cinematography
+      </a>
+    </div>
+
+    <!-- ترويسة المشروع -->
+    <header class="mb-14 border-b border-neutral-800 pb-10">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400">{project.category}</span>
+      <h1 class="text-4xl md:text-6xl font-bold text-white tracking-tight mt-2 mb-6">
+        {project.title}
+      </h1>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-neutral-900 text-xs font-mono">
+        <div>
+          <span class="text-neutral-500 block uppercase">Role</span>
+          <span class="text-neutral-200 mt-1 block">{project.role}</span>
+        </div>
+        <div>
+          <span class="text-neutral-500 block uppercase">Year</span>
+          <span class="text-neutral-200 mt-1 block">{project.year}</span>
+        </div>
+        <div class="col-span-2">
+          <span class="text-neutral-500 block uppercase">Technical Specs</span>
+          <span class="text-neutral-200 mt-1 block">{project.specs}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- النبذة -->
+    <section class="max-w-3xl mb-16 text-neutral-300 text-lg leading-relaxed">
+      <p>{project.description}</p>
+    </section>
+
+    <!-- وسائط العرض -->
+    <section class="space-y-12">
+      {project.media.map((item) => (
+        <div class="w-full rounded-2xl overflow-hidden bg-black shadow-2xl">
+          
+          <!-- فيديو YouTube -->
+          {item.type === 'youtube' && (
+            <div class="relative w-full aspect-video bg-black">
+              <iframe
+                class="w-full h-full"
+                src={item.src}
+                title={project.title}
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          )}
+
+          <!-- فيديو WebM محلي مدعوم بتشغيل ذكي وصامت -->
+          {item.type === 'video' && (
+            <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+              <video
+                src={item.src}
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="auto"
+                class="smart-video w-full h-full object-contain pointer-events-none"
+              ></video>
+            </div>
+          )}
+
+          <!-- صور WebP -->
+          {item.type === 'image' && (
+            <img
+              src={item.src}
+              alt={project.title}
+              class="w-full h-auto object-cover"
+              loading="lazy"
+            />
+          )}
+
+        </div>
+      ))}
+    </section>
+
+  </article>
+</Layout>
+
+<script>
+  function initSmartVideos() {
+    const videos = document.querySelectorAll<HTMLVideoElement>('video.smart-video');
+    if (!videos.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          // تأكيد كتم الصوت برمجياً لضمان موافقة المتصفح فوراً
+          video.muted = true;
+          video.play().catch(() => {});
+        } else {
+          // إيقاف الفيديو فور خروجه من الشاشة لتوفير أداء الجهاز
+          video.pause();
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    videos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      observer.observe(video);
+    });
+  }
+
+  // التفعيل مع أول تحميل ومع أي تنقل داخل الموقع في Astro
+  initSmartVideos();
+  document.addEventListener('astro:page-load', initSmartVideos);
+</script>

@@ -1,9 +1,12 @@
 ---
-import { SITE } from 'astrowind:config';
+import { Image } from 'astro:assets';
+import myLogo from '~/assets/icons/logo.svg';
 ---
 
-<span
-  class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white"
->
-  🚀 {SITE?.name}
-</span>
+<div class="flex items-center">
+  <Image 
+    src={myLogo} 
+    alt="mouad rouini" 
+    class="h-8 md:h-9 w-auto object-contain transition-all duration-200 dark:invert" 
+  />
+</div>

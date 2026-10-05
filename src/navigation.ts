@@ -1,86 +1,56 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink } from './utils/permalinks';
 
 export const headerData = {
- 
-      export const headerData = {
   links: [
     {
       text: 'Portfolio',
       links: [
-        { text: 'Motion Graphics', href: '/#motion' },
-        { text: '3D & CGI', href: '/#3d' },
-        { text: 'Cinematography & Edit', href: '/#editing' },
-        { text: 'AI Production', href: '/#ai' },
-        { text: 'Spatial & Branding', href: '/#spatial' },
+        { text: 'Cinematography', href: getPermalink('/cinematography') },
+        { text: 'Motion Design', href: getPermalink('/motion') },
+        { text: '3D Art & CGI', href: getPermalink('/3d') },
+        { text: 'Graphic & Brand', href: getPermalink('/graphic-design') },
+        { text: 'UI / UX Design', href: getPermalink('/ui-ux') },
       ],
     },
     {
-      text: 'Featured',
-      href: '/#featured',
+      text: 'Selected',
+      href: getPermalink('/#selected'),
     },
     {
-      text: 'How I Help',
-      href: '/services',
+      text: 'How I Can Help',
+      href: getPermalink('/#services'),
     },
     {
-      text: 'العربية',
-      href: '/ar',
+      text: 'Contact',
+      href: getPermalink('/contact'),
+      hasBorder: true,
     },
   ],
-  actions: [
-    { text: "Let's Talk", href: '/contact', variant: 'primary' }
-  ],
+  actions: [],
 };
 
 export const footerData = {
   links: [
     {
-      title: 'Product',
+      title: 'Portfolio',
       links: [
-        { text: 'Features', href: getPermalink('/#features') },
-        { text: 'Pricing', href: getPermalink('/pricing') },
-        { text: 'Services', href: getPermalink('/services') },
-        { text: 'Blog', href: getBlogPermalink() },
+        { text: 'Cinematography', href: getPermalink('/cinematography') },
+        { text: 'Motion Design', href: getPermalink('/motion') },
+        { text: '3D Art & CGI', href: getPermalink('/3d') },
+        { text: 'Graphic Design', href: getPermalink('/graphic-design') },
+        { text: 'UI / UX', href: getPermalink('/ui-ux') },
       ],
     },
     {
-      title: 'Demos',
+      title: 'Navigation',
       links: [
-        { text: 'SaaS', href: getPermalink('/homes/saas') },
-        { text: 'Startup', href: getPermalink('/homes/startup') },
-        { text: 'Mobile App', href: getPermalink('/homes/mobile-app') },
-        { text: 'Personal', href: getPermalink('/homes/personal') },
-        { text: 'Landing pages', href: getPermalink('/landing/lead-generation') },
-      ],
-    },
-    {
-      title: 'Resources',
-      links: [
-        { text: 'Documentation', href: 'https://github.com/arthelokyo/astrowind#readme' },
-        { text: 'Skills for AI agents', href: 'https://github.com/arthelokyo/astrowind/tree/main/.agents/skills' },
-        { text: 'Releases', href: 'https://github.com/arthelokyo/astrowind/releases' },
-        { text: 'Discussions', href: 'https://github.com/arthelokyo/astrowind/discussions' },
-      ],
-    },
-    {
-      title: 'Company',
-      links: [
-        { text: 'About', href: getPermalink('/about') },
+        { text: 'Selected Works', href: getPermalink('/#selected') },
+        { text: 'How I Can Help', href: getPermalink('/#services') },
         { text: 'Contact', href: getPermalink('/contact') },
-        { text: 'Report an issue', href: 'https://github.com/arthelokyo/astrowind/issues' },
-        { text: 'License', href: 'https://github.com/arthelokyo/astrowind/blob/main/LICENSE.md' },
       ],
     },
   ],
-  secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy Policy', href: getPermalink('/privacy') },
-  ],
-  socialLinks: [
-    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/arthelokyo/astrowind' },
-  ],
-  footNote: `
-    Made by <a class="text-blue-600 underline dark:text-muted" href="https://arthelokyo.com"> Arthelokyo</a> · All rights reserved.
-  `,
+  secondaryLinks: [],
+  socialLinks: [],
+  footNote: `© ${new Date().getFullYear()} Mouad Rouini · All rights reserved.`,
 };
