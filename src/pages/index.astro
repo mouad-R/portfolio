@@ -179,9 +179,10 @@ const services = [
           </span>
         </div>
 
-        <!-- Center Play Button -->
-        <a
-          href="/work/saad"
+        <!-- Center Play Button (Triggers Cinematic Lightbox) -->
+        <button
+          id="open-showreel-modal"
+          type="button"
           class="relative z-10 flex flex-col items-center group/play cursor-pointer"
           aria-label="Play Showreel"
         >
@@ -195,9 +196,9 @@ const services = [
           <span
             class="mt-4 text-xs font-mono uppercase tracking-widest text-white/90 font-medium group-hover/play:text-sky-300 transition-colors"
           >
-            Play Motion Reel ↗
+            Play Motion Reel ▶
           </span>
-        </a>
+        </button>
 
         <!-- Bottom Technical Specs -->
         <div
@@ -390,4 +391,89 @@ const services = [
       </a>
     </div>
   </section>
+
+  <!-- Cinematic Video Modal (Lightbox) -->
+  <div
+    id="showreel-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 bg-black/92 backdrop-blur-2xl opacity-0 pointer-events-none transition-all duration-300"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Mouad Rouini Showreel Player"
+  >
+    <!-- Close Button -->
+    <button
+      id="close-showreel-modal"
+      type="button"
+      class="absolute top-4 right-4 sm:top-7 sm:right-7 z-20 w-11 h-11 rounded-full bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all duration-300 cursor-pointer text-sm font-mono shadow-2xl"
+      aria-label="Close Showreel"
+    >
+      ✕
+    </button>
+
+    <!-- Modal Content Window -->
+    <div
+      class="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/15 scale-95 transition-transform duration-300"
+      id="showreel-modal-container"
+    >
+      <iframe
+        id="showreel-iframe"
+        data-src="https://www.youtube-nocookie.com/embed/5uODxM_u52I?autoplay=1&rel=0&modestbranding=1"
+        src=""
+        title="Mouad Rouini Showreel 2026"
+        class="w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+  </div>
 </Layout>
+
+<script>
+  function initShowreelModal() {
+    const openBtn = document.getElementById('open-showreel-modal');
+    const modal = document.getElementById('showreel-modal');
+    const closeBtn = document.getElementById('close-showreel-modal');
+    const container = document.getElementById('showreel-modal-container');
+    const iframe = document.getElementById('showreel-iframe') as HTMLIFrameElement | null;
+
+    if (!openBtn || !modal || !closeBtn || !container || !iframe) return;
+
+    const openModal = () => {
+      const srcUrl = iframe.getAttribute('data-src') || '';
+      iframe.src = srcUrl;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+      container.classList.remove('scale-95');
+      container.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+      iframe.src = '';
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      container.classList.remove('scale-100');
+      container.classList.add('scale-95');
+      document.body.style.overflow = '';
+    };
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close when clicking on backdrop
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('pointer-events-none')) {
+        closeModal();
+      }
+    });
+  }
+
+  initShowreelModal();
+  document.addEventListener('astro:page-load', initShowreelModal);
+</script>

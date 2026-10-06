@@ -1,138 +1,356 @@
 ---
+export const prerender = true;
+
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
-  title: 'Contact — Initiate a Project | Mouad Rouini',
-  description: 'Get in touch for creative direction, motion design, CGI, and post-production commissions.',
+  title: 'Contact & Project Inquiry — Mouad Rouini',
+  description: 'Initiate a commercial commission, motion project, or creative direction inquiry with Mouad Rouini.',
 };
+
+const serviceOptions = [
+  'Motion Design & Kinetic',
+  '3D Lookdev & CGI',
+  'Cinematography & Color',
+  'Full Creative Direction',
+];
+
+const budgetOptions = ['< $2,000', '$2,000 – $5,000', '$5,000 – $10,000', '$10,000+'];
+
+const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Schedule'];
 ---
 
 <Layout metadata={metadata}>
-  <section class="max-w-4xl mx-auto px-4 sm:px-6 py-20">
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-28 md:pt-32">
     <!-- Header -->
-    <div class="mb-12">
-      <span class="text-xs uppercase tracking-widest text-sky-600 dark:text-sky-400 font-mono">Get in touch</span>
-      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mt-2 text-neutral-900 dark:text-white">
-        Let's start a conversation.
+    <div class="max-w-3xl mb-12">
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-6 shadow-sm"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span
+          class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+        >
+          Commission Inquiries // 2026
+        </span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 leading-tight">
+        Let's build something <span class="text-sky-600 dark:text-sky-400">extraordinary.</span>
       </h1>
-      <p class="mt-4 text-neutral-600 dark:text-neutral-400 text-lg">
-        Available for creative direction, motion design, and CGI post-production contracts.
+      <p class="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+        Open for commercial commissions, broadcast titles, 3D product lookdev, and visual direction worldwide.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-      <!-- Direct contact info -->
-      <div class="space-y-8 md:col-span-1">
+    <!-- Success Message Banner (Visible on ?sent=true) -->
+    <div
+      id="sent-banner"
+      class="hidden mb-10 p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-sm font-mono flex items-center justify-between"
+    >
+      <div class="flex items-center gap-3">
+        <span class="text-emerald-500 text-lg">✓</span>
+        <span>Thank you! Your project brief has been received. I'll get back to you within 24 hours.</span>
+      </div>
+      <button type="button" id="close-banner" class="text-xs uppercase hover:underline opacity-70">Close</button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+      <!-- Direct Contact & Social Links (Col 4) -->
+      <div class="lg:col-span-4 space-y-8">
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-500">Direct Email</span>
-          <p class="mt-1">
-            <a
-              href="mailto:contact@mouadrouini.space"
-              class="text-neutral-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors font-medium"
-            >
-              contact@mouadrouini.space
-            </a>
-          </p>
+          <span class="text-xs font-mono uppercase text-sky-600 dark:text-sky-400 font-bold tracking-wider block mb-1">
+            Direct Email
+          </span>
+          <a
+            href="mailto:contact@mouadrouini.space"
+            class="text-base font-medium text-neutral-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+          >
+            contact@mouadrouini.space
+          </a>
+          <p class="text-xs text-neutral-500 font-mono mt-1">Typical response time: &lt; 24h</p>
         </div>
 
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-500">Location</span>
-          <p class="mt-1 text-neutral-900 dark:text-white font-medium">Algiers (UTC+1) · Available Worldwide</p>
+          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 tracking-wider block mb-1">
+            Studio Location
+          </span>
+          <p class="text-sm text-neutral-800 dark:text-neutral-200 font-medium">Algiers, Algeria (UTC+1)</p>
+          <p class="text-xs text-neutral-500 font-mono mt-0.5">Remote availability worldwide</p>
         </div>
 
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-500">Follow / Network</span>
-          <div class="mt-2 flex flex-col space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+          <span
+            class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 tracking-wider block mb-2 font-semibold"
+          >
+            Follow & Networks
+          </span>
+          <div class="flex flex-col space-y-2 text-xs font-mono">
             <a
               href="https://linkedin.com/in/mouadrouini"
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ LinkedIn</a
+              class="text-neutral-600 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-white transition-colors"
             >
+              ↗ LinkedIn
+            </a>
             <a
               href="https://instagram.com/mouadrouini"
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ Instagram</a
+              class="text-neutral-600 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-white transition-colors"
             >
+              ↗ Instagram
+            </a>
             <a
               href="https://behance.net/mouadrouini"
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ Behance</a
+              class="text-neutral-600 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-white transition-colors"
             >
+              ↗ Behance
+            </a>
             <a
               href="https://vimeo.com/mouadrouini"
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-neutral-900 dark:hover:text-white transition-colors">↗ Vimeo</a
+              class="text-neutral-600 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-white transition-colors"
             >
+              ↗ Vimeo
+            </a>
           </div>
         </div>
       </div>
 
-      <!-- Contact Form -->
-      <div
-        class="md:col-span-2 bg-neutral-50 dark:bg-neutral-900/60 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800"
-      >
-        <form action="https://formsubmit.co/contact@mouadrouini.space" method="POST" class="space-y-6">
+      <!-- Interactive Inquiry Brief Form (Col 8) -->
+      <div class="lg:col-span-8">
+        <form
+          action="https://formsubmit.co/contact@mouadrouini.space"
+          method="POST"
+          class="p-8 sm:p-10 rounded-3xl bg-white/80 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/90 dark:border-white/10 shadow-xl space-y-8"
+        >
           <!-- Honeypot anti-spam -->
           <input type="text" name="_honey" style="display:none" />
-          <!-- Disable captcha page -->
           <input type="hidden" name="_captcha" value="false" />
-          <!-- Redirect after submit -->
           <input type="hidden" name="_next" value="https://mouadrouini.space/contact?sent=true" />
 
+          <!-- Hidden inputs populated by pill selectors -->
+          <input type="hidden" name="service" id="field-service" value={serviceOptions[0]} />
+          <input type="hidden" name="budget" id="field-budget" value={budgetOptions[1]} />
+          <input type="hidden" name="timeline" id="field-timeline" value={timelineOptions[1]} />
+
+          <!-- 1. Service Selection Pills -->
           <div>
-            <label for="name" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
-              >Your Name</label
+            <label
+              class="block text-xs font-mono uppercase tracking-wider text-sky-600 dark:text-sky-400 font-bold mb-3"
             >
-            <input
-              id="name"
-              type="text"
-              name="name"
-              required
-              placeholder="e.g. John Doe"
-              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-lg px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
-            />
+              01 // What service do you need?
+            </label>
+            <div class="flex flex-wrap gap-2.5" id="pills-service">
+              {
+                serviceOptions.map((opt, idx) => (
+                  <button
+                    type="button"
+                    data-value={opt}
+                    class={`pill-btn px-4 py-2.5 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
+                      idx === 0
+                        ? 'bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold shadow-sm'
+                        : 'bg-neutral-100 dark:bg-white/5 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-white/10 hover:border-neutral-400'
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))
+              }
+            </div>
           </div>
 
+          <!-- 2. Budget Selection Pills -->
           <div>
-            <label for="email" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
-              >Email Address</label
+            <label
+              class="block text-xs font-mono uppercase tracking-wider text-sky-600 dark:text-sky-400 font-bold mb-3"
             >
-            <input
-              id="email"
-              type="email"
-              name="email"
-              required
-              placeholder="john@studio.com"
-              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-lg px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
-            />
+              02 // Estimated Budget (USD)
+            </label>
+            <div class="flex flex-wrap gap-2.5" id="pills-budget">
+              {
+                budgetOptions.map((opt, idx) => (
+                  <button
+                    type="button"
+                    data-value={opt}
+                    class={`pill-btn px-4 py-2.5 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
+                      idx === 1
+                        ? 'bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold shadow-sm'
+                        : 'bg-neutral-100 dark:bg-white/5 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-white/10 hover:border-neutral-400'
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))
+              }
+            </div>
           </div>
 
+          <!-- 3. Timeline Selection Pills -->
           <div>
-            <label for="message" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
-              >Project Brief & Details</label
+            <label
+              class="block text-xs font-mono uppercase tracking-wider text-sky-600 dark:text-sky-400 font-bold mb-3"
             >
+              03 // Expected Timeline
+            </label>
+            <div class="flex flex-wrap gap-2.5" id="pills-timeline">
+              {
+                timelineOptions.map((opt, idx) => (
+                  <button
+                    type="button"
+                    data-value={opt}
+                    class={`pill-btn px-4 py-2.5 rounded-full text-xs font-mono transition-all duration-200 cursor-pointer ${
+                      idx === 1
+                        ? 'bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold shadow-sm'
+                        : 'bg-neutral-100 dark:bg-white/5 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-white/10 hover:border-neutral-400'
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+
+          <!-- 4. Client Details (Name & Email) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-neutral-200 dark:border-white/10">
+            <div>
+              <label for="name" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+                Your Name / Brand *
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                required
+                placeholder="e.g. John Doe / Studio Acme"
+                class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-xl px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+                Email Address *
+              </label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                required
+                placeholder="john@example.com"
+                class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-xl px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
+              />
+            </div>
+          </div>
+
+          <!-- 5. Project Description -->
+          <div>
+            <label for="message" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+              Project Vision & Details *
+            </label>
             <textarea
               id="message"
               name="message"
               required
               rows="4"
-              placeholder="Tell me about the scope, timeline, and vision..."
-              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-lg px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
+              placeholder="Tell me about the campaign narrative, deliverables, reference links..."
+              class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-xl px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
             ></textarea>
           </div>
 
+          <!-- Submit Button -->
           <button
             type="submit"
-            class="w-full py-3.5 px-6 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold text-sm hover:opacity-90 transition-all cursor-pointer shadow-md"
+            class="w-full py-4 px-6 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-90 transition-all cursor-pointer shadow-lg"
           >
-            Send Message →
+            Submit Project Brief →
           </button>
         </form>
       </div>
     </div>
   </section>
 </Layout>
+
+<script>
+  function initInquiryForm() {
+    // 1. Check for ?sent=true banner
+    const urlParams = new URLSearchParams(window.location.search);
+    const banner = document.getElementById('sent-banner');
+    const closeBtn = document.getElementById('close-banner');
+
+    if (banner && urlParams.get('sent') === 'true') {
+      banner.classList.remove('hidden');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          banner.classList.add('hidden');
+        });
+      }
+    }
+
+    // 2. Setup interactive pill selectors
+    const setupGroup = (containerId: string, hiddenInputId: string) => {
+      const container = document.getElementById(containerId);
+      const hiddenInput = document.getElementById(hiddenInputId) as HTMLInputElement | null;
+      if (!container || !hiddenInput) return;
+
+      const pills = container.querySelectorAll<HTMLButtonElement>('.pill-btn');
+
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          const value = pill.getAttribute('data-value') || '';
+          hiddenInput.value = value;
+
+          pills.forEach((p) => {
+            p.classList.remove(
+              'bg-neutral-900',
+              'text-white',
+              'dark:bg-white',
+              'dark:text-black',
+              'font-semibold',
+              'shadow-sm'
+            );
+            p.classList.add(
+              'bg-neutral-100',
+              'dark:bg-white/5',
+              'text-neutral-700',
+              'dark:text-neutral-300',
+              'border',
+              'border-neutral-200',
+              'dark:border-white/10'
+            );
+          });
+
+          pill.classList.remove(
+            'bg-neutral-100',
+            'dark:bg-white/5',
+            'text-neutral-700',
+            'dark:text-neutral-300',
+            'border',
+            'border-neutral-200',
+            'dark:border-white/10'
+          );
+          pill.classList.add(
+            'bg-neutral-900',
+            'text-white',
+            'dark:bg-white',
+            'dark:text-black',
+            'font-semibold',
+            'shadow-sm'
+          );
+        });
+      });
+    };
+
+    setupGroup('pills-service', 'field-service');
+    setupGroup('pills-budget', 'field-budget');
+    setupGroup('pills-timeline', 'field-timeline');
+  }
+
+  initInquiryForm();
+  document.addEventListener('astro:page-load', initInquiryForm);
+</script>
