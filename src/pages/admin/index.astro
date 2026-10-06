@@ -1580,6 +1580,16 @@ export const projects: Project[] = ${JSON.stringify(projectsList, null, 2)};
           item.src = `/projects/${proj.slug}/${file.name}`;
         }
 
+        // Refresh proj.media with the newly uploaded file URLs in currentMedia
+        proj.media = currentMedia.map((m) => {
+          const item: MediaItem = { type: m.type };
+          if (m.src) item.src = m.src;
+          if (m.caption) item.caption = m.caption;
+          if (m.size) item.size = m.size;
+          if (m.bgColor) item.bgColor = m.bgColor;
+          return item;
+        });
+
         // Update projects array in memory
         const existingIdx = projectsList.findIndex((p) => p.slug === proj.slug);
         if (existingIdx >= 0) {
