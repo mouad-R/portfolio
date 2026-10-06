@@ -12,9 +12,12 @@
     <!-- Available Beacon -->
     <div class="hidden sm:flex items-center gap-2 pr-2 border-r border-neutral-200 dark:border-white/10">
       <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span class="text-[11px] text-neutral-600 dark:text-neutral-400 uppercase tracking-wider font-medium"
-        >Available</span
+      <span
+        class="text-[11px] text-neutral-600 dark:text-neutral-400 uppercase tracking-wider font-medium"
+        data-i18n="dock.available"
       >
+        Available
+      </span>
     </div>
 
     <!-- Quick Reel Button -->
@@ -23,7 +26,7 @@
       class="px-2.5 py-1 rounded-full text-neutral-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors flex items-center gap-1.5 font-medium"
       aria-label="Jump to Showreel"
     >
-      <span>Reel</span>
+      <span data-i18n="dock.reel">Reel</span>
       <span class="text-[10px]">▶</span>
     </a>
 
@@ -34,7 +37,7 @@
       class="px-2.5 py-1 rounded-full text-neutral-700 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors flex items-center gap-1.5 cursor-pointer font-medium"
       title="Copy email to clipboard"
     >
-      <span id="dock-copy-label">Copy Email</span>
+      <span id="dock-copy-label" data-i18n="dock.copyEmail">Copy Email</span>
     </button>
 
     <!-- Direct Contact Button -->
@@ -42,7 +45,7 @@
       href="/contact"
       class="px-3.5 py-1.5 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold uppercase tracking-wider text-[11px] hover:opacity-90 transition-opacity shadow-sm"
     >
-      Contact →
+      <span data-i18n="nav.contact">Contact</span> →
     </a>
   </div>
 </div>

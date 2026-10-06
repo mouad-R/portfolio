@@ -11,28 +11,14 @@ const metadata = {
     'Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling.',
 };
 
-const selectedWorks = [
-  {
-    ...projects.find((p) => p.slug === 'saad')!,
-    gridSpan: 'md:col-span-2 lg:col-span-2 aspect-[21/9] sm:aspect-[2.35/1]',
-  },
-  {
-    ...projects.find((p) => p.slug === 'brand-ident')!,
-    gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
-  },
-  {
-    ...projects.find((p) => p.slug === 'cyber-capsule')!,
-    gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
-  },
-  {
-    ...projects.find((p) => p.slug === 'lux-packaging')!,
-    gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
-  },
-  {
-    ...projects.find((p) => p.slug === 'travel-app')!,
-    gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
-  },
-];
+const featuredList = projects.filter((p) => p.featured !== false);
+const selectedWorks = (featuredList.length > 0 ? featuredList : projects.slice(0, 4)).map((p, idx) => ({
+  ...p,
+  gridSpan:
+    idx === 0
+      ? 'md:col-span-2 lg:col-span-2 aspect-[21/9] sm:aspect-[2.35/1]'
+      : 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
+}));
 
 const services = [
   {
@@ -113,6 +99,7 @@ const services = [
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span
           class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+          data-i18n="hero.badge"
         >
           Available for Direction & Commercial Commissions
         </span>
@@ -120,6 +107,7 @@ const services = [
 
       <h1
         class="text-4xl sm:text-6xl md:text-7xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] transition-colors"
+        data-i18n="hero.headline"
       >
         Senior Motion Designer & Visual Director.
       </h1>
@@ -195,6 +183,7 @@ const services = [
           </div>
           <span
             class="mt-4 text-xs font-mono uppercase tracking-widest text-white/90 font-medium group-hover/play:text-sky-300 transition-colors"
+            data-i18n="hero.watchShowreel"
           >
             Play Motion Reel ▶
           </span>
@@ -222,21 +211,24 @@ const services = [
     <div class="max-w-3xl">
       <p
         class="text-base sm:text-lg md:text-xl text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal mb-8"
+        data-i18n="hero.statement"
       >
-        Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity CGI lookdev — bridging
-        dynamic 2D/3D animation with cinematic post-production.
+        Operating at the intersection of kinetic rhythm, spatial lighting, and technical precision to elevate visual
+        storytelling.
       </p>
 
       <div class="flex flex-wrap items-center gap-4">
         <a
           href="#selected"
           class="px-6 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+          data-i18n="hero.exploreWorks"
         >
           Explore Works ↓
         </a>
         <a
           href="/contact"
           class="px-6 py-3.5 rounded-xl border border-neutral-300/80 bg-white/70 dark:border-white/15 dark:bg-neutral-900/50 backdrop-blur-md text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
+          data-i18n="hero.initiateCollab"
         >
           Initiate Collaboration →
         </a>
@@ -254,16 +246,23 @@ const services = [
   >
     <div class="flex items-end justify-between mb-10">
       <div>
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
-          >Portfolio</span
+        <span
+          class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
+          data-i18n="selected.badge">Curated Selection</span
         >
-        <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">Selected Works</h2>
+        <h2
+          class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
+          data-i18n="selected.title"
+        >
+          Selected Works
+        </h2>
       </div>
       <a
         href="/work"
         class="text-xs font-mono text-sky-600 dark:text-sky-400 hover:underline uppercase tracking-wider font-semibold"
+        data-i18n="selected.viewAll"
       >
-        [ View All Works ({projects.length}) → ]
+        View All Projects →
       </a>
     </div>
 
@@ -330,14 +329,23 @@ const services = [
   >
     <div class="flex items-end justify-between mb-12">
       <div>
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
-          >Capabilities</span
+        <span
+          class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
+          data-i18n="services.badge"
         >
-        <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">How I Can Help</h2>
+          Capabilities
+        </span>
+        <h2
+          class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
+          data-i18n="services.title"
+        >
+          Directing motion, light & design.
+        </h2>
       </div>
       <a
         href="/about#services"
         class="text-xs font-mono text-sky-600 dark:text-sky-400 hover:underline uppercase tracking-wider font-semibold hidden sm:block"
+        data-i18n="services.viewAbout"
       >
         [ View Capabilities in About → ]
       </a>
@@ -345,14 +353,22 @@ const services = [
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {
-        services.map((srv) => (
+        services.map((srv, idx) => (
           <div class="relative p-7 rounded-2xl bg-white/80 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
             <div>
               <span class="text-xs font-mono text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider block mb-4">
                 // {srv.step}
               </span>
-              <h3 class="text-xl font-bold text-neutral-900 dark:text-white tracking-tight mb-3">{srv.title}</h3>
-              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6 font-normal">
+              <h3
+                class="text-xl font-bold text-neutral-900 dark:text-white tracking-tight mb-3"
+                data-i18n={`services.0${idx + 1}.title`}
+              >
+                {srv.title}
+              </h3>
+              <p
+                class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed mb-6 font-normal"
+                data-i18n={`services.0${idx + 1}.desc`}
+              >
                 {srv.desc}
               </p>
             </div>
@@ -376,18 +392,22 @@ const services = [
       class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700"
     >
       <div class="max-w-xl">
-        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
-          Have a production or kinetic campaign in development?
+        <h2
+          class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2"
+          data-i18n="cta.title"
+        >
+          Have a project in mind? Let's craft something unforgettable.
         </h2>
-        <p class="text-neutral-600 dark:text-neutral-300 text-sm">
-          Open for select commercial direction, title sequences, and full-pipeline motion commissions.
+        <p class="text-neutral-600 dark:text-neutral-300 text-sm" data-i18n="cta.subtitle">
+          Open for select commercial projects, broadcast identities, and creative collaborations.
         </p>
       </div>
       <a
         href="/contact"
         class="flex-shrink-0 px-7 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+        data-i18n="cta.button"
       >
-        Get in Touch ↗
+        Start a Project Brief →
       </a>
     </div>
   </section>

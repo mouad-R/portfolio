@@ -5,6 +5,7 @@ export interface MediaItem {
   src?: string;
   caption?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  bgColor?: string;
 }
 
 export type ProjectCategory = 'motion' | '3d' | 'cinematography' | 'brand' | 'ui-ux';

@@ -30,15 +30,22 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span
           class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+          data-i18n="contact.badge"
         >
           Commission Inquiries // 2026
         </span>
       </div>
 
-      <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 leading-tight">
-        Let's build something <span class="text-sky-600 dark:text-sky-400">extraordinary.</span>
+      <h1
+        class="text-4xl sm:text-6xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 leading-tight"
+        data-i18n="contact.title"
+      >
+        Let's build something extraordinary.
       </h1>
-      <p class="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+      <p
+        class="text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal"
+        data-i18n="contact.subtitle"
+      >
         Open for commercial commissions, broadcast titles, 3D product lookdev, and visual direction worldwide.
       </p>
     </div>
@@ -59,7 +66,10 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
       <!-- Direct Contact & Social Links (Col 4) -->
       <div class="lg:col-span-4 space-y-8">
         <div>
-          <span class="text-xs font-mono uppercase text-sky-600 dark:text-sky-400 font-bold tracking-wider block mb-1">
+          <span
+            class="text-xs font-mono uppercase text-sky-600 dark:text-sky-400 font-bold tracking-wider block mb-1"
+            data-i18n="contact.directEmail"
+          >
             Direct Email
           </span>
           <a
@@ -68,20 +78,30 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
           >
             contact@mouadrouini.space
           </a>
-          <p class="text-xs text-neutral-500 font-mono mt-1">Typical response time: &lt; 24h</p>
+          <p class="text-xs text-neutral-500 font-mono mt-1" data-i18n="contact.responseTime">
+            Typical response time: &lt; 24h
+          </p>
         </div>
 
         <div>
-          <span class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 tracking-wider block mb-1">
+          <span
+            class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 tracking-wider block mb-1"
+            data-i18n="contact.location"
+          >
             Studio Location
           </span>
-          <p class="text-sm text-neutral-800 dark:text-neutral-200 font-medium">Algiers, Algeria (UTC+1)</p>
-          <p class="text-xs text-neutral-500 font-mono mt-0.5">Remote availability worldwide</p>
+          <p class="text-sm text-neutral-800 dark:text-neutral-200 font-medium" data-i18n="contact.locationVal">
+            Algiers, Algeria (UTC+1)
+          </p>
+          <p class="text-xs text-neutral-500 font-mono mt-0.5" data-i18n="contact.remoteVal">
+            Remote availability worldwide
+          </p>
         </div>
 
         <div>
           <span
             class="text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 tracking-wider block mb-2 font-semibold"
+            data-i18n="contact.networks"
           >
             Follow & Networks
           </span>
@@ -143,6 +163,7 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
           <div>
             <label
               class="block text-xs font-mono uppercase tracking-wider text-sky-600 dark:text-sky-400 font-bold mb-3"
+              data-i18n="contact.serviceLabel"
             >
               01 // What service do you need?
             </label>
@@ -169,6 +190,7 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
           <div>
             <label
               class="block text-xs font-mono uppercase tracking-wider text-sky-600 dark:text-sky-400 font-bold mb-3"
+              data-i18n="contact.budgetLabel"
             >
               02 // Estimated Budget (USD)
             </label>
@@ -195,6 +217,7 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
           <div>
             <label
               class="block text-xs font-mono uppercase tracking-wider text-sky-600 dark:text-sky-400 font-bold mb-3"
+              data-i18n="contact.timelineLabel"
             >
               03 // Expected Timeline
             </label>
@@ -220,7 +243,11 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
           <!-- 4. Client Details (Name & Email) -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-neutral-200 dark:border-white/10">
             <div>
-              <label for="name" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+              <label
+                for="name"
+                class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
+                data-i18n="contact.nameLabel"
+              >
                 Your Name / Brand *
               </label>
               <input
@@ -229,12 +256,17 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
                 name="name"
                 required
                 placeholder="e.g. John Doe / Studio Acme"
+                data-i18n-placeholder="contact.namePlaceholder"
                 class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-xl px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
               />
             </div>
 
             <div>
-              <label for="email" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+              <label
+                for="email"
+                class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
+                data-i18n="contact.emailLabel"
+              >
                 Email Address *
               </label>
               <input
@@ -243,6 +275,7 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
                 name="email"
                 required
                 placeholder="john@example.com"
+                data-i18n-placeholder="contact.emailPlaceholder"
                 class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-xl px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
               />
             </div>
@@ -250,7 +283,11 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
 
           <!-- 5. Project Description -->
           <div>
-            <label for="message" class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+            <label
+              for="message"
+              class="block text-xs font-mono uppercase text-neutral-500 dark:text-neutral-400 mb-2"
+              data-i18n="contact.detailsLabel"
+            >
               Project Vision & Details *
             </label>
             <textarea
@@ -259,6 +296,7 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
               required
               rows="4"
               placeholder="Tell me about the campaign narrative, deliverables, reference links..."
+              data-i18n-placeholder="contact.detailsPlaceholder"
               class="w-full bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 rounded-xl px-4 py-3 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm transition-colors"
             ></textarea>
           </div>
@@ -267,6 +305,7 @@ const timelineOptions = ['Urgent (< 2 Weeks)', '1 – 2 Months', 'Flexible Sched
           <button
             type="submit"
             class="w-full py-4 px-6 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-90 transition-all cursor-pointer shadow-lg"
+            data-i18n="contact.submit"
           >
             Submit Project Brief →
           </button>

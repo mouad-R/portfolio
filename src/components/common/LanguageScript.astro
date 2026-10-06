@@ -1,0 +1,90 @@
+---
+import { translations } from '~/utils/translations';
+---
+
+<!-- Early execution to prevent RTL/LTR layout flash -->
+<script is:inline>
+  (function () {
+    const lang = localStorage.getItem('portfolio_lang') || 'en';
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    if (lang === 'ar') {
+      document.documentElement.classList.add('lang-ar');
+    } else {
+      document.documentElement.classList.remove('lang-ar');
+    }
+  })();
+</script>
+
+<script is:inline define:vars={{ translations }}>
+  function applyLanguage(lang) {
+    localStorage.setItem('portfolio_lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+    if (lang === 'ar') {
+      document.documentElement.classList.add('lang-ar');
+    } else {
+      document.documentElement.classList.remove('lang-ar');
+    }
+
+    const dict = translations[lang] || translations.en;
+
+    // 1. Elements with data-i18n
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (key && dict[key]) {
+        el.textContent = dict[key];
+      }
+    });
+
+    // 2. Elements with data-i18n-placeholder
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (key && dict[key]) {
+        el.setAttribute('placeholder', dict[key]);
+      }
+    });
+
+    // 3. Update Toggle UI
+    document.querySelectorAll('.lang-toggle-btn').forEach((btn) => {
+      const enLabel = btn.querySelector('.lang-label-en');
+      const arLabel = btn.querySelector('.lang-label-ar');
+      if (lang === 'ar') {
+        arLabel?.classList.add('text-sky-500', 'font-black');
+        arLabel?.classList.remove('text-neutral-400');
+        enLabel?.classList.remove('text-sky-500', 'font-black');
+        enLabel?.classList.add('text-neutral-400');
+      } else {
+        enLabel?.classList.add('text-sky-500', 'font-black');
+        enLabel?.classList.remove('text-neutral-400');
+        arLabel?.classList.remove('text-sky-500', 'font-black');
+        arLabel?.classList.add('text-neutral-400');
+      }
+    });
+  }
+
+  function initLanguage() {
+    const currentLang = localStorage.getItem('portfolio_lang') || 'en';
+    applyLanguage(currentLang);
+
+    // Setup click events on all language toggle buttons
+    document.querySelectorAll('.lang-toggle-btn').forEach((btn) => {
+      btn.onclick = () => {
+        const current = localStorage.getItem('portfolio_lang') || 'en';
+        const nextLang = current === 'en' ? 'ar' : 'en';
+        applyLanguage(nextLang);
+      };
+    });
+  }
+
+  // Initialize on load and after Astro View Transitions
+  initLanguage();
+  document.addEventListener('astro:page-load', initLanguage);
+  document.addEventListener('astro:after-swap', () => {
+    const lang = localStorage.getItem('portfolio_lang') || 'en';
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    initLanguage();
+  });
+</script>

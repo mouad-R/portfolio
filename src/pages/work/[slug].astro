@@ -3,6 +3,7 @@ export const prerender = true;
 
 import Layout from '~/layouts/PageLayout.astro';
 import { projects, type Project } from '~/data/projects';
+import { getEmbedUrl } from '~/utils/media';
 
 export function getStaticPaths() {
   return projects.map((project, index) => {
@@ -38,8 +39,8 @@ const metadata = {
         href="/work"
         class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
       >
-        <span>←</span>
-        <span>Back to All Works</span>
+        <span class="rtl:rotate-180">←</span>
+        <span data-i18n="work.backToAll">Back to All Works</span>
       </a>
     </div>
 
@@ -61,15 +62,17 @@ const metadata = {
         class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-neutral-200 dark:border-neutral-900 text-xs font-mono"
       >
         <div>
-          <span class="text-neutral-500 dark:text-neutral-400 block uppercase">Role</span>
+          <span class="text-neutral-500 dark:text-neutral-400 block uppercase" data-i18n="work.role">Role</span>
           <span class="text-neutral-900 dark:text-neutral-100 mt-1 block font-semibold">{project.role}</span>
         </div>
         <div>
-          <span class="text-neutral-500 dark:text-neutral-400 block uppercase">Year</span>
+          <span class="text-neutral-500 dark:text-neutral-400 block uppercase" data-i18n="work.year">Year</span>
           <span class="text-neutral-900 dark:text-neutral-100 mt-1 block font-semibold">{project.year}</span>
         </div>
         <div class="col-span-2">
-          <span class="text-neutral-500 dark:text-neutral-400 block uppercase">Technical Specs</span>
+          <span class="text-neutral-500 dark:text-neutral-400 block uppercase" data-i18n="work.specs"
+            >Technical Specs</span
+          >
           <span class="text-neutral-900 dark:text-neutral-100 mt-1 block font-semibold">{project.specs}</span>
         </div>
       </div>
@@ -100,47 +103,58 @@ const metadata = {
                 item.size === 'lg' && 'h-20 sm:h-28',
                 item.size === 'xl' && 'h-32 sm:h-44',
                 !item.size && 'h-12 sm:h-16',
+                'w-full transition-colors',
               ]}
+              style={
+                item.bgColor && item.bgColor !== 'transparent'
+                  ? `background-color: ${item.bgColor};`
+                  : 'background-color: transparent;'
+              }
               aria-hidden="true"
             />
           ) : (
             <div
               class:list={[
-                'w-full overflow-hidden bg-black shadow-2xl border border-neutral-800',
+                'w-full overflow-hidden bg-neutral-950 shadow-2xl border border-neutral-800',
                 project.mediaGap === 'none' || !project.mediaGap
                   ? 'rounded-none first:rounded-t-2xl last:rounded-b-2xl'
                   : 'rounded-2xl',
               ]}
             >
               {item.type === 'youtube' && item.src && (
-                <div class="relative w-full aspect-video bg-black">
+                <div class="relative w-full aspect-video bg-black overflow-hidden">
                   <iframe
                     class="w-full h-full"
-                    src={item.src}
+                    src={getEmbedUrl(item.src)}
                     title={project.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
+                    loading="lazy"
                   />
                 </div>
               )}
 
               {item.type === 'video' && item.src && (
-                <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+                <div class="relative w-full bg-neutral-950 overflow-hidden flex items-center justify-center">
                   <video
-                    src={item.src}
                     autoplay
                     loop
                     muted
                     playsinline
-                    preload="auto"
-                    class="smart-video w-full h-full object-contain pointer-events-none"
-                  />
+                    controls
+                    preload="metadata"
+                    class="smart-video w-full h-auto max-h-[88vh] object-contain mx-auto"
+                  >
+                    <source src={item.src} type={item.src.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
+                    <source src={item.src} />
+                    Your browser does not support playing this video.
+                  </video>
                 </div>
               )}
 
               {item.type === 'image' && item.src && (
-                <div class="relative w-full overflow-hidden">
+                <div class="relative w-full overflow-hidden bg-neutral-950">
                   <img
                     src={item.src}
                     alt={item.caption || project.title}
@@ -166,7 +180,10 @@ const metadata = {
         href={`/work/${prevProject.slug}`}
         class="group p-6 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/60 dark:bg-neutral-900/40 hover:border-sky-500/50 transition-all flex flex-col justify-between"
       >
-        <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2">
+        <span
+          class="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2"
+          data-i18n="work.prevProject"
+        >
           ← Previous Project
         </span>
         <span
@@ -180,7 +197,10 @@ const metadata = {
         href={`/work/${nextProject.slug}`}
         class="group p-6 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/60 dark:bg-neutral-900/40 hover:border-sky-500/50 transition-all flex flex-col justify-between sm:items-end text-left sm:text-right"
       >
-        <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2">
+        <span
+          class="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2"
+          data-i18n="work.nextProject"
+        >
           Next Project →
         </span>
         <span
@@ -198,26 +218,31 @@ const metadata = {
     const videos = document.querySelectorAll<HTMLVideoElement>('video.smart-video');
     if (!videos.length) return;
 
+    videos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.play().catch(() => {});
+    });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const video = entry.target as HTMLVideoElement;
           if (entry.isIntersecting) {
-            video.muted = true;
-            video.play().catch(() => {});
+            if (video.paused && video.muted) {
+              video.play().catch(() => {});
+            }
           } else {
-            video.pause();
+            if (video.muted) {
+              video.pause();
+            }
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     );
 
-    videos.forEach((video) => {
-      video.muted = true;
-      video.defaultMuted = true;
-      observer.observe(video);
-    });
+    videos.forEach((video) => observer.observe(video));
   }
 
   initSmartVideos();

@@ -103,11 +103,33 @@ const metadata = {
 
     <!-- VIEW 1: Projects Overview List -->
     <div id="view-projects-list" class="space-y-6">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-neutral-900 dark:text-white font-mono">
-          المشاريع المنشورة حالياً (<span id="count-projects">0</span>)
-        </h2>
-        <span class="text-xs font-mono text-neutral-500">انقر على أي مشروع لتعديل بياناته أو إعادة ترتيب وسائطه</span>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-neutral-900 dark:text-white font-mono">
+            المشاريع المنشورة حالياً (<span id="count-projects">0</span>)
+          </h2>
+          <span class="text-xs font-mono text-neutral-500">
+            يمكنك إعادة ترتيب المشاريع (▲/▼) واختيار ظهورها في الصفحة الأولى بنقرة واحدة
+          </span>
+        </div>
+
+        <button
+          type="button"
+          id="btn-save-projects-order"
+          class="hidden px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-mono text-xs font-bold hover:bg-emerald-500 shadow-lg flex items-center gap-2 cursor-pointer transition-all animate-pulse"
+        >
+          <span>💾</span>
+          <span>حفظ ترتيب وظهور المشاريع</span>
+        </button>
+      </div>
+
+      <div
+        id="reorder-banner"
+        class="hidden p-3 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-400 font-mono text-xs flex items-center justify-between"
+      >
+        <span
+          >⚠️ تم تغيير ترتيب أو حالة ظهور المشاريع. تذكّر الضغط على زر "حفظ ترتيب وظهور المشاريع" لتثبيتها بالموقع.</span
+        >
       </div>
 
       <div id="projects-table" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -366,6 +388,22 @@ const metadata = {
                 class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
               ></textarea>
             </div>
+
+            <!-- Featured Toggle -->
+            <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-between">
+              <div>
+                <label
+                  for="form-featured"
+                  class="block text-xs font-bold text-neutral-900 dark:text-white font-mono cursor-pointer"
+                >
+                  ⭐ مشروع مميز بالصفحة الأولى (Featured)
+                </label>
+                <p class="text-[11px] text-neutral-500 font-mono mt-0.5">
+                  يظهر هذا المشروع في قسم الأعمال المختارة بالصفحة الرئيسية
+                </p>
+              </div>
+              <input type="checkbox" id="form-featured" class="w-5 h-5 accent-sky-600 rounded cursor-pointer" checked />
+            </div>
           </div>
         </div>
 
@@ -507,6 +545,7 @@ const metadata = {
     src?: string;
     caption?: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
+    bgColor?: string;
     _file?: File; // Temporary local file reference for uploading
   }
 
@@ -527,6 +566,8 @@ const metadata = {
   }
 
   function initStudioAdmin() {
+    const repoOwner = 'mouad-R';
+    const repoName = 'portfolio';
     const rawData = document.getElementById('initial-projects-data')?.getAttribute('data-projects');
     const projectsList: Project[] = rawData ? JSON.parse(rawData) : [];
     let currentEditingSlug: string | null = null;
@@ -802,13 +843,34 @@ const metadata = {
       if (e.dataTransfer?.files) handleBatchFiles(e.dataTransfer.files);
     });
 
+    // Helper: Convert raw YouTube / Vimeo URLs to Embed format
+    const toEmbedUrl = (url: string): string => {
+      if (!url) return '';
+      const trimmed = url.trim();
+      if (trimmed.includes('youtube.com/embed/') || trimmed.includes('youtube-nocookie.com/embed/')) {
+        return trimmed;
+      }
+      const ytMatch = trimmed.match(
+        /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/
+      );
+      if (ytMatch && ytMatch[1]) {
+        return `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1`;
+      }
+      const vimeoMatch = trimmed.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+      if (vimeoMatch && vimeoMatch[1]) {
+        return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+      }
+      return trimmed;
+    };
+
     // 6. Secondary Add Buttons (Embed link & Spacer)
     const btnAddEmbedLink = document.getElementById('btn-add-embed-link');
     const btnAddSpacer = document.getElementById('btn-add-spacer');
 
     btnAddEmbedLink?.addEventListener('click', () => {
-      const url = prompt('أدخل رابط YouTube Embed أو رابط فيديو مباشر:', 'https://www.youtube-nocookie.com/embed/');
-      if (url) {
+      const raw = prompt('أدخل رابط فيديو (YouTube / Vimeo / رابط مباشر MP4 أو WebM):', '');
+      if (raw && raw.trim()) {
+        const url = toEmbedUrl(raw.trim());
         const isYt = url.includes('youtube') || url.includes('youtu.be');
         currentMedia.push({
           type: isYt ? 'youtube' : 'video',
@@ -819,7 +881,7 @@ const metadata = {
     });
 
     btnAddSpacer?.addEventListener('click', () => {
-      currentMedia.push({ type: 'spacer', size: 'md' });
+      currentMedia.push({ type: 'spacer', size: 'md', bgColor: 'transparent' });
       renderMediaCards();
     });
 
@@ -842,19 +904,39 @@ const metadata = {
         card.setAttribute('data-index', String(index));
 
         if (item.type === 'spacer') {
+          const isStandardColor = ['transparent', '#0a0a0a', '#ffffff'].includes(item.bgColor || 'transparent');
           card.innerHTML = `
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
               <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
               <span class="px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-500 font-bold flex items-center gap-1.5">
                 <span>↕️</span>
-                <span>فراغ مخصص (Spacer)</span>
+                <span>فراغ (Spacer)</span>
               </span>
-              <select class="spacer-size-select px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white cursor-pointer">
-                <option value="sm" ${item.size === 'sm' ? 'selected' : ''}>صغير (24px)</option>
-                <option value="md" ${item.size === 'md' || !item.size ? 'selected' : ''}>متوسط (48px)</option>
-                <option value="lg" ${item.size === 'lg' ? 'selected' : ''}>كبير (96px)</option>
-                <option value="xl" ${item.size === 'xl' ? 'selected' : ''}>ضخم (140px)</option>
-              </select>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] text-neutral-400">الحجم:</span>
+                <select class="spacer-size-select px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white cursor-pointer">
+                  <option value="sm" ${item.size === 'sm' ? 'selected' : ''}>صغير (24px)</option>
+                  <option value="md" ${item.size === 'md' || !item.size ? 'selected' : ''}>متوسط (48px)</option>
+                  <option value="lg" ${item.size === 'lg' ? 'selected' : ''}>كبير (96px)</option>
+                  <option value="xl" ${item.size === 'xl' ? 'selected' : ''}>ضخم (140px)</option>
+                </select>
+              </div>
+
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] text-neutral-400">اللون:</span>
+                <select class="spacer-color-select px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white cursor-pointer">
+                  <option value="transparent" ${!item.bgColor || item.bgColor === 'transparent' ? 'selected' : ''}>شفاف (Transparent)</option>
+                  <option value="#0a0a0a" ${item.bgColor === '#0a0a0a' ? 'selected' : ''}>داكن (#0a0a0a)</option>
+                  <option value="#ffffff" ${item.bgColor === '#ffffff' ? 'selected' : ''}>أبيض (#ffffff)</option>
+                  <option value="__custom__" ${!isStandardColor ? 'selected' : ''}>لون Hex مخصص...</option>
+                </select>
+                <input
+                  type="text"
+                  value="${!isStandardColor ? item.bgColor || '' : ''}"
+                  placeholder="#121212"
+                  class="spacer-custom-hex w-20 px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-[11px] ${!isStandardColor ? '' : 'hidden'}"
+                />
+              </div>
             </div>
             <div class="flex items-center gap-2">
               <button type="button" class="btn-move-up p-1 hover:text-sky-500" title="تحريك لأعلى">▲</button>
@@ -886,11 +968,22 @@ const metadata = {
             </div>
           `;
         } else {
-          // Video / YouTube
+          // Video / YouTube with dynamic preview
+          const vidPreviewHtml =
+            item.type === 'video' && item._file
+              ? `<video src="${URL.createObjectURL(item._file)}" muted playsinline class="w-full h-full object-cover"></video>`
+              : item.type === 'video' && item.src
+                ? `<video src="${item.src}" muted playsinline class="w-full h-full object-cover"></video>`
+                : item.type === 'youtube' && item.src
+                  ? `<div class="w-full h-full bg-red-600/20 text-red-500 flex items-center justify-center font-bold text-xs">▶ YT</div>`
+                  : `<span class="text-xs">🎬</span>`;
+
           card.innerHTML = `
             <div class="flex items-center gap-3 overflow-hidden">
               <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
-              <span class="p-2 rounded-lg bg-indigo-500/10 text-indigo-500 font-bold">🎬 فيديو</span>
+              <div class="w-14 h-12 rounded-lg overflow-hidden bg-neutral-900 flex-shrink-0 border border-neutral-300 dark:border-white/10 flex items-center justify-center">
+                ${vidPreviewHtml}
+              </div>
               <div class="space-y-1">
                 <div class="flex items-center gap-2">
                   <select class="card-type-select px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-[10px] font-bold">
@@ -899,7 +992,7 @@ const metadata = {
                   </select>
                   ${item._file ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-500">ملف جاهز للرفع: ${item._file.name}</span>` : ''}
                 </div>
-                <input type="text" value="${item.src || ''}" placeholder="رابط الفيديو" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
+                <input type="text" value="${item.src || ''}" placeholder="رابط الفيديو أو YouTube" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -915,8 +1008,32 @@ const metadata = {
           currentMedia[index].size = (e.target as HTMLSelectElement).value as MediaItem['size'];
         });
 
+        card.querySelector('.spacer-color-select')?.addEventListener('change', (e) => {
+          const val = (e.target as HTMLSelectElement).value;
+          const hexInput = card.querySelector('.spacer-custom-hex') as HTMLInputElement | null;
+          if (val === '__custom__') {
+            hexInput?.classList.remove('hidden');
+            currentMedia[index].bgColor = hexInput?.value.trim() || '#121212';
+          } else {
+            hexInput?.classList.add('hidden');
+            currentMedia[index].bgColor = val;
+          }
+        });
+
+        card.querySelector('.spacer-custom-hex')?.addEventListener('input', (e) => {
+          currentMedia[index].bgColor = (e.target as HTMLInputElement).value.trim();
+        });
+
         card.querySelector('.card-src-input')?.addEventListener('input', (e) => {
-          currentMedia[index].src = (e.target as HTMLInputElement).value;
+          let val = (e.target as HTMLInputElement).value;
+          if (val.includes('youtube.com') || val.includes('youtu.be')) {
+            const converted = toEmbedUrl(val);
+            if (converted !== val) {
+              val = converted;
+              (e.target as HTMLInputElement).value = converted;
+            }
+          }
+          currentMedia[index].src = val;
         });
 
         card.querySelector('.card-caption-input')?.addEventListener('input', (e) => {
@@ -981,35 +1098,94 @@ const metadata = {
       });
     };
 
-    // 8. Projects Overview List
+    // 8. Projects Overview List with Reordering & Featured Toggles
+    const btnSaveOrder = document.getElementById('btn-save-projects-order');
+    const reorderBanner = document.getElementById('reorder-banner');
+
+    const showReorderNotice = () => {
+      btnSaveOrder?.classList.remove('hidden');
+      reorderBanner?.classList.remove('hidden');
+    };
+
     const renderProjectsList = () => {
       if (!projectsTable || !countProjects) return;
       countProjects.textContent = String(projectsList.length);
       projectsTable.innerHTML = '';
 
-      projectsList.forEach((proj) => {
+      projectsList.forEach((proj, index) => {
+        const isFeatured = proj.featured !== false;
         const card = document.createElement('div');
         card.className =
           'rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/80 dark:bg-neutral-900/80 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
         card.innerHTML = `
           <div>
-            <div class="aspect-video rounded-xl overflow-hidden bg-neutral-950 mb-4 border border-neutral-200 dark:border-white/10 relative">
+            <div class="aspect-video rounded-xl overflow-hidden bg-neutral-950 mb-3 border border-neutral-200 dark:border-white/10 relative group/thumb">
               <img src="${proj.thumbnail}" alt="${proj.title}" class="w-full h-full object-cover" />
-              <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-mono uppercase">${proj.category}</span>
+              <div class="absolute top-2 right-2 flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded bg-black/80 text-white text-[10px] font-mono uppercase font-bold">#${index + 1}</span>
+                <span class="px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-mono uppercase">${proj.category}</span>
+              </div>
             </div>
+
+            <!-- Featured Toggle Button -->
+            <div class="mb-3">
+              <button
+                type="button"
+                class="btn-toggle-featured w-full py-1.5 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-between border cursor-pointer transition-all ${
+                  isFeatured
+                    ? 'bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20'
+                    : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-400 border-neutral-200 dark:border-white/10 hover:text-neutral-200'
+                }"
+              >
+                <span>${isFeatured ? '⭐ مميز (يظهر في الرئيسية)' : '⬜ في الأرشيف فقط'}</span>
+                <span class="text-[10px] opacity-75">${isFeatured ? 'تغيير ✕' : 'إضافة للرئيسية +'}</span>
+              </button>
+            </div>
+
             <h3 class="text-base font-bold text-neutral-900 dark:text-white mb-1">${proj.title}</h3>
             <p class="text-xs font-mono text-neutral-500 mb-2">${proj.year} · ${proj.role || 'Creator'}</p>
             <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 font-mono">${proj.description || ''}</p>
           </div>
 
           <div class="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-white/5 font-mono text-xs">
-            <span class="text-neutral-400">${proj.media.length} عنصر</span>
+            <!-- Move buttons -->
+            <div class="flex items-center gap-1">
+              <button type="button" class="btn-proj-up p-1.5 rounded-lg bg-neutral-100 dark:bg-white/5 hover:text-sky-500 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" ${index === 0 ? 'disabled' : ''} title="تقديم للأمام">▲</button>
+              <button type="button" class="btn-proj-down p-1.5 rounded-lg bg-neutral-100 dark:bg-white/5 hover:text-sky-500 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" ${index === projectsList.length - 1 ? 'disabled' : ''} title="تأخير للخلف">▼</button>
+            </div>
+
             <div class="flex items-center gap-2">
               <a href="/work/${proj.slug}" target="_blank" class="px-2.5 py-1 rounded-lg text-neutral-500 hover:text-sky-500 transition-colors">عرض ↗</a>
               <button type="button" class="btn-edit-proj px-3 py-1 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold cursor-pointer" data-slug="${proj.slug}">تعديل</button>
             </div>
           </div>
         `;
+
+        card.querySelector('.btn-proj-up')?.addEventListener('click', () => {
+          if (index > 0) {
+            const temp = projectsList[index];
+            projectsList[index] = projectsList[index - 1];
+            projectsList[index - 1] = temp;
+            renderProjectsList();
+            showReorderNotice();
+          }
+        });
+
+        card.querySelector('.btn-proj-down')?.addEventListener('click', () => {
+          if (index < projectsList.length - 1) {
+            const temp = projectsList[index];
+            projectsList[index] = projectsList[index + 1];
+            projectsList[index + 1] = temp;
+            renderProjectsList();
+            showReorderNotice();
+          }
+        });
+
+        card.querySelector('.btn-toggle-featured')?.addEventListener('click', () => {
+          projectsList[index].featured = !(projectsList[index].featured !== false);
+          renderProjectsList();
+          showReorderNotice();
+        });
 
         card.querySelector('.btn-edit-proj')?.addEventListener('click', () => openEditor(proj));
         projectsTable.appendChild(card);
@@ -1066,6 +1242,9 @@ const metadata = {
           previewVideoPlaceholder.classList.add('hidden');
         }
 
+        const featuredInput = document.getElementById('form-featured') as HTMLInputElement | null;
+        if (featuredInput) featuredInput.checked = proj.featured !== false;
+
         currentMedia = JSON.parse(JSON.stringify(proj.media || []));
       } else {
         currentEditingSlug = null;
@@ -1078,6 +1257,9 @@ const metadata = {
         (document.getElementById('form-video-preview') as HTMLInputElement).value = '';
         (document.getElementById('form-description') as HTMLTextAreaElement).value = '';
         (document.getElementById('form-media-gap') as HTMLSelectElement).value = 'none';
+
+        const featuredInput = document.getElementById('form-featured') as HTMLInputElement | null;
+        if (featuredInput) featuredInput.checked = true;
 
         if (coverPreviewBox && coverPlaceholder) {
           coverPreviewBox.classList.add('hidden');
@@ -1167,9 +1349,10 @@ const metadata = {
         (document.getElementById('form-video-preview') as HTMLInputElement).value.trim() || undefined;
       const description = (document.getElementById('form-description') as HTMLTextAreaElement).value.trim();
       const mediaGap = (document.getElementById('form-media-gap') as HTMLSelectElement).value as Project['mediaGap'];
-
       const catVal = categorySelect?.value || 'motion|Motion Design';
       const [categoryKey, category] = catVal.split('|') as [Project['categoryKey'], string];
+
+      const featured = (document.getElementById('form-featured') as HTMLInputElement)?.checked ?? true;
 
       // Strip temporary _file references
       const cleanMedia = currentMedia.map((m) => {
@@ -1177,6 +1360,7 @@ const metadata = {
         if (m.src) copy.src = m.src;
         if (m.caption) copy.caption = m.caption;
         if (m.size) copy.size = m.size;
+        if (m.bgColor) copy.bgColor = m.bgColor;
         return copy;
       });
 
@@ -1191,10 +1375,152 @@ const metadata = {
         description,
         thumbnail,
         videoPreview,
+        featured,
         mediaGap,
         media: cleanMedia,
       };
     };
+
+    // Helper: Safely Upload or Update File in GitHub Repo
+    const uploadFileToGitHub = async (token: string, uploadPath: string, base64: string, message: string) => {
+      let sha: string | undefined = undefined;
+      try {
+        const checkRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+          },
+        });
+        if (checkRes.ok) {
+          const existingData = await checkRes.json();
+          sha = existingData.sha;
+        }
+      } catch {
+        // file does not exist yet
+      }
+
+      const putRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message,
+          content: base64,
+          branch: 'main',
+          ...(sha ? { sha } : {}),
+        }),
+      });
+
+      if (!putRes.ok) {
+        const errData = await putRes.json().catch(() => ({}));
+        throw new Error(errData.message || `فشل رفع الملف ${uploadPath}`);
+      }
+    };
+
+    // Helper: Push Projects Array to GitHub
+    const pushProjectsToGitHub = async (token: string, commitMsg: string) => {
+      const getRes = await fetch(
+        `https://api.github.com/repos/${repoOwner}/${repoName}/contents/src/data/projects.ts`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+          },
+        }
+      );
+
+      if (!getRes.ok) throw new Error('فشل الوصول إلى ملف المشاريع في GitHub. تأكد من صحة الرمز.');
+      const fileData = await getRes.json();
+      const sha = fileData.sha;
+
+      const updatedTsContent = `export type MediaItemType = 'youtube' | 'video' | 'image' | 'spacer';
+
+export interface MediaItem {
+  type: MediaItemType;
+  src?: string;
+  caption?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  bgColor?: string;
+}
+
+export type ProjectCategory = 'motion' | '3d' | 'cinematography' | 'brand' | 'ui-ux';
+
+export interface Project {
+  slug: string;
+  title: string;
+  category: string;
+  categoryKey: ProjectCategory;
+  year: string;
+  role: string;
+  specs: string;
+  description: string;
+  thumbnail: string;
+  videoPreview?: string;
+  featured?: boolean;
+  mediaGap?: 'none' | 'sm' | 'md' | 'lg';
+  media: MediaItem[];
+}
+
+export const projects: Project[] = ${JSON.stringify(projectsList, null, 2)};
+`;
+
+      const utf8Bytes = new TextEncoder().encode(updatedTsContent);
+      let binaryStr = '';
+      utf8Bytes.forEach((b) => (binaryStr += String.fromCharCode(b)));
+      const base64Ts = btoa(binaryStr);
+
+      const putRes = await fetch(
+        `https://api.github.com/repos/${repoOwner}/${repoName}/contents/src/data/projects.ts`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: commitMsg,
+            content: base64Ts,
+            sha,
+            branch: 'main',
+          }),
+        }
+      );
+
+      if (!putRes.ok) {
+        const errData = await putRes.json();
+        throw new Error(errData.message || 'حدث خطأ أثناء حفظ الملف في GitHub.');
+      }
+    };
+
+    // Save Reordered Projects Order & Featured Status
+    btnSaveOrder?.addEventListener('click', async () => {
+      const token = localStorage.getItem('mouad_gh_token');
+      if (!token) {
+        btnSettings?.click();
+        alert('يرجى حفظ رمز GitHub Token أولاً لتتمكن من الحفظ المباشر.');
+        return;
+      }
+
+      btnSaveOrder.textContent = '⏳ جاري الحفظ...';
+      try {
+        await pushProjectsToGitHub(token, 'feat(work): update projects order and featured status via Studio Admin');
+        btnSaveOrder.classList.add('hidden');
+        if (reorderBanner) {
+          reorderBanner.className =
+            'p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 font-mono text-xs';
+          reorderBanner.innerHTML = '<span>✓ تم حفظ ترتيب وظهور المشاريع ونشر التغييرات على الموقع بنجاح!</span>';
+          setTimeout(() => reorderBanner.classList.add('hidden'), 4000);
+        }
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        alert('حدث خطأ أثناء الحفظ: ' + errorMsg);
+        btnSaveOrder.textContent = '💾 حفظ ترتيب وظهور المشاريع';
+      }
+    });
 
     // Export code
     btnExport?.addEventListener('click', () => {
@@ -1223,29 +1549,13 @@ const metadata = {
       statusBanner.innerHTML = '<span>⏳</span><span>جاري معالجة ورفع الملفات إلى GitHub...</span>';
       statusBanner.classList.remove('hidden');
 
-      const repoOwner = 'mouad-R';
-      const repoName = 'portfolio';
-
       try {
         // Upload Cover File if local
         if (coverFile) {
           statusBanner.innerHTML = `<span>⏳</span><span>جاري رفع صورة الغلاف (${coverFile.name})...</span>`;
           const base64 = await fileToBase64(coverFile);
           const uploadPath = `public/projects/${proj.slug}/${coverFile.name}`;
-
-          await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              message: `upload: cover for ${proj.title}`,
-              content: base64,
-              branch: 'main',
-            }),
-          });
+          await uploadFileToGitHub(token, uploadPath, base64, `upload: cover for ${proj.title}`);
           proj.thumbnail = `/projects/${proj.slug}/${coverFile.name}`;
         }
 
@@ -1254,20 +1564,7 @@ const metadata = {
           statusBanner.innerHTML = `<span>⏳</span><span>جاري رفع معاينة الفيديو (${previewVideoFile.name})...</span>`;
           const base64 = await fileToBase64(previewVideoFile);
           const uploadPath = `public/projects/${proj.slug}/${previewVideoFile.name}`;
-
-          await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              message: `upload: preview video for ${proj.title}`,
-              content: base64,
-              branch: 'main',
-            }),
-          });
+          await uploadFileToGitHub(token, uploadPath, base64, `upload: preview video for ${proj.title}`);
           proj.videoPreview = `/projects/${proj.slug}/${previewVideoFile.name}`;
         }
 
@@ -1279,20 +1576,7 @@ const metadata = {
           statusBanner.innerHTML = `<span>⏳</span><span>جاري رفع وسائط المشروع (${i + 1}/${filesToUpload.length}: ${file.name})...</span>`;
           const base64 = await fileToBase64(file);
           const uploadPath = `public/projects/${proj.slug}/${file.name}`;
-
-          await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              message: `upload: ${file.name} for ${proj.title}`,
-              content: base64,
-              branch: 'main',
-            }),
-          });
+          await uploadFileToGitHub(token, uploadPath, base64, `upload: ${file.name} for ${proj.title}`);
           item.src = `/projects/${proj.slug}/${file.name}`;
         }
 
@@ -1304,79 +1588,9 @@ const metadata = {
           projectsList.unshift(proj);
         }
 
-        // Fetch current SHA of projects.ts
+        // Update projects.ts on GitHub
         statusBanner.innerHTML = '<span>⏳</span><span>جاري تحديث كود المشاريع ونشر التغييرات...</span>';
-        const getRes = await fetch(
-          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/src/data/projects.ts`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/vnd.github.v3+json',
-            },
-          }
-        );
-
-        if (!getRes.ok) throw new Error('فشل الوصول إلى ملف المشاريع في GitHub. تأكد من صحة الرمز.');
-        const fileData = await getRes.json();
-        const sha = fileData.sha;
-
-        const updatedTsContent = `export type MediaItemType = 'youtube' | 'video' | 'image' | 'spacer';
-
-export interface MediaItem {
-  type: MediaItemType;
-  src?: string;
-  caption?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-}
-
-export type ProjectCategory = 'motion' | '3d' | 'cinematography' | 'brand' | 'ui-ux';
-
-export interface Project {
-  slug: string;
-  title: string;
-  category: string;
-  categoryKey: ProjectCategory;
-  year: string;
-  role: string;
-  specs: string;
-  description: string;
-  thumbnail: string;
-  videoPreview?: string;
-  featured?: boolean;
-  mediaGap?: 'none' | 'sm' | 'md' | 'lg';
-  media: MediaItem[];
-}
-
-export const projects: Project[] = ${JSON.stringify(projectsList, null, 2)};
-`;
-
-        const utf8Bytes = new TextEncoder().encode(updatedTsContent);
-        let binaryStr = '';
-        utf8Bytes.forEach((b) => (binaryStr += String.fromCharCode(b)));
-        const base64Ts = btoa(binaryStr);
-
-        const putRes = await fetch(
-          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/src/data/projects.ts`,
-          {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              message: `feat(work): update project "${proj.title}" via Studio Admin`,
-              content: base64Ts,
-              sha,
-              branch: 'main',
-            }),
-          }
-        );
-
-        if (!putRes.ok) {
-          const errData = await putRes.json();
-          throw new Error(errData.message || 'حدث خطأ أثناء حفظ الملف في GitHub.');
-        }
+        await pushProjectsToGitHub(token, `feat(work): update project "${proj.title}" via Studio Admin`);
 
         // Success!
         statusBanner.className =
