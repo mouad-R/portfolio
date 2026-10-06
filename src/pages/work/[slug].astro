@@ -80,55 +80,83 @@ const metadata = {
       <p>{project.description}</p>
     </section>
 
-    <!-- Project Media Showcase -->
-    <section class="space-y-12">
+    <!-- Project Media Showcase (Configurable Gap & Custom Spacers) -->
+    <section
+      class:list={[
+        project.mediaGap === 'none' && 'space-y-0',
+        project.mediaGap === 'sm' && 'space-y-4 sm:space-y-6',
+        project.mediaGap === 'md' && 'space-y-8 sm:space-y-12',
+        project.mediaGap === 'lg' && 'space-y-12 sm:space-y-16',
+        !project.mediaGap && 'space-y-0',
+      ]}
+    >
       {
-        project.media.map((item) => (
-          <div class="w-full rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800">
-            {item.type === 'youtube' && (
-              <div class="relative w-full aspect-video bg-black">
-                <iframe
-                  class="w-full h-full"
-                  src={item.src}
-                  title={project.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                />
-              </div>
-            )}
+        project.media.map((item) =>
+          item.type === 'spacer' ? (
+            <div
+              class:list={[
+                item.size === 'sm' && 'h-6 sm:h-8',
+                item.size === 'md' && 'h-12 sm:h-16',
+                item.size === 'lg' && 'h-20 sm:h-28',
+                item.size === 'xl' && 'h-32 sm:h-44',
+                !item.size && 'h-12 sm:h-16',
+              ]}
+              aria-hidden="true"
+            />
+          ) : (
+            <div
+              class:list={[
+                'w-full overflow-hidden bg-black shadow-2xl border border-neutral-800',
+                project.mediaGap === 'none' || !project.mediaGap
+                  ? 'rounded-none first:rounded-t-2xl last:rounded-b-2xl'
+                  : 'rounded-2xl',
+              ]}
+            >
+              {item.type === 'youtube' && item.src && (
+                <div class="relative w-full aspect-video bg-black">
+                  <iframe
+                    class="w-full h-full"
+                    src={item.src}
+                    title={project.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  />
+                </div>
+              )}
 
-            {item.type === 'video' && (
-              <div class="relative w-full aspect-video bg-black flex items-center justify-center">
-                <video
-                  src={item.src}
-                  autoplay
-                  loop
-                  muted
-                  playsinline
-                  preload="auto"
-                  class="smart-video w-full h-full object-contain pointer-events-none"
-                />
-              </div>
-            )}
+              {item.type === 'video' && item.src && (
+                <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+                  <video
+                    src={item.src}
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="auto"
+                    class="smart-video w-full h-full object-contain pointer-events-none"
+                  />
+                </div>
+              )}
 
-            {item.type === 'image' && (
-              <div class="relative w-full overflow-hidden">
-                <img
-                  src={item.src}
-                  alt={item.caption || project.title}
-                  class="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-                {item.caption && (
-                  <div class="p-4 bg-neutral-950/90 border-t border-white/10 text-xs font-mono text-neutral-400">
-                    {item.caption}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))
+              {item.type === 'image' && item.src && (
+                <div class="relative w-full overflow-hidden">
+                  <img
+                    src={item.src}
+                    alt={item.caption || project.title}
+                    class="w-full h-auto object-cover"
+                    loading="lazy"
+                  />
+                  {item.caption && (
+                    <div class="p-4 bg-neutral-950/90 border-t border-white/10 text-xs font-mono text-neutral-400">
+                      {item.caption}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        )
       }
     </section>
 

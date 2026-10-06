@@ -1,0 +1,902 @@
+---
+export const prerender = true;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { projects } from '~/data/projects';
+
+const metadata = {
+  title: 'Studio Admin — Projects & Media Manager | Mouad Rouini',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Pass initial projects data safely to client -->
+  <div id="initial-projects-data" data-projects={JSON.stringify(projects)} class="hidden"></div>
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-28 min-h-screen">
+    <!-- Header -->
+    <div
+      class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-neutral-200 dark:border-white/10"
+    >
+      <div>
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-2 shadow-sm"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span
+            class="text-[10px] font-mono uppercase tracking-widest text-neutral-800 dark:text-neutral-300 font-semibold"
+          >
+            Studio Management Console
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">
+          لوحة إدارة ومحرر الأعمال
+        </h1>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          id="btn-settings"
+          class="px-4 py-2.5 rounded-xl border border-neutral-300 dark:border-white/15 bg-white/80 dark:bg-neutral-900/80 text-xs font-mono font-medium hover:border-neutral-500 transition-colors flex items-center gap-2 cursor-pointer"
+        >
+          <span>⚙️ إعدادات GitHub</span>
+          <span id="github-badge" class="w-2 h-2 rounded-full bg-amber-500"></span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-create-new"
+          class="px-5 py-2.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black text-xs font-mono font-semibold hover:opacity-90 transition-all shadow-md flex items-center gap-2 cursor-pointer"
+        >
+          <span>+ إضافة مشروع جديد</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- GitHub Token Modal -->
+    <div
+      id="settings-modal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300"
+    >
+      <div
+        class="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-6 border border-neutral-200 dark:border-white/10 shadow-2xl"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-neutral-900 dark:text-white">إعدادات الاتصال بـ GitHub</h2>
+          <button
+            type="button"
+            id="close-settings"
+            class="text-neutral-500 hover:text-black dark:hover:text-white text-sm">✕</button
+          >
+        </div>
+        <p class="text-xs text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed font-mono">
+          لتتمكن من نشر وتعديل المشاريع مباشرة بنقرة واحدة، أدخل رمز GitHub Personal Access Token. يُحفظ الرمز في متصفحك
+          فقط ولا يراه أحد غيرك.
+        </p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-mono uppercase text-neutral-500 mb-1"
+              >GitHub Personal Access Token (PAT)</label
+            >
+            <input
+              type="password"
+              id="input-github-token"
+              placeholder="ghp_..."
+              class="w-full px-3 py-2.5 rounded-xl text-xs font-mono bg-neutral-100 dark:bg-black border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white focus:outline-none focus:border-sky-500"
+            />
+          </div>
+          <button
+            type="button"
+            id="btn-save-token"
+            class="w-full py-3 rounded-xl bg-sky-600 text-white font-mono text-xs font-semibold hover:bg-sky-500 transition-colors cursor-pointer"
+          >
+            حفظ الرمز وتفعيل النشر المباشر ✓
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION A: Projects List (Overview) -->
+    <div id="view-projects-list" class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-neutral-900 dark:text-white font-mono">
+          المشاريع المنشورة حالياً (<span id="count-projects">0</span>)
+        </h2>
+        <span class="text-xs font-mono text-neutral-500">انقر على أي مشروع لتعديله أو ترتيب وسائطه</span>
+      </div>
+
+      <div id="projects-table" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+
+    <!-- SECTION B: Project Editor (Form + Media Drag/Drop Builder) -->
+    <div id="view-project-editor" class="hidden space-y-10">
+      <!-- Back button -->
+      <div class="flex items-center justify-between">
+        <button
+          type="button"
+          id="btn-back-to-list"
+          class="inline-flex items-center gap-2 text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
+        >
+          <span>← العودة لقائمة المشاريع</span>
+        </button>
+
+        <span
+          id="editor-mode-badge"
+          class="text-xs font-mono px-3 py-1 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 font-semibold"
+        >
+          تعديل مشروع
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <!-- Left: Project Info Fields (Col 5) -->
+        <div
+          class="lg:col-span-5 space-y-6 bg-white/70 dark:bg-neutral-900/60 p-6 sm:p-8 rounded-3xl border border-neutral-200 dark:border-white/10 backdrop-blur-xl"
+        >
+          <h2
+            class="text-lg font-bold text-neutral-900 dark:text-white font-mono pb-3 border-b border-neutral-200 dark:border-white/10"
+          >
+            1. معلومات المشروع الأساسية
+          </h2>
+
+          <div class="space-y-4 text-xs font-mono">
+            <div>
+              <label class="block uppercase text-neutral-500 mb-1">عنوان المشروع (Title) *</label>
+              <input
+                type="text"
+                id="form-title"
+                placeholder="e.g. Kinetic Brand Launch"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-sm focus:outline-none focus:border-sky-500"
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block uppercase text-neutral-500 mb-1">الرابط الفرعي (Slug) *</label>
+                <input
+                  type="text"
+                  id="form-slug"
+                  placeholder="e.g. kinetic-brand"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                />
+              </div>
+
+              <div>
+                <label class="block uppercase text-neutral-500 mb-1">السنة (Year)</label>
+                <input
+                  type="text"
+                  id="form-year"
+                  placeholder="2026"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block uppercase text-neutral-500 mb-1">التصنيف (Category)</label>
+                <select
+                  id="form-category-key"
+                  class="w-full px-3 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500 cursor-pointer"
+                >
+                  <option value="motion">Motion Design</option>
+                  <option value="3d">3D & Lookdev</option>
+                  <option value="cinematography">Cinematography</option>
+                  <option value="brand">Brand & Graphic</option>
+                  <option value="ui-ux">UI / UX Design</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block uppercase text-neutral-500 mb-1">الاسم المعروض للتصنيف</label>
+                <input
+                  type="text"
+                  id="form-category-label"
+                  placeholder="Motion Design & 3D"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block uppercase text-neutral-500 mb-1">دورك في المشروع (Role)</label>
+              <input
+                type="text"
+                id="form-role"
+                placeholder="Senior Motion Designer & Art Director"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+              />
+            </div>
+
+            <div>
+              <label class="block uppercase text-neutral-500 mb-1">البرامج والمواصفات (Specs)</label>
+              <input
+                type="text"
+                id="form-specs"
+                placeholder="After Effects · Cinema 4D · 60fps"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+              />
+            </div>
+
+            <div>
+              <label class="block uppercase text-neutral-500 mb-1">رابط صورة الغلاف (Thumbnail)</label>
+              <input
+                type="text"
+                id="form-thumbnail"
+                placeholder="https://... أو /projects/slug/cover.jpg"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+              />
+            </div>
+
+            <div>
+              <label class="block uppercase text-neutral-500 mb-1">معاينة فيديو قصيرة عند التمرير (اختياري)</label>
+              <input
+                type="text"
+                id="form-video-preview"
+                placeholder="/projects/slug/preview.webm"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+              />
+            </div>
+
+            <div>
+              <label class="block uppercase text-neutral-500 mb-1">نبذة ووصف المشروع (Description)</label>
+              <textarea
+                id="form-description"
+                rows="4"
+                placeholder="اكتب هنا شرحاً لأهداف المشروع وتقنيات التنفيذ..."
+                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Media Drag-and-Drop Builder (Col 7) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div
+            class="bg-white/70 dark:bg-neutral-900/60 p-6 sm:p-8 rounded-3xl border border-neutral-200 dark:border-white/10 backdrop-blur-xl"
+          >
+            <div
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-neutral-200 dark:border-white/10"
+            >
+              <div>
+                <h2 class="text-lg font-bold text-neutral-900 dark:text-white font-mono">
+                  2. محرر وسائط المشروع (Media & Layout)
+                </h2>
+                <p class="text-xs text-neutral-500 font-mono mt-0.5">رتب الصور والفيديوهات والفراغات بالسحب والإفلات</p>
+              </div>
+
+              <!-- Global Gap Option -->
+              <div class="flex items-center gap-2 text-xs font-mono">
+                <span class="text-neutral-500">فراغ المشروع العام:</span>
+                <select
+                  id="form-media-gap"
+                  class="px-2.5 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs cursor-pointer"
+                >
+                  <option value="none">معدوم (0px - متلاصقة)</option>
+                  <option value="sm">صغير (16px)</option>
+                  <option value="md">متوسط (32px)</option>
+                  <option value="lg">كبير (48px)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Media Quick Add Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
+              <!-- Upload / Add Image -->
+              <button
+                type="button"
+                id="btn-add-image"
+                class="p-3.5 rounded-2xl bg-neutral-100 dark:bg-white/5 border border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+              >
+                <span class="text-lg">🖼️</span>
+                <span>+ إضافة صورة</span>
+              </button>
+
+              <!-- Add Video / Link -->
+              <button
+                type="button"
+                id="btn-add-video"
+                class="p-3.5 rounded-2xl bg-neutral-100 dark:bg-white/5 border border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+              >
+                <span class="text-lg">🎬</span>
+                <span>+ إضافة فيديو / رابط</span>
+              </button>
+
+              <!-- Add Spacer -->
+              <button
+                type="button"
+                id="btn-add-spacer"
+                class="p-3.5 rounded-2xl bg-neutral-100 dark:bg-white/5 border border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+              >
+                <span class="text-lg">↕️</span>
+                <span>+ إضافة فراغ مخصص</span>
+              </button>
+            </div>
+
+            <!-- Drag and Drop Media Cards List -->
+            <div class="space-y-3" id="media-cards-container">
+              <!-- Rendered dynamically via JavaScript -->
+            </div>
+
+            <div
+              id="media-empty-state"
+              class="py-12 text-center border-2 border-dashed border-neutral-200 dark:border-white/10 rounded-2xl text-xs font-mono text-neutral-400"
+            >
+              لا توجد وسائط مضافة بعد. اضغط على أحد الأزرار أعلاه لإضافة صور أو روابط أو فراغات.
+            </div>
+          </div>
+
+          <!-- Bottom Save & Publish Controls -->
+          <div
+            class="p-6 rounded-3xl bg-neutral-900 text-white dark:bg-white dark:text-black flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl"
+          >
+            <div>
+              <h3 class="font-bold text-sm font-mono">جاهز لنشر المشروع؟</h3>
+              <p class="text-xs opacity-75 font-mono">سيتم تحديث الكود وبناء الموقع تلقائياً</p>
+            </div>
+
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <button
+                type="button"
+                id="btn-export-code"
+                class="flex-1 sm:flex-none px-4 py-3 rounded-xl border border-white/20 dark:border-black/20 text-xs font-mono uppercase tracking-wider hover:bg-white/10 dark:hover:bg-black/10 transition-colors cursor-pointer"
+              >
+                معاينة الكود
+              </button>
+
+              <button
+                type="button"
+                id="btn-publish-project"
+                class="flex-1 sm:flex-none px-6 py-3 rounded-xl bg-sky-500 text-white font-bold text-xs font-mono uppercase tracking-wider hover:bg-sky-400 transition-colors shadow-lg cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>حفظ ونشر التعديلات 🚀</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Publish Status Banner -->
+          <div id="publish-status-banner" class="hidden p-4 rounded-2xl text-xs font-mono flex items-center gap-3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  interface MediaItem {
+    type: 'youtube' | 'video' | 'image' | 'spacer';
+    src?: string;
+    caption?: string;
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+  }
+
+  interface Project {
+    slug: string;
+    title: string;
+    category: string;
+    categoryKey: 'motion' | '3d' | 'cinematography' | 'brand' | 'ui-ux';
+    year: string;
+    role: string;
+    specs: string;
+    description: string;
+    thumbnail: string;
+    videoPreview?: string;
+    featured?: boolean;
+    mediaGap?: 'none' | 'sm' | 'md' | 'lg';
+    media: MediaItem[];
+  }
+
+  function initStudioAdmin() {
+    const rawData = document.getElementById('initial-projects-data')?.getAttribute('data-projects');
+    const projectsList: Project[] = rawData ? JSON.parse(rawData) : [];
+    let currentEditingSlug: string | null = null;
+    let currentMedia: MediaItem[] = [];
+
+    // Elements
+    const viewList = document.getElementById('view-projects-list');
+    const viewEditor = document.getElementById('view-project-editor');
+    const projectsTable = document.getElementById('projects-table');
+    const countProjects = document.getElementById('count-projects');
+    const mediaContainer = document.getElementById('media-cards-container');
+    const mediaEmpty = document.getElementById('media-empty-state');
+    const btnCreateNew = document.getElementById('btn-create-new');
+    const btnBackToList = document.getElementById('btn-back-to-list');
+    const btnAddImage = document.getElementById('btn-add-image');
+    const btnAddVideo = document.getElementById('btn-add-video');
+    const btnAddSpacer = document.getElementById('btn-add-spacer');
+    const btnPublish = document.getElementById('btn-publish-project');
+    const btnExport = document.getElementById('btn-export-code');
+    const statusBanner = document.getElementById('publish-status-banner');
+
+    // GitHub Settings Modal
+    const btnSettings = document.getElementById('btn-settings');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettings = document.getElementById('close-settings');
+    const btnSaveToken = document.getElementById('btn-save-token');
+    const inputToken = document.getElementById('input-github-token') as HTMLInputElement | null;
+    const githubBadge = document.getElementById('github-badge');
+
+    const updateTokenBadge = () => {
+      const token = localStorage.getItem('mouad_gh_token');
+      if (token && githubBadge) {
+        githubBadge.classList.remove('bg-amber-500');
+        githubBadge.classList.add('bg-emerald-500');
+      }
+    };
+    updateTokenBadge();
+
+    btnSettings?.addEventListener('click', () => {
+      if (inputToken) inputToken.value = localStorage.getItem('mouad_gh_token') || '';
+      settingsModal?.classList.remove('opacity-0', 'pointer-events-none');
+    });
+
+    closeSettings?.addEventListener('click', () => {
+      settingsModal?.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    btnSaveToken?.addEventListener('click', () => {
+      if (inputToken?.value.trim()) {
+        localStorage.setItem('mouad_gh_token', inputToken.value.trim());
+        updateTokenBadge();
+        settingsModal?.classList.add('opacity-0', 'pointer-events-none');
+        alert('تم حفظ رمز GitHub بنجاح! يمكنك الآن النشر مباشرة من اللوحة.');
+      }
+    });
+
+    // Render Projects List
+    const renderProjectsList = () => {
+      if (!projectsTable || !countProjects) return;
+      countProjects.textContent = String(projectsList.length);
+      projectsTable.innerHTML = '';
+
+      projectsList.forEach((proj) => {
+        const card = document.createElement('div');
+        card.className =
+          'rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/80 dark:bg-neutral-900/80 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="aspect-video rounded-xl overflow-hidden bg-neutral-950 mb-4 border border-neutral-200 dark:border-white/10 relative">
+              <img src="${proj.thumbnail}" alt="${proj.title}" class="w-full h-full object-cover" />
+              <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-mono uppercase">${proj.category}</span>
+            </div>
+            <h3 class="text-base font-bold text-neutral-900 dark:text-white mb-1">${proj.title}</h3>
+            <p class="text-xs font-mono text-neutral-500 mb-3">${proj.year} · ${proj.role || 'Creator'}</p>
+            <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 font-mono">${proj.description || ''}</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-white/5 font-mono text-xs">
+            <span class="text-neutral-400">${proj.media.length} عنصر وسائط</span>
+            <div class="flex items-center gap-2">
+              <a href="/work/${proj.slug}" target="_blank" class="px-2.5 py-1 rounded-lg text-neutral-500 hover:text-sky-500 transition-colors">عرض ↗</a>
+              <button type="button" class="btn-edit-proj px-3 py-1 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold cursor-pointer" data-slug="${proj.slug}">تعديل</button>
+            </div>
+          </div>
+        `;
+
+        card.querySelector('.btn-edit-proj')?.addEventListener('click', () => {
+          openEditor(proj);
+        });
+
+        projectsTable.appendChild(card);
+      });
+    };
+
+    // Open Editor
+    const openEditor = (proj?: Project) => {
+      viewList?.classList.add('hidden');
+      viewEditor?.classList.remove('hidden');
+
+      if (proj) {
+        currentEditingSlug = proj.slug;
+        (document.getElementById('form-title') as HTMLInputElement).value = proj.title;
+        (document.getElementById('form-slug') as HTMLInputElement).value = proj.slug;
+        (document.getElementById('form-year') as HTMLInputElement).value = proj.year;
+        (document.getElementById('form-category-key') as HTMLSelectElement).value = proj.categoryKey;
+        (document.getElementById('form-category-label') as HTMLInputElement).value = proj.category;
+        (document.getElementById('form-role') as HTMLInputElement).value = proj.role;
+        (document.getElementById('form-specs') as HTMLInputElement).value = proj.specs;
+        (document.getElementById('form-thumbnail') as HTMLInputElement).value = proj.thumbnail;
+        (document.getElementById('form-video-preview') as HTMLInputElement).value = proj.videoPreview || '';
+        (document.getElementById('form-description') as HTMLTextAreaElement).value = proj.description;
+        (document.getElementById('form-media-gap') as HTMLSelectElement).value = proj.mediaGap || 'none';
+        currentMedia = JSON.parse(JSON.stringify(proj.media || []));
+      } else {
+        currentEditingSlug = null;
+        (document.getElementById('form-title') as HTMLInputElement).value = '';
+        (document.getElementById('form-slug') as HTMLInputElement).value = '';
+        (document.getElementById('form-year') as HTMLInputElement).value = String(new Date().getFullYear());
+        (document.getElementById('form-category-key') as HTMLSelectElement).value = 'motion';
+        (document.getElementById('form-category-label') as HTMLInputElement).value = 'Motion Design & Kinetic';
+        (document.getElementById('form-role') as HTMLInputElement).value = 'Senior Motion Designer';
+        (document.getElementById('form-specs') as HTMLInputElement).value = 'After Effects · Cinema 4D · 60fps';
+        (document.getElementById('form-thumbnail') as HTMLInputElement).value = '';
+        (document.getElementById('form-video-preview') as HTMLInputElement).value = '';
+        (document.getElementById('form-description') as HTMLTextAreaElement).value = '';
+        (document.getElementById('form-media-gap') as HTMLSelectElement).value = 'none';
+        currentMedia = [];
+      }
+
+      renderMediaCards();
+    };
+
+    btnCreateNew?.addEventListener('click', () => openEditor());
+
+    btnBackToList?.addEventListener('click', () => {
+      viewEditor?.classList.add('hidden');
+      viewList?.classList.remove('hidden');
+    });
+
+    // Auto-generate slug from title
+    document.getElementById('form-title')?.addEventListener('input', (e) => {
+      if (!currentEditingSlug) {
+        const val = (e.target as HTMLInputElement).value;
+        const slug = val
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        (document.getElementById('form-slug') as HTMLInputElement).value = slug;
+      }
+    });
+
+    // Render Drag-and-Drop Media Cards
+    const renderMediaCards = () => {
+      if (!mediaContainer || !mediaEmpty) return;
+      mediaContainer.innerHTML = '';
+
+      if (currentMedia.length === 0) {
+        mediaEmpty.classList.remove('hidden');
+      } else {
+        mediaEmpty.classList.add('hidden');
+      }
+
+      currentMedia.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.draggable = true;
+        card.className =
+          'media-draggable-card group flex items-center justify-between p-4 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/90 dark:bg-neutral-950/80 shadow-sm transition-all text-xs font-mono';
+        card.setAttribute('data-index', String(index));
+
+        if (item.type === 'spacer') {
+          card.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
+              <span class="p-2 rounded-lg bg-sky-500/10 text-sky-500 font-bold">↕️ فراغ مخصص (Spacer)</span>
+              <select class="spacer-size-select px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10">
+                <option value="sm" ${item.size === 'sm' ? 'selected' : ''}>صغير (24px)</option>
+                <option value="md" ${item.size === 'md' || !item.size ? 'selected' : ''}>متوسط (48px)</option>
+                <option value="lg" ${item.size === 'lg' ? 'selected' : ''}>كبير (96px)</option>
+                <option value="xl" ${item.size === 'xl' ? 'selected' : ''}>ضخم (140px)</option>
+              </select>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" class="btn-move-up p-1 hover:text-sky-500" title="تحريك لأعلى">▲</button>
+              <button type="button" class="btn-move-down p-1 hover:text-sky-500" title="تحريك لأسفل">▼</button>
+              <button type="button" class="btn-remove-item text-red-500 hover:text-red-700 p-1" title="حذف">✕</button>
+            </div>
+          `;
+        } else if (item.type === 'image') {
+          card.innerHTML = `
+            <div class="flex items-center gap-3 overflow-hidden">
+              <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
+              <div class="w-12 h-10 rounded-lg overflow-hidden bg-neutral-900 flex-shrink-0 border border-neutral-300 dark:border-white/10">
+                <img src="${item.src || ''}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x70?text=Image'" />
+              </div>
+              <div class="space-y-1">
+                <span class="text-[10px] uppercase font-bold text-sky-500">صورة (Image)</span>
+                <input type="text" value="${item.src || ''}" placeholder="رابط الصورة" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
+                <input type="text" value="${item.caption || ''}" placeholder="وصف الصورة (اختياري)" class="card-caption-input block w-60 sm:w-80 px-2 py-0.5 rounded bg-transparent border-b border-neutral-200 dark:border-white/10 text-[11px] text-neutral-400" />
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" class="btn-move-up p-1 hover:text-sky-500">▲</button>
+              <button type="button" class="btn-move-down p-1 hover:text-sky-500">▼</button>
+              <button type="button" class="btn-remove-item text-red-500 hover:text-red-700 p-1">✕</button>
+            </div>
+          `;
+        } else {
+          // Video / YouTube
+          card.innerHTML = `
+            <div class="flex items-center gap-3 overflow-hidden">
+              <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
+              <span class="p-2 rounded-lg bg-indigo-500/10 text-indigo-500 font-bold">🎬 فيديو / Embed</span>
+              <div class="space-y-1">
+                <select class="card-type-select px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-[10px] font-bold">
+                  <option value="youtube" ${item.type === 'youtube' ? 'selected' : ''}>YouTube Embed</option>
+                  <option value="video" ${item.type === 'video' ? 'selected' : ''}>فيديو مباشر (WebM/MP4)</option>
+                </select>
+                <input type="text" value="${item.src || ''}" placeholder="رابط الفيديو (YouTube embed أو رابط .webm)" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" class="btn-move-up p-1 hover:text-sky-500">▲</button>
+              <button type="button" class="btn-move-down p-1 hover:text-sky-500">▼</button>
+              <button type="button" class="btn-remove-item text-red-500 hover:text-red-700 p-1">✕</button>
+            </div>
+          `;
+        }
+
+        // Event listeners for card inputs
+        card.querySelector('.spacer-size-select')?.addEventListener('change', (e) => {
+          currentMedia[index].size = (e.target as HTMLSelectElement).value as MediaItem['size'];
+        });
+
+        card.querySelector('.card-src-input')?.addEventListener('input', (e) => {
+          currentMedia[index].src = (e.target as HTMLInputElement).value;
+        });
+
+        card.querySelector('.card-caption-input')?.addEventListener('input', (e) => {
+          currentMedia[index].caption = (e.target as HTMLInputElement).value;
+        });
+
+        card.querySelector('.card-type-select')?.addEventListener('change', (e) => {
+          currentMedia[index].type = (e.target as HTMLSelectElement).value as MediaItem['type'];
+        });
+
+        // Up & Down Buttons
+        card.querySelector('.btn-move-up')?.addEventListener('click', () => {
+          if (index > 0) {
+            const temp = currentMedia[index];
+            currentMedia[index] = currentMedia[index - 1];
+            currentMedia[index - 1] = temp;
+            renderMediaCards();
+          }
+        });
+
+        card.querySelector('.btn-move-down')?.addEventListener('click', () => {
+          if (index < currentMedia.length - 1) {
+            const temp = currentMedia[index];
+            currentMedia[index] = currentMedia[index + 1];
+            currentMedia[index + 1] = temp;
+            renderMediaCards();
+          }
+        });
+
+        card.querySelector('.btn-remove-item')?.addEventListener('click', () => {
+          currentMedia.splice(index, 1);
+          renderMediaCards();
+        });
+
+        // HTML5 Drag and Drop
+        card.addEventListener('dragstart', (e) => {
+          e.dataTransfer?.setData('text/plain', String(index));
+          card.classList.add('opacity-50');
+        });
+
+        card.addEventListener('dragend', () => {
+          card.classList.remove('opacity-50');
+        });
+
+        card.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          card.classList.add('border-sky-500');
+        });
+
+        card.addEventListener('dragleave', () => {
+          card.classList.remove('border-sky-500');
+        });
+
+        card.addEventListener('drop', (e) => {
+          e.preventDefault();
+          card.classList.remove('border-sky-500');
+          const sourceIdx = Number(e.dataTransfer?.getData('text/plain'));
+          const targetIdx = index;
+          if (!isNaN(sourceIdx) && sourceIdx !== targetIdx) {
+            const movedItem = currentMedia.splice(sourceIdx, 1)[0];
+            currentMedia.splice(targetIdx, 0, movedItem);
+            renderMediaCards();
+          }
+        });
+
+        mediaContainer.appendChild(card);
+      });
+    };
+
+    // Quick Add Handlers
+    btnAddSpacer?.addEventListener('click', () => {
+      currentMedia.push({ type: 'spacer', size: 'md' });
+      renderMediaCards();
+    });
+
+    btnAddImage?.addEventListener('click', () => {
+      const url = prompt('أدخل رابط الصورة (أو مسارها في مجلد public):', 'https://');
+      if (url) {
+        currentMedia.push({ type: 'image', src: url, caption: '' });
+        renderMediaCards();
+      }
+    });
+
+    btnAddVideo?.addEventListener('click', () => {
+      const url = prompt(
+        'أدخل رابط YouTube Embed أو رابط ملف فيديو مباشر (.webm):',
+        'https://www.youtube-nocookie.com/embed/'
+      );
+      if (url) {
+        const isYoutube = url.includes('youtube') || url.includes('youtu.be');
+        currentMedia.push({
+          type: isYoutube ? 'youtube' : 'video',
+          src: url,
+        });
+        renderMediaCards();
+      }
+    });
+
+    // Build Current Project Object
+    const buildProjectObject = (): Project => {
+      const title = (document.getElementById('form-title') as HTMLInputElement).value.trim();
+      const slug = (document.getElementById('form-slug') as HTMLInputElement).value.trim();
+      const year = (document.getElementById('form-year') as HTMLInputElement).value.trim() || '2026';
+      const categoryKey = (document.getElementById('form-category-key') as HTMLSelectElement)
+        .value as Project['categoryKey'];
+      const category =
+        (document.getElementById('form-category-label') as HTMLInputElement).value.trim() || 'Motion Design';
+      const role = (document.getElementById('form-role') as HTMLInputElement).value.trim() || 'Lead Artist';
+      const specs =
+        (document.getElementById('form-specs') as HTMLInputElement).value.trim() || 'After Effects · Cinema 4D';
+      const thumbnail =
+        (document.getElementById('form-thumbnail') as HTMLInputElement).value.trim() ||
+        'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80';
+      const videoPreview =
+        (document.getElementById('form-video-preview') as HTMLInputElement).value.trim() || undefined;
+      const description = (document.getElementById('form-description') as HTMLTextAreaElement).value.trim();
+      const mediaGap = (document.getElementById('form-media-gap') as HTMLSelectElement).value as Project['mediaGap'];
+
+      return {
+        slug,
+        title,
+        category,
+        categoryKey,
+        year,
+        role,
+        specs,
+        description,
+        thumbnail,
+        videoPreview,
+        mediaGap,
+        media: currentMedia,
+      };
+    };
+
+    // Export Code
+    btnExport?.addEventListener('click', () => {
+      const proj = buildProjectObject();
+      const json = JSON.stringify(proj, null, 2);
+      prompt('كود المشروع جاهز للنسخ:', json);
+    });
+
+    // Publish to GitHub via GitHub API
+    btnPublish?.addEventListener('click', async () => {
+      const proj = buildProjectObject();
+      if (!proj.title || !proj.slug) {
+        alert('يرجى ملء عنوان المشروع والرابط الفرعي (Slug).');
+        return;
+      }
+
+      const token = localStorage.getItem('mouad_gh_token');
+      if (!token) {
+        btnSettings?.click();
+        alert('يرجى إدخال رمز GitHub PAT أولاً للتمكن من النشر المباشر.');
+        return;
+      }
+
+      if (!statusBanner) return;
+      statusBanner.className =
+        'p-4 rounded-2xl text-xs font-mono flex items-center gap-3 bg-sky-500/10 border border-sky-500/30 text-sky-800 dark:text-sky-300';
+      statusBanner.innerHTML = '<span>⏳</span><span>جاري حفظ وتحديث ملفات المشروع على GitHub...</span>';
+      statusBanner.classList.remove('hidden');
+
+      try {
+        // 1. Update projectsList in memory
+        const existingIdx = projectsList.findIndex((p) => p.slug === proj.slug);
+        if (existingIdx >= 0) {
+          projectsList[existingIdx] = proj;
+        } else {
+          projectsList.unshift(proj);
+        }
+
+        // 2. Fetch current file SHA from GitHub API
+        const repoOwner = 'mouad-R';
+        const repoName = 'portfolio';
+        const filePath = 'src/data/projects.ts';
+
+        const getRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+          },
+        });
+
+        if (!getRes.ok) {
+          throw new Error('فشل التحقق من مستودع GitHub. تأكد من صحة رمز الـ Token وصلاحياته.');
+        }
+
+        const fileData = await getRes.json();
+        const sha = fileData.sha;
+
+        // 3. Generate updated TypeScript content
+        const newFileContent = `export type MediaItemType = 'youtube' | 'video' | 'image' | 'spacer';
+
+export interface MediaItem {
+  type: MediaItemType;
+  src?: string;
+  caption?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+export type ProjectCategory = 'motion' | '3d' | 'cinematography' | 'brand' | 'ui-ux';
+
+export interface Project {
+  slug: string;
+  title: string;
+  category: string;
+  categoryKey: ProjectCategory;
+  year: string;
+  role: string;
+  specs: string;
+  description: string;
+  thumbnail: string;
+  videoPreview?: string;
+  featured?: boolean;
+  mediaGap?: 'none' | 'sm' | 'md' | 'lg';
+  media: MediaItem[];
+}
+
+export const projects: Project[] = ${JSON.stringify(projectsList, null, 2)};
+`;
+
+        // 4. PUT updated file to GitHub repo
+        // Encode utf-8 to base64
+        const utf8Bytes = new TextEncoder().encode(newFileContent);
+        let binaryStr = '';
+        utf8Bytes.forEach((b) => (binaryStr += String.fromCharCode(b)));
+        const base64Content = btoa(binaryStr);
+
+        const putRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: `feat(work): update project "${proj.title}" via Studio Admin`,
+            content: base64Content,
+            sha,
+            branch: 'main',
+          }),
+        });
+
+        if (!putRes.ok) {
+          const errData = await putRes.json();
+          throw new Error(errData.message || 'حدث خطأ أثناء حفظ الملف في GitHub.');
+        }
+
+        // Success!
+        statusBanner.className =
+          'p-4 rounded-2xl text-xs font-mono flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300';
+        statusBanner.innerHTML =
+          '<span>✓</span><span>تم الحفظ والنشر بنجاح على GitHub! سيقوم الخادم بنشر المشروع لايف على موقعك خلال 60 ثانية.</span>';
+
+        renderProjectsList();
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        statusBanner.className =
+          'p-4 rounded-2xl text-xs font-mono flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-800 dark:text-red-300';
+        statusBanner.innerHTML = `<span>✕</span><span>خطأ: ${errorMsg}</span>`;
+      }
+    });
+
+    renderProjectsList();
+  }
+
+  initStudioAdmin();
+  document.addEventListener('astro:page-load', initStudioAdmin);
+</script>

@@ -1,7 +1,10 @@
+export type MediaItemType = 'youtube' | 'video' | 'image' | 'spacer';
+
 export interface MediaItem {
-  type: 'youtube' | 'video' | 'image';
-  src: string;
+  type: MediaItemType;
+  src?: string;
   caption?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 export type ProjectCategory = 'motion' | '3d' | 'cinematography' | 'brand' | 'ui-ux';
@@ -18,6 +21,7 @@ export interface Project {
   thumbnail: string;
   videoPreview?: string;
   featured?: boolean;
+  mediaGap?: 'none' | 'sm' | 'md' | 'lg';
   media: MediaItem[];
 }
 
