@@ -41,15 +41,23 @@ export const projects: Project[] = [
     "media": [
       {
         "type": "video",
-        "src": "/projects/new-project/2_3.webm"
-      },
-      {
-        "type": "youtube",
-        "src": "https://youtu.be/5uODxM_u52I"
+        "src": "/projects/new-project/2_1.webm"
       },
       {
         "type": "spacer",
         "size": "md"
+      },
+      {
+        "type": "video",
+        "src": "/projects/new-project/2 (1).webm"
+      },
+      {
+        "type": "video",
+        "src": "/projects/new-project/2_2.webm"
+      },
+      {
+        "type": "video",
+        "src": "/projects/new-project/2_3.webm"
       },
       {
         "type": "image",
