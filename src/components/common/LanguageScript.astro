@@ -22,6 +22,7 @@ import { translations } from '~/utils/translations';
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
+    document.documentElement.classList.add('dark');
     if (lang === 'ar') {
       document.documentElement.classList.add('lang-ar');
     } else {

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import myLogo from '~/assets/icons/logo.svg';
 
 interface Props {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'footer';
   framed?: boolean;
   class?: string;
 }
@@ -22,6 +22,14 @@ const sizeConfig = {
   lg: {
     frame: 'w-14 h-14 sm:w-16 sm:h-16 p-3',
     img: 'h-8 sm:h-9 w-auto',
+  },
+  xl: {
+    frame: 'w-24 h-24 sm:w-28 sm:h-28 p-4',
+    img: 'h-14 sm:h-16 w-auto',
+  },
+  footer: {
+    frame: 'w-[124px] h-[124px] p-5',
+    img: 'h-[72px] w-auto',
   },
 };
 

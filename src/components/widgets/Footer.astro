@@ -34,16 +34,16 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
   >
     <div class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12">
       <div class="col-span-12 lg:col-span-4">
-        <div class="mb-3">
-          <a class="inline-block" href={getHomePermalink()} aria-label={SITE?.name || 'Home'}>
-            <Logo size="lg" />
+        <div class="mb-4 inline-flex flex-col items-start">
+          <a class="inline-block mb-3.5" href={getHomePermalink()} aria-label={SITE?.name || 'Home'}>
+            <Logo size="footer" />
           </a>
-        </div>
-        <div class="mb-2">
-          <a
-            class="inline-block font-bold text-xl tracking-tight text-neutral-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
-            href={getHomePermalink()}>{SITE?.name}</a
-          >
+          <div>
+            <a
+              class="inline-block font-bold text-xl tracking-tight text-white hover:text-sky-400 transition-colors w-[124px] text-center"
+              href={getHomePermalink()}>{SITE?.name}</a
+            >
+          </div>
         </div>
         <div class="text-sm text-muted flex gap-1">
           {
