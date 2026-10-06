@@ -104,11 +104,11 @@ const services = [
     </div>
   </div>
 
-  <!-- Hero Section -->
-  <section class="relative pt-20 pb-12 md:pt-32 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6">
+  <!-- Hero Headline (Single Sentence) -->
+  <section class="relative pt-20 pb-8 md:pt-32 md:pb-10 max-w-6xl mx-auto px-4 sm:px-6">
     <div class="max-w-4xl">
       <div
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-8 shadow-sm"
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-6 shadow-sm"
       >
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <span
@@ -119,47 +119,15 @@ const services = [
       </div>
 
       <h1
-        class="text-4xl sm:text-6xl md:text-7xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] mb-6 transition-colors"
+        class="text-4xl sm:text-6xl md:text-7xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] transition-colors"
       >
         Senior Motion Designer & Visual Director.
       </h1>
-
-      <p
-        class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 max-w-2xl leading-relaxed mb-8 font-normal transition-colors"
-      >
-        Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling —
-        bridging dynamic 2D/3D animation with cinematic post-production.
-      </p>
-
-      <div class="flex flex-wrap items-center gap-4">
-        <a
-          href="#showreel"
-          class="px-6 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md flex items-center gap-2"
-        >
-          <span>Watch Showreel</span>
-          <span class="text-base">▶</span>
-        </a>
-        <a
-          href="#selected"
-          class="px-6 py-3.5 rounded-xl border border-neutral-300/80 bg-white/70 dark:border-white/15 dark:bg-neutral-900/50 backdrop-blur-md text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
-        >
-          View Works ↓
-        </a>
-        <a
-          href="/contact"
-          class="px-6 py-3.5 rounded-xl border border-transparent text-sky-600 dark:text-sky-400 font-semibold text-xs tracking-wider uppercase hover:underline transition-all"
-        >
-          Initiate Collaboration →
-        </a>
-      </div>
     </div>
   </section>
 
-  <!-- Kinetic Typography Marquee -->
-  <Marquee class="my-6 md:my-10" />
-
-  <!-- Featured Showreel Section -->
-  <section id="showreel" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+  <!-- Featured Showreel Section (Directly after headline) -->
+  <section id="showreel" class="max-w-6xl mx-auto px-4 sm:px-6 pb-8 md:pb-12">
     <div
       class="relative rounded-3xl overflow-hidden border border-neutral-200/80 dark:border-white/10 bg-neutral-950 shadow-2xl group intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700"
     >
@@ -247,6 +215,36 @@ const services = [
       </div>
     </div>
   </section>
+
+  <!-- Post-Reel Statement (2 Lines) & Quick Actions -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-4 md:py-8">
+    <div class="max-w-3xl">
+      <p
+        class="text-base sm:text-lg md:text-xl text-neutral-700 dark:text-neutral-300 leading-relaxed font-normal mb-8"
+      >
+        Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity CGI lookdev — bridging
+        dynamic 2D/3D animation with cinematic post-production.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="#selected"
+          class="px-6 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+        >
+          Explore Works ↓
+        </a>
+        <a
+          href="/contact"
+          class="px-6 py-3.5 rounded-xl border border-neutral-300/80 bg-white/70 dark:border-white/15 dark:bg-neutral-900/50 backdrop-blur-md text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
+        >
+          Initiate Collaboration →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kinetic Typography Marquee -->
+  <Marquee class="my-6 md:my-10" />
 
   <!-- Selected Works Bento Grid -->
   <section
