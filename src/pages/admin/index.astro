@@ -71,12 +71,12 @@ const metadata = {
           <button
             type="button"
             id="close-settings"
-            class="text-neutral-500 hover:text-black dark:hover:text-white text-sm">✕</button
+            class="text-neutral-500 hover:text-black dark:hover:text-white text-sm cursor-pointer">✕</button
           >
         </div>
         <p class="text-xs text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed font-mono">
-          لتتمكن من نشر وتعديل المشاريع مباشرة بنقرة واحدة، أدخل رمز GitHub Personal Access Token. يُحفظ الرمز في متصفحك
-          فقط ولا يراه أحد غيرك.
+          لتتمكن من نشر وتحديث المشاريع ورفع الصور مباشرة إلى مستودعك، أدخل رمز GitHub Personal Access Token (PAT).
+          يُحفظ الرمز في متصفحك فقط.
         </p>
         <div class="space-y-4">
           <div>
@@ -101,24 +101,24 @@ const metadata = {
       </div>
     </div>
 
-    <!-- SECTION A: Projects List (Overview) -->
+    <!-- VIEW 1: Projects Overview List -->
     <div id="view-projects-list" class="space-y-6">
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-neutral-900 dark:text-white font-mono">
           المشاريع المنشورة حالياً (<span id="count-projects">0</span>)
         </h2>
-        <span class="text-xs font-mono text-neutral-500">انقر على أي مشروع لتعديله أو ترتيب وسائطه</span>
+        <span class="text-xs font-mono text-neutral-500">انقر على أي مشروع لتعديل بياناته أو إعادة ترتيب وسائطه</span>
       </div>
 
       <div id="projects-table" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Rendered dynamically via JavaScript -->
+        <!-- Rendered dynamically -->
       </div>
     </div>
 
-    <!-- SECTION B: Project Editor (Form + Media Drag/Drop Builder) -->
+    <!-- VIEW 2: Project Editor (Form + Mixed Batch Dropzone + Spacer Controls) -->
     <div id="view-project-editor" class="hidden space-y-10">
-      <!-- Back button -->
-      <div class="flex items-center justify-between">
+      <!-- Back / Nav -->
+      <div class="flex items-center justify-between pb-4 border-b border-neutral-200 dark:border-white/10">
         <button
           type="button"
           id="btn-back-to-list"
@@ -131,40 +131,42 @@ const metadata = {
           id="editor-mode-badge"
           class="text-xs font-mono px-3 py-1 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 font-semibold"
         >
-          تعديل مشروع
+          محرر المشروع
         </span>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <!-- Left: Project Info Fields (Col 5) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- LEFT: Project Metadata & Settings (Col 5) -->
         <div
-          class="lg:col-span-5 space-y-6 bg-white/70 dark:bg-neutral-900/60 p-6 sm:p-8 rounded-3xl border border-neutral-200 dark:border-white/10 backdrop-blur-xl"
+          class="lg:col-span-5 space-y-6 bg-white/70 dark:bg-neutral-900/60 p-6 sm:p-7 rounded-3xl border border-neutral-200 dark:border-white/10 backdrop-blur-xl"
         >
           <h2
-            class="text-lg font-bold text-neutral-900 dark:text-white font-mono pb-3 border-b border-neutral-200 dark:border-white/10"
+            class="text-base font-bold text-neutral-900 dark:text-white font-mono pb-2 border-b border-neutral-200 dark:border-white/10"
           >
-            1. معلومات المشروع الأساسية
+            1. معلومات وتفاصيل العمل
           </h2>
 
-          <div class="space-y-4 text-xs font-mono">
+          <div class="space-y-5 text-xs font-mono">
+            <!-- Title -->
             <div>
-              <label class="block uppercase text-neutral-500 mb-1">عنوان المشروع (Title) *</label>
+              <label class="block uppercase text-neutral-500 mb-1 font-semibold">عنوان المشروع (Title) *</label>
               <input
                 type="text"
                 id="form-title"
-                placeholder="e.g. Kinetic Brand Launch"
+                placeholder="e.g. Kinetic Brand Identity"
                 class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-sm focus:outline-none focus:border-sky-500"
               />
             </div>
 
+            <!-- Slug & Year -->
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block uppercase text-neutral-500 mb-1">الرابط الفرعي (Slug) *</label>
+                <label class="block uppercase text-neutral-500 mb-1">الرابط (Slug) *</label>
                 <input
                   type="text"
                   id="form-slug"
-                  placeholder="e.g. kinetic-brand"
-                  class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                  placeholder="kinetic-brand"
+                  class="w-full px-3 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
                 />
               </div>
 
@@ -174,49 +176,98 @@ const metadata = {
                   type="text"
                   id="form-year"
                   placeholder="2026"
-                  class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                  class="w-full px-3 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
                 />
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block uppercase text-neutral-500 mb-1">التصنيف (Category)</label>
-                <select
-                  id="form-category-key"
-                  class="w-full px-3 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500 cursor-pointer"
+            <!-- Category with Custom Category Option -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block uppercase text-neutral-500 font-semibold">التصنيف (Category)</label>
+                <button
+                  type="button"
+                  id="btn-toggle-custom-category"
+                  class="text-[11px] text-sky-600 dark:text-sky-400 hover:underline cursor-pointer"
                 >
-                  <option value="motion">Motion Design</option>
-                  <option value="3d">3D & Lookdev</option>
-                  <option value="cinematography">Cinematography</option>
-                  <option value="brand">Brand & Graphic</option>
-                  <option value="ui-ux">UI / UX Design</option>
-                </select>
+                  + تصنيف مخصص
+                </button>
               </div>
 
-              <div>
-                <label class="block uppercase text-neutral-500 mb-1">الاسم المعروض للتصنيف</label>
+              <select
+                id="form-category-select"
+                class="w-full px-3 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500 cursor-pointer"
+              >
+                <option value="motion|Motion Design & Kinetic">Motion Design & Kinetic</option>
+                <option value="3d|3D Art & CGI Lookdev">3D Art & CGI Lookdev</option>
+                <option value="cinematography|Cinematography & Color Grade">Cinematography & Color Grade</option>
+                <option value="brand|Brand Identity & Packaging">Brand Identity & Packaging</option>
+                <option value="ui-ux|UI / UX Product Design">UI / UX Product Design</option>
+                <option value="__custom__">+ إضافة تصنيف جديد...</option>
+              </select>
+
+              <div id="custom-category-box" class="hidden mt-2 flex items-center gap-2">
                 <input
                   type="text"
-                  id="form-category-label"
-                  placeholder="Motion Design & 3D"
-                  class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                  id="form-custom-category-input"
+                  placeholder="اكتب اسم التصنيف الجديد..."
+                  class="flex-1 px-3 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-sky-500 text-neutral-900 dark:text-white text-xs"
                 />
+                <button
+                  type="button"
+                  id="btn-apply-custom-category"
+                  class="px-3 py-2 rounded-xl bg-sky-600 text-white text-xs font-semibold hover:bg-sky-500 cursor-pointer"
+                >
+                  إضافة
+                </button>
               </div>
             </div>
 
+            <!-- Role -->
             <div>
               <label class="block uppercase text-neutral-500 mb-1">دورك في المشروع (Role)</label>
               <input
                 type="text"
                 id="form-role"
-                placeholder="Senior Motion Designer & Art Director"
+                placeholder="Senior Motion Designer & 3D Animator"
                 class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
               />
             </div>
 
+            <!-- Programs & Specs with Ready-Made Badges -->
             <div>
-              <label class="block uppercase text-neutral-500 mb-1">البرامج والمواصفات (Specs)</label>
+              <label class="block uppercase text-neutral-500 mb-1.5 font-semibold">
+                البرامج والمواصفات الفنية (Specs)
+              </label>
+
+              <!-- Ready badges -->
+              <div class="flex flex-wrap gap-1.5 mb-2.5" id="specs-badges-container">
+                {
+                  [
+                    'After Effects',
+                    'Cinema 4D',
+                    'Octane Render',
+                    'Redshift',
+                    'Blender',
+                    'DaVinci Resolve',
+                    'ACES Color',
+                    '60 FPS',
+                    'Premiere Pro',
+                    'Figma',
+                    'Unreal Engine',
+                    'Houdini',
+                  ].map((badge) => (
+                    <button
+                      type="button"
+                      data-badge={badge}
+                      class="spec-badge-btn px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-[11px] text-neutral-700 dark:text-neutral-300 hover:border-sky-500 transition-colors cursor-pointer"
+                    >
+                      + {badge}
+                    </button>
+                  ))
+                }
+              </div>
+
               <input
                 type="text"
                 id="form-specs"
@@ -225,56 +276,112 @@ const metadata = {
               />
             </div>
 
+            <!-- Cover Thumbnail Dropzone -->
             <div>
-              <label class="block uppercase text-neutral-500 mb-1">رابط صورة الغلاف (Thumbnail)</label>
+              <label class="block uppercase text-neutral-500 mb-1.5 font-semibold">
+                صورة الغلاف (Cover Thumbnail) *
+              </label>
+              <div
+                id="dropzone-cover"
+                class="relative p-4 rounded-2xl border-2 border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 transition-colors bg-neutral-50 dark:bg-neutral-950/50 flex flex-col items-center justify-center text-center cursor-pointer min-h-[110px]"
+              >
+                <input type="file" id="input-cover-file" accept="image/*" class="hidden" />
+                <div id="cover-preview-box" class="hidden w-full aspect-video rounded-xl overflow-hidden mb-2 relative">
+                  <img id="cover-preview-img" src="" alt="Cover preview" class="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    id="btn-remove-cover"
+                    class="absolute top-2 right-2 px-2 py-1 rounded bg-black/80 text-white text-[10px] hover:bg-red-600"
+                    >حذف</button
+                  >
+                </div>
+                <div id="cover-placeholder" class="space-y-1">
+                  <span class="text-xl">🖼️</span>
+                  <p class="text-[11px] text-neutral-600 dark:text-neutral-300 font-medium">
+                    اسحب صورة الغلاف وأفلتها هنا أو اضغط للاختيار
+                  </p>
+                </div>
+              </div>
               <input
                 type="text"
                 id="form-thumbnail"
-                placeholder="https://... أو /projects/slug/cover.jpg"
-                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                placeholder="أو ضع رابط صورة خارجي (https://...)"
+                class="mt-2 w-full px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-[11px]"
               />
             </div>
 
+            <!-- Short Video Hover Preview Dropzone -->
             <div>
-              <label class="block uppercase text-neutral-500 mb-1">معاينة فيديو قصيرة عند التمرير (اختياري)</label>
+              <label class="block uppercase text-neutral-500 mb-1.5 font-semibold">
+                معاينة فيديو قصيرة عند التمرير (اختياري)
+              </label>
+              <div
+                id="dropzone-preview-video"
+                class="relative p-4 rounded-2xl border-2 border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 transition-colors bg-neutral-50 dark:bg-neutral-950/50 flex flex-col items-center justify-center text-center cursor-pointer min-h-[90px]"
+              >
+                <input type="file" id="input-preview-video-file" accept="video/*" class="hidden" />
+                <div
+                  id="preview-video-box"
+                  class="hidden w-full aspect-video rounded-xl overflow-hidden mb-2 relative bg-black"
+                >
+                  <video id="preview-video-element" autoplay loop muted playsinline class="w-full h-full object-contain"
+                  ></video>
+                  <button
+                    type="button"
+                    id="btn-remove-preview-video"
+                    class="absolute top-2 right-2 px-2 py-1 rounded bg-black/80 text-white text-[10px] hover:bg-red-600"
+                    >حذف</button
+                  >
+                </div>
+                <div id="preview-video-placeholder" class="space-y-1">
+                  <span class="text-xl">🎬</span>
+                  <p class="text-[11px] text-neutral-600 dark:text-neutral-300 font-medium">
+                    اسحب مقطع فيديو قصير صامت (.webm / .mp4) أو اضغط للاختيار
+                  </p>
+                </div>
+              </div>
               <input
                 type="text"
                 id="form-video-preview"
-                placeholder="/projects/slug/preview.webm"
-                class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
+                placeholder="أو ضع مسار الفيديو (/projects/.../preview.webm)"
+                class="mt-2 w-full px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-[11px]"
               />
             </div>
 
+            <!-- Description -->
             <div>
-              <label class="block uppercase text-neutral-500 mb-1">نبذة ووصف المشروع (Description)</label>
+              <label class="block uppercase text-neutral-500 mb-1 font-semibold">نبذة ووصف المشروع (Description)</label>
               <textarea
                 id="form-description"
                 rows="4"
-                placeholder="اكتب هنا شرحاً لأهداف المشروع وتقنيات التنفيذ..."
+                placeholder="اشرح هنا فكرة المشروع، التحديات الإبداعية، ونتائج العمل..."
                 class="w-full px-3.5 py-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-sky-500"
               ></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Right: Interactive Media Drag-and-Drop Builder (Col 7) -->
+        <!-- RIGHT: Media Builder with Batch Dropzone & Drag/Drop Reordering (Col 7) -->
         <div class="lg:col-span-7 space-y-6">
           <div
-            class="bg-white/70 dark:bg-neutral-900/60 p-6 sm:p-8 rounded-3xl border border-neutral-200 dark:border-white/10 backdrop-blur-xl"
+            class="bg-white/70 dark:bg-neutral-900/60 p-6 sm:p-7 rounded-3xl border border-neutral-200 dark:border-white/10 backdrop-blur-xl"
           >
+            <!-- Top Controls & Global Gap -->
             <div
-              class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-neutral-200 dark:border-white/10"
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-200 dark:border-white/10"
             >
               <div>
-                <h2 class="text-lg font-bold text-neutral-900 dark:text-white font-mono">
-                  2. محرر وسائط المشروع (Media & Layout)
+                <h2 class="text-base font-bold text-neutral-900 dark:text-white font-mono">
+                  2. محرر وترتيب وسائط المشروع
                 </h2>
-                <p class="text-xs text-neutral-500 font-mono mt-0.5">رتب الصور والفيديوهات والفراغات بالسحب والإفلات</p>
+                <p class="text-xs text-neutral-500 font-mono mt-0.5">
+                  رتب وسائطك بالسحب والإفلات، وتحكم بالفراغات بينها
+                </p>
               </div>
 
               <!-- Global Gap Option -->
               <div class="flex items-center gap-2 text-xs font-mono">
-                <span class="text-neutral-500">فراغ المشروع العام:</span>
+                <span class="text-neutral-500">الفراغ العام:</span>
                 <select
                   id="form-media-gap"
                   class="px-2.5 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white text-xs cursor-pointer"
@@ -287,49 +394,65 @@ const metadata = {
               </div>
             </div>
 
-            <!-- Media Quick Add Buttons -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
-              <!-- Upload / Add Image -->
+            <!-- BATCH DRAG & DROP ZONE (Images + Videos Together) -->
+            <div class="my-6">
+              <input type="file" id="input-batch-files" multiple accept="image/*,video/*" class="hidden" />
+              <div
+                id="dropzone-batch-media"
+                class="p-8 rounded-2xl border-2 border-dashed border-sky-500/40 hover:border-sky-500 bg-sky-500/5 hover:bg-sky-500/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer group"
+              >
+                <div
+                  class="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform"
+                >
+                  📁
+                </div>
+                <h3 class="text-sm font-bold text-neutral-900 dark:text-white font-mono mb-1">
+                  اسحب وأفلت مجموعة صور وفيديوهات دفعة واحدة هنا
+                </h3>
+                <p class="text-xs font-mono text-neutral-500 max-w-md">
+                  أو <span class="text-sky-600 dark:text-sky-400 font-bold underline">اضغط لاختيار ملفات من جهازك</span>
+                  (يدعم JPG, PNG, WebP, MP4, WebM معاً)
+                </p>
+              </div>
+            </div>
+
+            <!-- Secondary Action Buttons (Embed Link & Spacer) -->
+            <div class="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-neutral-200 dark:border-white/10">
               <button
                 type="button"
-                id="btn-add-image"
-                class="p-3.5 rounded-2xl bg-neutral-100 dark:bg-white/5 border border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+                id="btn-add-batch-manual"
+                class="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-sky-500 text-xs font-mono text-neutral-800 dark:text-neutral-200 flex items-center gap-2 cursor-pointer"
               >
-                <span class="text-lg">🖼️</span>
-                <span>+ إضافة صورة</span>
+                <span>➕ رفع ملفات من جهازك</span>
               </button>
 
-              <!-- Add Video / Link -->
               <button
                 type="button"
-                id="btn-add-video"
-                class="p-3.5 rounded-2xl bg-neutral-100 dark:bg-white/5 border border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+                id="btn-add-embed-link"
+                class="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-sky-500 text-xs font-mono text-neutral-800 dark:text-neutral-200 flex items-center gap-2 cursor-pointer"
               >
-                <span class="text-lg">🎬</span>
-                <span>+ إضافة فيديو / رابط</span>
+                <span>🔗 إضافة رابط (YouTube / Vimeo / URL)</span>
               </button>
 
-              <!-- Add Spacer -->
               <button
                 type="button"
                 id="btn-add-spacer"
-                class="p-3.5 rounded-2xl bg-neutral-100 dark:bg-white/5 border border-dashed border-neutral-300 dark:border-white/15 hover:border-sky-500 text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+                class="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-white/5 border border-neutral-200 dark:border-white/10 hover:border-sky-500 text-xs font-mono text-neutral-800 dark:text-neutral-200 flex items-center gap-2 cursor-pointer"
               >
-                <span class="text-lg">↕️</span>
-                <span>+ إضافة فراغ مخصص</span>
+                <span>↕️ إضافة فراغ مخصص (Spacer)</span>
               </button>
             </div>
 
-            <!-- Drag and Drop Media Cards List -->
+            <!-- Draggable Cards List -->
             <div class="space-y-3" id="media-cards-container">
-              <!-- Rendered dynamically via JavaScript -->
+              <!-- Rendered dynamically -->
             </div>
 
             <div
               id="media-empty-state"
               class="py-12 text-center border-2 border-dashed border-neutral-200 dark:border-white/10 rounded-2xl text-xs font-mono text-neutral-400"
             >
-              لا توجد وسائط مضافة بعد. اضغط على أحد الأزرار أعلاه لإضافة صور أو روابط أو فراغات.
+              لا توجد عناصر مضافة بعد. اسحب ملفاتك إلى الصندوق أعلاه للبدء!
             </div>
           </div>
 
@@ -339,7 +462,7 @@ const metadata = {
           >
             <div>
               <h3 class="font-bold text-sm font-mono">جاهز لنشر المشروع؟</h3>
-              <p class="text-xs opacity-75 font-mono">سيتم تحديث الكود وبناء الموقع تلقائياً</p>
+              <p class="text-xs opacity-75 font-mono">سيتم حفظ التغييرات وبناء الموقع لايف على نطاقك</p>
             </div>
 
             <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -348,7 +471,7 @@ const metadata = {
                 id="btn-export-code"
                 class="flex-1 sm:flex-none px-4 py-3 rounded-xl border border-white/20 dark:border-black/20 text-xs font-mono uppercase tracking-wider hover:bg-white/10 dark:hover:bg-black/10 transition-colors cursor-pointer"
               >
-                معاينة الكود
+                نسخ كود المشروع
               </button>
 
               <button
@@ -361,7 +484,7 @@ const metadata = {
             </div>
           </div>
 
-          <!-- Publish Status Banner -->
+          <!-- Status Banner -->
           <div id="publish-status-banner" class="hidden p-4 rounded-2xl text-xs font-mono flex items-center gap-3">
           </div>
         </div>
@@ -376,6 +499,7 @@ const metadata = {
     src?: string;
     caption?: string;
     size?: 'sm' | 'md' | 'lg' | 'xl';
+    _file?: File; // Temporary local file reference for uploading
   }
 
   interface Project {
@@ -399,6 +523,8 @@ const metadata = {
     const projectsList: Project[] = rawData ? JSON.parse(rawData) : [];
     let currentEditingSlug: string | null = null;
     let currentMedia: MediaItem[] = [];
+    let coverFile: File | null = null;
+    let previewVideoFile: File | null = null;
 
     // Elements
     const viewList = document.getElementById('view-projects-list');
@@ -409,14 +535,11 @@ const metadata = {
     const mediaEmpty = document.getElementById('media-empty-state');
     const btnCreateNew = document.getElementById('btn-create-new');
     const btnBackToList = document.getElementById('btn-back-to-list');
-    const btnAddImage = document.getElementById('btn-add-image');
-    const btnAddVideo = document.getElementById('btn-add-video');
-    const btnAddSpacer = document.getElementById('btn-add-spacer');
     const btnPublish = document.getElementById('btn-publish-project');
     const btnExport = document.getElementById('btn-export-code');
     const statusBanner = document.getElementById('publish-status-banner');
 
-    // GitHub Settings Modal
+    // Settings Modal
     const btnSettings = document.getElementById('btn-settings');
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
@@ -447,107 +570,252 @@ const metadata = {
         localStorage.setItem('mouad_gh_token', inputToken.value.trim());
         updateTokenBadge();
         settingsModal?.classList.add('opacity-0', 'pointer-events-none');
-        alert('تم حفظ رمز GitHub بنجاح! يمكنك الآن النشر مباشرة من اللوحة.');
+        alert('تم حفظ رمز GitHub بنجاح! يمكنك الآن النشر ورفع الملفات مباشرة.');
       }
     });
 
-    // Render Projects List
-    const renderProjectsList = () => {
-      if (!projectsTable || !countProjects) return;
-      countProjects.textContent = String(projectsList.length);
-      projectsTable.innerHTML = '';
+    // 1. Cover Thumbnail Dropzone Handler
+    const dropzoneCover = document.getElementById('dropzone-cover');
+    const inputCoverFile = document.getElementById('input-cover-file') as HTMLInputElement | null;
+    const coverPreviewBox = document.getElementById('cover-preview-box');
+    const coverPreviewImg = document.getElementById('cover-preview-img') as HTMLImageElement | null;
+    const coverPlaceholder = document.getElementById('cover-placeholder');
+    const btnRemoveCover = document.getElementById('btn-remove-cover');
+    const formThumbnailInput = document.getElementById('form-thumbnail') as HTMLInputElement | null;
 
-      projectsList.forEach((proj) => {
-        const card = document.createElement('div');
-        card.className =
-          'rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/80 dark:bg-neutral-900/80 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
-        card.innerHTML = `
-          <div>
-            <div class="aspect-video rounded-xl overflow-hidden bg-neutral-950 mb-4 border border-neutral-200 dark:border-white/10 relative">
-              <img src="${proj.thumbnail}" alt="${proj.title}" class="w-full h-full object-cover" />
-              <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-mono uppercase">${proj.category}</span>
-            </div>
-            <h3 class="text-base font-bold text-neutral-900 dark:text-white mb-1">${proj.title}</h3>
-            <p class="text-xs font-mono text-neutral-500 mb-3">${proj.year} · ${proj.role || 'Creator'}</p>
-            <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 font-mono">${proj.description || ''}</p>
-          </div>
+    dropzoneCover?.addEventListener('click', (e) => {
+      if (e.target !== btnRemoveCover) inputCoverFile?.click();
+    });
 
-          <div class="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-white/5 font-mono text-xs">
-            <span class="text-neutral-400">${proj.media.length} عنصر وسائط</span>
-            <div class="flex items-center gap-2">
-              <a href="/work/${proj.slug}" target="_blank" class="px-2.5 py-1 rounded-lg text-neutral-500 hover:text-sky-500 transition-colors">عرض ↗</a>
-              <button type="button" class="btn-edit-proj px-3 py-1 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold cursor-pointer" data-slug="${proj.slug}">تعديل</button>
-            </div>
-          </div>
-        `;
-
-        card.querySelector('.btn-edit-proj')?.addEventListener('click', () => {
-          openEditor(proj);
-        });
-
-        projectsTable.appendChild(card);
-      });
+    const setCoverImage = (file: File) => {
+      coverFile = file;
+      const url = URL.createObjectURL(file);
+      if (coverPreviewImg && coverPreviewBox && coverPlaceholder) {
+        coverPreviewImg.src = url;
+        coverPreviewBox.classList.remove('hidden');
+        coverPlaceholder.classList.add('hidden');
+      }
+      if (formThumbnailInput) {
+        const slug = (document.getElementById('form-slug') as HTMLInputElement).value || 'new-project';
+        formThumbnailInput.value = `/projects/${slug}/${file.name}`;
+      }
     };
 
-    // Open Editor
-    const openEditor = (proj?: Project) => {
-      viewList?.classList.add('hidden');
-      viewEditor?.classList.remove('hidden');
+    inputCoverFile?.addEventListener('change', () => {
+      if (inputCoverFile.files?.[0]) setCoverImage(inputCoverFile.files[0]);
+    });
 
-      if (proj) {
-        currentEditingSlug = proj.slug;
-        (document.getElementById('form-title') as HTMLInputElement).value = proj.title;
-        (document.getElementById('form-slug') as HTMLInputElement).value = proj.slug;
-        (document.getElementById('form-year') as HTMLInputElement).value = proj.year;
-        (document.getElementById('form-category-key') as HTMLSelectElement).value = proj.categoryKey;
-        (document.getElementById('form-category-label') as HTMLInputElement).value = proj.category;
-        (document.getElementById('form-role') as HTMLInputElement).value = proj.role;
-        (document.getElementById('form-specs') as HTMLInputElement).value = proj.specs;
-        (document.getElementById('form-thumbnail') as HTMLInputElement).value = proj.thumbnail;
-        (document.getElementById('form-video-preview') as HTMLInputElement).value = proj.videoPreview || '';
-        (document.getElementById('form-description') as HTMLTextAreaElement).value = proj.description;
-        (document.getElementById('form-media-gap') as HTMLSelectElement).value = proj.mediaGap || 'none';
-        currentMedia = JSON.parse(JSON.stringify(proj.media || []));
-      } else {
-        currentEditingSlug = null;
-        (document.getElementById('form-title') as HTMLInputElement).value = '';
-        (document.getElementById('form-slug') as HTMLInputElement).value = '';
-        (document.getElementById('form-year') as HTMLInputElement).value = String(new Date().getFullYear());
-        (document.getElementById('form-category-key') as HTMLSelectElement).value = 'motion';
-        (document.getElementById('form-category-label') as HTMLInputElement).value = 'Motion Design & Kinetic';
-        (document.getElementById('form-role') as HTMLInputElement).value = 'Senior Motion Designer';
-        (document.getElementById('form-specs') as HTMLInputElement).value = 'After Effects · Cinema 4D · 60fps';
-        (document.getElementById('form-thumbnail') as HTMLInputElement).value = '';
-        (document.getElementById('form-video-preview') as HTMLInputElement).value = '';
-        (document.getElementById('form-description') as HTMLTextAreaElement).value = '';
-        (document.getElementById('form-media-gap') as HTMLSelectElement).value = 'none';
-        currentMedia = [];
+    dropzoneCover?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzoneCover.classList.add('border-sky-500', 'bg-sky-500/10');
+    });
+    dropzoneCover?.addEventListener('dragleave', () => {
+      dropzoneCover.classList.remove('border-sky-500', 'bg-sky-500/10');
+    });
+    dropzoneCover?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzoneCover.classList.remove('border-sky-500', 'bg-sky-500/10');
+      if (e.dataTransfer?.files?.[0]) setCoverImage(e.dataTransfer.files[0]);
+    });
+
+    btnRemoveCover?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      coverFile = null;
+      if (coverPreviewBox && coverPlaceholder && inputCoverFile) {
+        coverPreviewBox.classList.add('hidden');
+        coverPlaceholder.classList.remove('hidden');
+        inputCoverFile.value = '';
       }
+      if (formThumbnailInput) formThumbnailInput.value = '';
+    });
+
+    // 2. Short Preview Video Dropzone Handler
+    const dropzonePreviewVideo = document.getElementById('dropzone-preview-video');
+    const inputPreviewVideoFile = document.getElementById('input-preview-video-file') as HTMLInputElement | null;
+    const previewVideoBox = document.getElementById('preview-video-box');
+    const previewVideoEl = document.getElementById('preview-video-element') as HTMLVideoElement | null;
+    const previewVideoPlaceholder = document.getElementById('preview-video-placeholder');
+    const btnRemovePreviewVideo = document.getElementById('btn-remove-preview-video');
+    const formVideoPreviewInput = document.getElementById('form-video-preview') as HTMLInputElement | null;
+
+    dropzonePreviewVideo?.addEventListener('click', (e) => {
+      if (e.target !== btnRemovePreviewVideo) inputPreviewVideoFile?.click();
+    });
+
+    const setPreviewVideo = (file: File) => {
+      previewVideoFile = file;
+      const url = URL.createObjectURL(file);
+      if (previewVideoEl && previewVideoBox && previewVideoPlaceholder) {
+        previewVideoEl.src = url;
+        previewVideoBox.classList.remove('hidden');
+        previewVideoPlaceholder.classList.add('hidden');
+      }
+      if (formVideoPreviewInput) {
+        const slug = (document.getElementById('form-slug') as HTMLInputElement).value || 'new-project';
+        formVideoPreviewInput.value = `/projects/${slug}/${file.name}`;
+      }
+    };
+
+    inputPreviewVideoFile?.addEventListener('change', () => {
+      if (inputPreviewVideoFile.files?.[0]) setPreviewVideo(inputPreviewVideoFile.files[0]);
+    });
+
+    dropzonePreviewVideo?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzonePreviewVideo.classList.add('border-sky-500', 'bg-sky-500/10');
+    });
+    dropzonePreviewVideo?.addEventListener('dragleave', () => {
+      dropzonePreviewVideo.classList.remove('border-sky-500', 'bg-sky-500/10');
+    });
+    dropzonePreviewVideo?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzonePreviewVideo.classList.remove('border-sky-500', 'bg-sky-500/10');
+      if (e.dataTransfer?.files?.[0]) setPreviewVideo(e.dataTransfer.files[0]);
+    });
+
+    btnRemovePreviewVideo?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      previewVideoFile = null;
+      if (previewVideoBox && previewVideoPlaceholder && inputPreviewVideoFile && previewVideoEl) {
+        previewVideoBox.classList.add('hidden');
+        previewVideoPlaceholder.classList.remove('hidden');
+        previewVideoEl.src = '';
+        inputPreviewVideoFile.value = '';
+      }
+      if (formVideoPreviewInput) formVideoPreviewInput.value = '';
+    });
+
+    // 3. Category Selector & Custom Category Handler
+    const categorySelect = document.getElementById('form-category-select') as HTMLSelectElement | null;
+    const customCategoryBox = document.getElementById('custom-category-box');
+    const customCategoryInput = document.getElementById('form-custom-category-input') as HTMLInputElement | null;
+    const btnApplyCustomCategory = document.getElementById('btn-apply-custom-category');
+    const btnToggleCustomCategory = document.getElementById('btn-toggle-custom-category');
+
+    btnToggleCustomCategory?.addEventListener('click', () => {
+      customCategoryBox?.classList.toggle('hidden');
+    });
+
+    categorySelect?.addEventListener('change', () => {
+      if (categorySelect.value === '__custom__') {
+        customCategoryBox?.classList.remove('hidden');
+      }
+    });
+
+    btnApplyCustomCategory?.addEventListener('click', () => {
+      const name = customCategoryInput?.value.trim();
+      if (!name || !categorySelect) return;
+      const key = name.toLowerCase().replace(/[^\w]/g, '-').slice(0, 15) || 'custom';
+      const opt = document.createElement('option');
+      opt.value = `${key}|${name}`;
+      opt.textContent = name;
+      categorySelect.insertBefore(opt, categorySelect.lastElementChild);
+      categorySelect.value = opt.value;
+      customCategoryBox?.classList.add('hidden');
+    });
+
+    // 4. Specs Ready-Made Badges
+    const specsInput = document.getElementById('form-specs') as HTMLInputElement | null;
+    document.querySelectorAll<HTMLButtonElement>('.spec-badge-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const badge = btn.getAttribute('data-badge') || '';
+        if (!specsInput) return;
+        const currentVals = specsInput.value
+          .split('·')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (!currentVals.includes(badge)) {
+          currentVals.push(badge);
+        } else {
+          const idx = currentVals.indexOf(badge);
+          currentVals.splice(idx, 1);
+        }
+        specsInput.value = currentVals.join(' · ');
+      });
+    });
+
+    // 5. BATCH MIXED FILES DRAG & DROP (Images and Videos together)
+    const dropzoneBatch = document.getElementById('dropzone-batch-media');
+    const inputBatchFiles = document.getElementById('input-batch-files') as HTMLInputElement | null;
+    const btnAddBatchManual = document.getElementById('btn-add-batch-manual');
+
+    btnAddBatchManual?.addEventListener('click', () => inputBatchFiles?.click());
+    dropzoneBatch?.addEventListener('click', () => inputBatchFiles?.click());
+
+    const handleBatchFiles = (fileList: FileList | File[]) => {
+      const files = Array.from(fileList);
+      const slug = (document.getElementById('form-slug') as HTMLInputElement).value || 'new-project';
+
+      files.forEach((file) => {
+        if (file.type.startsWith('image/')) {
+          const previewUrl = URL.createObjectURL(file);
+          currentMedia.push({
+            type: 'image',
+            src: `/projects/${slug}/${file.name}`,
+            caption: '',
+            _file: file,
+          });
+          // Also set object url for local preview inside card
+          setTimeout(() => {
+            const cardImgs = mediaContainer?.querySelectorAll<HTMLImageElement>('img.media-preview-thumb');
+            if (cardImgs && cardImgs.length > 0) {
+              const lastImg = cardImgs[cardImgs.length - 1];
+              if (lastImg && !lastImg.src.startsWith('data:') && !lastImg.src.startsWith('blob:')) {
+                lastImg.src = previewUrl;
+              }
+            }
+          }, 50);
+        } else if (file.type.startsWith('video/')) {
+          currentMedia.push({
+            type: 'video',
+            src: `/projects/${slug}/${file.name}`,
+            _file: file,
+          });
+        }
+      });
 
       renderMediaCards();
     };
 
-    btnCreateNew?.addEventListener('click', () => openEditor());
-
-    btnBackToList?.addEventListener('click', () => {
-      viewEditor?.classList.add('hidden');
-      viewList?.classList.remove('hidden');
+    inputBatchFiles?.addEventListener('change', () => {
+      if (inputBatchFiles.files) handleBatchFiles(inputBatchFiles.files);
     });
 
-    // Auto-generate slug from title
-    document.getElementById('form-title')?.addEventListener('input', (e) => {
-      if (!currentEditingSlug) {
-        const val = (e.target as HTMLInputElement).value;
-        const slug = val
-          .toLowerCase()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/[\s_-]+/g, '-')
-          .replace(/^-+|-+$/g, '');
-        (document.getElementById('form-slug') as HTMLInputElement).value = slug;
+    dropzoneBatch?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzoneBatch.classList.add('border-sky-500', 'bg-sky-500/20');
+    });
+    dropzoneBatch?.addEventListener('dragleave', () => {
+      dropzoneBatch.classList.remove('border-sky-500', 'bg-sky-500/20');
+    });
+    dropzoneBatch?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzoneBatch.classList.remove('border-sky-500', 'bg-sky-500/20');
+      if (e.dataTransfer?.files) handleBatchFiles(e.dataTransfer.files);
+    });
+
+    // 6. Secondary Add Buttons (Embed link & Spacer)
+    const btnAddEmbedLink = document.getElementById('btn-add-embed-link');
+    const btnAddSpacer = document.getElementById('btn-add-spacer');
+
+    btnAddEmbedLink?.addEventListener('click', () => {
+      const url = prompt('أدخل رابط YouTube Embed أو رابط فيديو مباشر:', 'https://www.youtube-nocookie.com/embed/');
+      if (url) {
+        const isYt = url.includes('youtube') || url.includes('youtu.be');
+        currentMedia.push({
+          type: isYt ? 'youtube' : 'video',
+          src: url,
+        });
+        renderMediaCards();
       }
     });
 
-    // Render Drag-and-Drop Media Cards
+    btnAddSpacer?.addEventListener('click', () => {
+      currentMedia.push({ type: 'spacer', size: 'md' });
+      renderMediaCards();
+    });
+
+    // 7. Render Drag & Drop Media Cards
     const renderMediaCards = () => {
       if (!mediaContainer || !mediaEmpty) return;
       mediaContainer.innerHTML = '';
@@ -569,8 +837,11 @@ const metadata = {
           card.innerHTML = `
             <div class="flex items-center gap-3">
               <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
-              <span class="p-2 rounded-lg bg-sky-500/10 text-sky-500 font-bold">↕️ فراغ مخصص (Spacer)</span>
-              <select class="spacer-size-select px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10">
+              <span class="px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-500 font-bold flex items-center gap-1.5">
+                <span>↕️</span>
+                <span>فراغ مخصص (Spacer)</span>
+              </span>
+              <select class="spacer-size-select px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-white/10 text-neutral-900 dark:text-white cursor-pointer">
                 <option value="sm" ${item.size === 'sm' ? 'selected' : ''}>صغير (24px)</option>
                 <option value="md" ${item.size === 'md' || !item.size ? 'selected' : ''}>متوسط (48px)</option>
                 <option value="lg" ${item.size === 'lg' ? 'selected' : ''}>كبير (96px)</option>
@@ -584,16 +855,20 @@ const metadata = {
             </div>
           `;
         } else if (item.type === 'image') {
+          const imgSrc = item._file ? URL.createObjectURL(item._file) : item.src || '';
           card.innerHTML = `
             <div class="flex items-center gap-3 overflow-hidden">
               <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
-              <div class="w-12 h-10 rounded-lg overflow-hidden bg-neutral-900 flex-shrink-0 border border-neutral-300 dark:border-white/10">
-                <img src="${item.src || ''}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x70?text=Image'" />
+              <div class="w-14 h-12 rounded-lg overflow-hidden bg-neutral-900 flex-shrink-0 border border-neutral-300 dark:border-white/10">
+                <img src="${imgSrc}" class="media-preview-thumb w-full h-full object-cover" onerror="this.src='https://placehold.co/100x70?text=Image'" />
               </div>
               <div class="space-y-1">
-                <span class="text-[10px] uppercase font-bold text-sky-500">صورة (Image)</span>
-                <input type="text" value="${item.src || ''}" placeholder="رابط الصورة" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
-                <input type="text" value="${item.caption || ''}" placeholder="وصف الصورة (اختياري)" class="card-caption-input block w-60 sm:w-80 px-2 py-0.5 rounded bg-transparent border-b border-neutral-200 dark:border-white/10 text-[11px] text-neutral-400" />
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] uppercase font-bold text-sky-500">صورة (Image)</span>
+                  ${item._file ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-500">ملف جاهز للرفع: ${item._file.name}</span>` : ''}
+                </div>
+                <input type="text" value="${item.src || ''}" placeholder="مسار الصورة" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
+                <input type="text" value="${item.caption || ''}" placeholder="وصف الصورة (Caption)" class="card-caption-input block w-60 sm:w-80 px-2 py-0.5 rounded bg-transparent border-b border-neutral-200 dark:border-white/10 text-[11px] text-neutral-400" />
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -607,13 +882,16 @@ const metadata = {
           card.innerHTML = `
             <div class="flex items-center gap-3 overflow-hidden">
               <span class="cursor-grab text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white text-base">⋮⋮</span>
-              <span class="p-2 rounded-lg bg-indigo-500/10 text-indigo-500 font-bold">🎬 فيديو / Embed</span>
+              <span class="p-2 rounded-lg bg-indigo-500/10 text-indigo-500 font-bold">🎬 فيديو</span>
               <div class="space-y-1">
-                <select class="card-type-select px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-[10px] font-bold">
-                  <option value="youtube" ${item.type === 'youtube' ? 'selected' : ''}>YouTube Embed</option>
-                  <option value="video" ${item.type === 'video' ? 'selected' : ''}>فيديو مباشر (WebM/MP4)</option>
-                </select>
-                <input type="text" value="${item.src || ''}" placeholder="رابط الفيديو (YouTube embed أو رابط .webm)" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
+                <div class="flex items-center gap-2">
+                  <select class="card-type-select px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-[10px] font-bold">
+                    <option value="video" ${item.type === 'video' ? 'selected' : ''}>فيديو مباشر (WebM/MP4)</option>
+                    <option value="youtube" ${item.type === 'youtube' ? 'selected' : ''}>YouTube Embed</option>
+                  </select>
+                  ${item._file ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-500">ملف جاهز للرفع: ${item._file.name}</span>` : ''}
+                </div>
+                <input type="text" value="${item.src || ''}" placeholder="رابط الفيديو" class="card-src-input block w-60 sm:w-80 px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-xs" />
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -624,7 +902,7 @@ const metadata = {
           `;
         }
 
-        // Event listeners for card inputs
+        // Card events
         card.querySelector('.spacer-size-select')?.addEventListener('change', (e) => {
           currentMedia[index].size = (e.target as HTMLSelectElement).value as MediaItem['size'];
         });
@@ -641,7 +919,6 @@ const metadata = {
           currentMedia[index].type = (e.target as HTMLSelectElement).value as MediaItem['type'];
         });
 
-        // Up & Down Buttons
         card.querySelector('.btn-move-up')?.addEventListener('click', () => {
           if (index > 0) {
             const temp = currentMedia[index];
@@ -665,24 +942,20 @@ const metadata = {
           renderMediaCards();
         });
 
-        // HTML5 Drag and Drop
+        // HTML5 Drag and Drop Reordering
         card.addEventListener('dragstart', (e) => {
           e.dataTransfer?.setData('text/plain', String(index));
           card.classList.add('opacity-50');
         });
 
-        card.addEventListener('dragend', () => {
-          card.classList.remove('opacity-50');
-        });
+        card.addEventListener('dragend', () => card.classList.remove('opacity-50'));
 
         card.addEventListener('dragover', (e) => {
           e.preventDefault();
           card.classList.add('border-sky-500');
         });
 
-        card.addEventListener('dragleave', () => {
-          card.classList.remove('border-sky-500');
-        });
+        card.addEventListener('dragleave', () => card.classList.remove('border-sky-500'));
 
         card.addEventListener('drop', (e) => {
           e.preventDefault();
@@ -690,8 +963,8 @@ const metadata = {
           const sourceIdx = Number(e.dataTransfer?.getData('text/plain'));
           const targetIdx = index;
           if (!isNaN(sourceIdx) && sourceIdx !== targetIdx) {
-            const movedItem = currentMedia.splice(sourceIdx, 1)[0];
-            currentMedia.splice(targetIdx, 0, movedItem);
+            const moved = currentMedia.splice(sourceIdx, 1)[0];
+            currentMedia.splice(targetIdx, 0, moved);
             renderMediaCards();
           }
         });
@@ -700,44 +973,159 @@ const metadata = {
       });
     };
 
-    // Quick Add Handlers
-    btnAddSpacer?.addEventListener('click', () => {
-      currentMedia.push({ type: 'spacer', size: 'md' });
+    // 8. Projects Overview List
+    const renderProjectsList = () => {
+      if (!projectsTable || !countProjects) return;
+      countProjects.textContent = String(projectsList.length);
+      projectsTable.innerHTML = '';
+
+      projectsList.forEach((proj) => {
+        const card = document.createElement('div');
+        card.className =
+          'rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/80 dark:bg-neutral-900/80 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="aspect-video rounded-xl overflow-hidden bg-neutral-950 mb-4 border border-neutral-200 dark:border-white/10 relative">
+              <img src="${proj.thumbnail}" alt="${proj.title}" class="w-full h-full object-cover" />
+              <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-mono uppercase">${proj.category}</span>
+            </div>
+            <h3 class="text-base font-bold text-neutral-900 dark:text-white mb-1">${proj.title}</h3>
+            <p class="text-xs font-mono text-neutral-500 mb-2">${proj.year} · ${proj.role || 'Creator'}</p>
+            <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 font-mono">${proj.description || ''}</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-neutral-100 dark:border-white/5 font-mono text-xs">
+            <span class="text-neutral-400">${proj.media.length} عنصر</span>
+            <div class="flex items-center gap-2">
+              <a href="/work/${proj.slug}" target="_blank" class="px-2.5 py-1 rounded-lg text-neutral-500 hover:text-sky-500 transition-colors">عرض ↗</a>
+              <button type="button" class="btn-edit-proj px-3 py-1 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold cursor-pointer" data-slug="${proj.slug}">تعديل</button>
+            </div>
+          </div>
+        `;
+
+        card.querySelector('.btn-edit-proj')?.addEventListener('click', () => openEditor(proj));
+        projectsTable.appendChild(card);
+      });
+    };
+
+    // 9. Open Editor Mode
+    const openEditor = (proj?: Project) => {
+      viewList?.classList.add('hidden');
+      viewEditor?.classList.remove('hidden');
+      coverFile = null;
+      previewVideoFile = null;
+
+      if (proj) {
+        currentEditingSlug = proj.slug;
+        (document.getElementById('form-title') as HTMLInputElement).value = proj.title;
+        (document.getElementById('form-slug') as HTMLInputElement).value = proj.slug;
+        (document.getElementById('form-year') as HTMLInputElement).value = proj.year;
+        (document.getElementById('form-role') as HTMLInputElement).value = proj.role;
+        (document.getElementById('form-specs') as HTMLInputElement).value = proj.specs;
+        (document.getElementById('form-thumbnail') as HTMLInputElement).value = proj.thumbnail;
+        (document.getElementById('form-video-preview') as HTMLInputElement).value = proj.videoPreview || '';
+        (document.getElementById('form-description') as HTMLTextAreaElement).value = proj.description;
+        (document.getElementById('form-media-gap') as HTMLSelectElement).value = proj.mediaGap || 'none';
+
+        // Select category
+        if (categorySelect) {
+          const matchVal = `${proj.categoryKey}|${proj.category}`;
+          const existingOpt = Array.from(categorySelect.options).find(
+            (o) => o.value === matchVal || o.value.startsWith(`${proj.categoryKey}|`)
+          );
+          if (existingOpt) {
+            categorySelect.value = existingOpt.value;
+          } else {
+            const opt = document.createElement('option');
+            opt.value = `${proj.categoryKey}|${proj.category}`;
+            opt.textContent = proj.category;
+            categorySelect.insertBefore(opt, categorySelect.lastElementChild);
+            categorySelect.value = opt.value;
+          }
+        }
+
+        // Cover preview
+        if (proj.thumbnail && coverPreviewBox && coverPreviewImg && coverPlaceholder) {
+          coverPreviewImg.src = proj.thumbnail;
+          coverPreviewBox.classList.remove('hidden');
+          coverPlaceholder.classList.add('hidden');
+        }
+
+        // Preview video
+        if (proj.videoPreview && previewVideoBox && previewVideoEl && previewVideoPlaceholder) {
+          previewVideoEl.src = proj.videoPreview;
+          previewVideoBox.classList.remove('hidden');
+          previewVideoPlaceholder.classList.add('hidden');
+        }
+
+        currentMedia = JSON.parse(JSON.stringify(proj.media || []));
+      } else {
+        currentEditingSlug = null;
+        (document.getElementById('form-title') as HTMLInputElement).value = '';
+        (document.getElementById('form-slug') as HTMLInputElement).value = '';
+        (document.getElementById('form-year') as HTMLInputElement).value = String(new Date().getFullYear());
+        (document.getElementById('form-role') as HTMLInputElement).value = 'Senior Motion Designer';
+        (document.getElementById('form-specs') as HTMLInputElement).value = 'After Effects · Cinema 4D · 60fps';
+        (document.getElementById('form-thumbnail') as HTMLInputElement).value = '';
+        (document.getElementById('form-video-preview') as HTMLInputElement).value = '';
+        (document.getElementById('form-description') as HTMLTextAreaElement).value = '';
+        (document.getElementById('form-media-gap') as HTMLSelectElement).value = 'none';
+
+        if (coverPreviewBox && coverPlaceholder) {
+          coverPreviewBox.classList.add('hidden');
+          coverPlaceholder.classList.remove('hidden');
+        }
+        if (previewVideoBox && previewVideoPlaceholder) {
+          previewVideoBox.classList.add('hidden');
+          previewVideoPlaceholder.classList.remove('hidden');
+        }
+
+        currentMedia = [];
+      }
+
       renderMediaCards();
+    };
+
+    btnCreateNew?.addEventListener('click', () => openEditor());
+
+    btnBackToList?.addEventListener('click', () => {
+      viewEditor?.classList.add('hidden');
+      viewList?.classList.remove('hidden');
+      renderProjectsList();
     });
 
-    btnAddImage?.addEventListener('click', () => {
-      const url = prompt('أدخل رابط الصورة (أو مسارها في مجلد public):', 'https://');
-      if (url) {
-        currentMedia.push({ type: 'image', src: url, caption: '' });
-        renderMediaCards();
+    // Auto-generate slug
+    document.getElementById('form-title')?.addEventListener('input', (e) => {
+      if (!currentEditingSlug) {
+        const val = (e.target as HTMLInputElement).value;
+        const slug = val
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        (document.getElementById('form-slug') as HTMLInputElement).value = slug;
       }
     });
 
-    btnAddVideo?.addEventListener('click', () => {
-      const url = prompt(
-        'أدخل رابط YouTube Embed أو رابط ملف فيديو مباشر (.webm):',
-        'https://www.youtube-nocookie.com/embed/'
-      );
-      if (url) {
-        const isYoutube = url.includes('youtube') || url.includes('youtu.be');
-        currentMedia.push({
-          type: isYoutube ? 'youtube' : 'video',
-          src: url,
-        });
-        renderMediaCards();
-      }
-    });
+    // Helper: Convert File to Base64
+    const fileToBase64 = (file: File): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const res = reader.result as string;
+          // remove "data:...;base64," prefix
+          const base64 = res.split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = (err) => reject(err);
+      });
 
-    // Build Current Project Object
+    // Build Project Object
     const buildProjectObject = (): Project => {
       const title = (document.getElementById('form-title') as HTMLInputElement).value.trim();
       const slug = (document.getElementById('form-slug') as HTMLInputElement).value.trim();
       const year = (document.getElementById('form-year') as HTMLInputElement).value.trim() || '2026';
-      const categoryKey = (document.getElementById('form-category-key') as HTMLSelectElement)
-        .value as Project['categoryKey'];
-      const category =
-        (document.getElementById('form-category-label') as HTMLInputElement).value.trim() || 'Motion Design';
       const role = (document.getElementById('form-role') as HTMLInputElement).value.trim() || 'Lead Artist';
       const specs =
         (document.getElementById('form-specs') as HTMLInputElement).value.trim() || 'After Effects · Cinema 4D';
@@ -749,11 +1137,23 @@ const metadata = {
       const description = (document.getElementById('form-description') as HTMLTextAreaElement).value.trim();
       const mediaGap = (document.getElementById('form-media-gap') as HTMLSelectElement).value as Project['mediaGap'];
 
+      const catVal = categorySelect?.value || 'motion|Motion Design';
+      const [categoryKey, category] = catVal.split('|') as [Project['categoryKey'], string];
+
+      // Strip temporary _file references
+      const cleanMedia = currentMedia.map((m) => {
+        const copy: MediaItem = { type: m.type };
+        if (m.src) copy.src = m.src;
+        if (m.caption) copy.caption = m.caption;
+        if (m.size) copy.size = m.size;
+        return copy;
+      });
+
       return {
         slug,
         title,
-        category,
-        categoryKey,
+        category: category || 'Motion Design',
+        categoryKey: categoryKey || 'motion',
         year,
         role,
         specs,
@@ -761,40 +1161,111 @@ const metadata = {
         thumbnail,
         videoPreview,
         mediaGap,
-        media: currentMedia,
+        media: cleanMedia,
       };
     };
 
-    // Export Code
+    // Export code
     btnExport?.addEventListener('click', () => {
       const proj = buildProjectObject();
-      const json = JSON.stringify(proj, null, 2);
-      prompt('كود المشروع جاهز للنسخ:', json);
+      prompt('كود المشروع جاهز للنسخ:', JSON.stringify(proj, null, 2));
     });
 
-    // Publish to GitHub via GitHub API
+    // 10. Publish to GitHub with File Uploads
     btnPublish?.addEventListener('click', async () => {
       const proj = buildProjectObject();
       if (!proj.title || !proj.slug) {
-        alert('يرجى ملء عنوان المشروع والرابط الفرعي (Slug).');
+        alert('يرجى كتابة عنوان المشروع والرابط (Slug).');
         return;
       }
 
       const token = localStorage.getItem('mouad_gh_token');
       if (!token) {
         btnSettings?.click();
-        alert('يرجى إدخال رمز GitHub PAT أولاً للتمكن من النشر المباشر.');
+        alert('يرجى إدخال رمز GitHub Personal Access Token أولاً للتمكن من النشر.');
         return;
       }
 
       if (!statusBanner) return;
       statusBanner.className =
         'p-4 rounded-2xl text-xs font-mono flex items-center gap-3 bg-sky-500/10 border border-sky-500/30 text-sky-800 dark:text-sky-300';
-      statusBanner.innerHTML = '<span>⏳</span><span>جاري حفظ وتحديث ملفات المشروع على GitHub...</span>';
+      statusBanner.innerHTML = '<span>⏳</span><span>جاري معالجة ورفع الملفات إلى GitHub...</span>';
       statusBanner.classList.remove('hidden');
 
+      const repoOwner = 'mouad-R';
+      const repoName = 'portfolio';
+
       try {
-        // 1. Update projectsList in memory
+        // Upload Cover File if local
+        if (coverFile) {
+          statusBanner.innerHTML = `<span>⏳</span><span>جاري رفع صورة الغلاف (${coverFile.name})...</span>`;
+          const base64 = await fileToBase64(coverFile);
+          const uploadPath = `public/projects/${proj.slug}/${coverFile.name}`;
+
+          await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `upload: cover for ${proj.title}`,
+              content: base64,
+              branch: 'main',
+            }),
+          });
+          proj.thumbnail = `/projects/${proj.slug}/${coverFile.name}`;
+        }
+
+        // Upload Preview Video if local
+        if (previewVideoFile) {
+          statusBanner.innerHTML = `<span>⏳</span><span>جاري رفع معاينة الفيديو (${previewVideoFile.name})...</span>`;
+          const base64 = await fileToBase64(previewVideoFile);
+          const uploadPath = `public/projects/${proj.slug}/${previewVideoFile.name}`;
+
+          await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `upload: preview video for ${proj.title}`,
+              content: base64,
+              branch: 'main',
+            }),
+          });
+          proj.videoPreview = `/projects/${proj.slug}/${previewVideoFile.name}`;
+        }
+
+        // Upload any local media files
+        const filesToUpload = currentMedia.filter((m) => m._file);
+        for (let i = 0; i < filesToUpload.length; i++) {
+          const item = filesToUpload[i];
+          const file = item._file!;
+          statusBanner.innerHTML = `<span>⏳</span><span>جاري رفع وسائط المشروع (${i + 1}/${filesToUpload.length}: ${file.name})...</span>`;
+          const base64 = await fileToBase64(file);
+          const uploadPath = `public/projects/${proj.slug}/${file.name}`;
+
+          await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${uploadPath}`, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `upload: ${file.name} for ${proj.title}`,
+              content: base64,
+              branch: 'main',
+            }),
+          });
+          item.src = `/projects/${proj.slug}/${file.name}`;
+        }
+
+        // Update projects array in memory
         const existingIdx = projectsList.findIndex((p) => p.slug === proj.slug);
         if (existingIdx >= 0) {
           projectsList[existingIdx] = proj;
@@ -802,27 +1273,23 @@ const metadata = {
           projectsList.unshift(proj);
         }
 
-        // 2. Fetch current file SHA from GitHub API
-        const repoOwner = 'mouad-R';
-        const repoName = 'portfolio';
-        const filePath = 'src/data/projects.ts';
+        // Fetch current SHA of projects.ts
+        statusBanner.innerHTML = '<span>⏳</span><span>جاري تحديث كود المشاريع ونشر التغييرات...</span>';
+        const getRes = await fetch(
+          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/src/data/projects.ts`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github.v3+json',
+            },
+          }
+        );
 
-        const getRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/vnd.github.v3+json',
-          },
-        });
-
-        if (!getRes.ok) {
-          throw new Error('فشل التحقق من مستودع GitHub. تأكد من صحة رمز الـ Token وصلاحياته.');
-        }
-
+        if (!getRes.ok) throw new Error('فشل الوصول إلى ملف المشاريع في GitHub. تأكد من صحة الرمز.');
         const fileData = await getRes.json();
         const sha = fileData.sha;
 
-        // 3. Generate updated TypeScript content
-        const newFileContent = `export type MediaItemType = 'youtube' | 'video' | 'image' | 'spacer';
+        const updatedTsContent = `export type MediaItemType = 'youtube' | 'video' | 'image' | 'spacer';
 
 export interface MediaItem {
   type: MediaItemType;
@@ -852,27 +1319,28 @@ export interface Project {
 export const projects: Project[] = ${JSON.stringify(projectsList, null, 2)};
 `;
 
-        // 4. PUT updated file to GitHub repo
-        // Encode utf-8 to base64
-        const utf8Bytes = new TextEncoder().encode(newFileContent);
+        const utf8Bytes = new TextEncoder().encode(updatedTsContent);
         let binaryStr = '';
         utf8Bytes.forEach((b) => (binaryStr += String.fromCharCode(b)));
-        const base64Content = btoa(binaryStr);
+        const base64Ts = btoa(binaryStr);
 
-        const putRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: `feat(work): update project "${proj.title}" via Studio Admin`,
-            content: base64Content,
-            sha,
-            branch: 'main',
-          }),
-        });
+        const putRes = await fetch(
+          `https://api.github.com/repos/${repoOwner}/${repoName}/contents/src/data/projects.ts`,
+          {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: `feat(work): update project "${proj.title}" via Studio Admin`,
+              content: base64Ts,
+              sha,
+              branch: 'main',
+            }),
+          }
+        );
 
         if (!putRes.ok) {
           const errData = await putRes.json();
@@ -883,7 +1351,7 @@ export const projects: Project[] = ${JSON.stringify(projectsList, null, 2)};
         statusBanner.className =
           'p-4 rounded-2xl text-xs font-mono flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300';
         statusBanner.innerHTML =
-          '<span>✓</span><span>تم الحفظ والنشر بنجاح على GitHub! سيقوم الخادم بنشر المشروع لايف على موقعك خلال 60 ثانية.</span>';
+          '<span>✓</span><span>تم الحفظ والنشر بنجاح على GitHub! سيقوم الخادم ببناء ونشر المشروع لايف على موقعك خلال 60 ثانية.</span>';
 
         renderProjectsList();
       } catch (err: unknown) {
