@@ -3,25 +3,11 @@ import { getPermalink } from './utils/permalinks';
 export const headerData = {
   links: [
     {
-      text: 'Portfolio',
-      links: [
-        { text: 'Cinematography', href: getPermalink('/cinematography') },
-        { text: 'Motion Design', href: getPermalink('/motion') },
-        { text: '3D Art & CGI', href: getPermalink('/3d') },
-        { text: 'Graphic & Brand', href: getPermalink('/graphic-design') },
-        { text: 'UI / UX Design', href: getPermalink('/ui-ux') },
-      ],
+      text: 'Work',
+      href: getPermalink('/work'),
     },
     {
-      text: 'Services',
-      href: getPermalink('/services'),
-    },
-    {
-      text: 'Process',
-      href: getPermalink('/process'),
-    },
-    {
-      text: 'About',
+      text: 'About & Services',
       href: getPermalink('/about'),
     },
     {
@@ -36,22 +22,21 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: 'Portfolio',
+      title: 'Featured Works',
       links: [
-        { text: 'Cinematography', href: getPermalink('/cinematography') },
-        { text: 'Motion Design', href: getPermalink('/motion') },
-        { text: '3D Art & CGI', href: getPermalink('/3d') },
-        { text: 'Graphic Design', href: getPermalink('/graphic-design') },
-        { text: 'UI / UX', href: getPermalink('/ui-ux') },
+        { text: 'Saad (Cinematography)', href: getPermalink('/work/saad') },
+        { text: 'Brand Identity (Motion)', href: getPermalink('/work/brand-ident') },
+        { text: 'Cyber Capsule (3D Lookdev)', href: getPermalink('/work/cyber-capsule') },
+        { text: 'View All Works →', href: getPermalink('/work') },
       ],
     },
     {
       title: 'Navigation',
       links: [
-        { text: 'Services', href: getPermalink('/services') },
-        { text: 'Process', href: getPermalink('/process') },
-        { text: 'About', href: getPermalink('/about') },
-        { text: 'Contact', href: getPermalink('/contact') },
+        { text: 'All Works', href: getPermalink('/work') },
+        { text: 'About & Services', href: getPermalink('/about') },
+        { text: 'Production Pipeline', href: getPermalink('/about#pipeline') },
+        { text: 'Contact & Inquiries', href: getPermalink('/contact') },
       ],
     },
   ],

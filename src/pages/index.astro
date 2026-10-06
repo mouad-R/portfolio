@@ -3,6 +3,7 @@ export const prerender = true;
 
 import Layout from '~/layouts/PageLayout.astro';
 import Marquee from '~/components/common/Marquee.astro';
+import { projects } from '~/data/projects';
 
 const metadata = {
   title: 'Mouad Rouini — Senior Motion Designer & Visual Director',
@@ -10,51 +11,25 @@ const metadata = {
     'Specialized in rhythm-driven motion design, broadcast identities, and high-fidelity visual storytelling.',
 };
 
-const disciplines = [
+const selectedWorks = [
   {
-    num: '01',
-    title: 'Motion Design',
-    category: 'Kinetic & Animation',
-    specs: '60 FPS · AE / Cinema 4D · Kinetic Systems',
-    href: '/motion',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80',
+    ...projects.find((p) => p.slug === 'saad')!,
     gridSpan: 'md:col-span-2 lg:col-span-2 aspect-[21/9] sm:aspect-[2.35/1]',
   },
   {
-    num: '02',
-    title: 'Cinematography',
-    category: 'Film Direction & Color',
-    specs: 'ARRI / RED · 2.39:1 · DaVinci Wide Gamut',
-    href: '/cinematography',
-    image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80',
-    video: '/projects/saad/1.webm',
+    ...projects.find((p) => p.slug === 'brand-ident')!,
     gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
   },
   {
-    num: '03',
-    title: '3D Art & CGI',
-    category: 'Lookdev & Rendering',
-    specs: 'Cinema 4D · Octane / Redshift · Shading',
-    href: '/3d',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+    ...projects.find((p) => p.slug === 'cyber-capsule')!,
     gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
   },
   {
-    num: '04',
-    title: 'Graphic & Brand',
-    category: 'Identity & Packaging',
-    specs: 'Brand Systems · Luxury Mockups · Print Specs',
-    href: '/graphic-design',
-    image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=800&q=80',
+    ...projects.find((p) => p.slug === 'lux-packaging')!,
     gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
   },
   {
-    num: '05',
-    title: 'UI / UX Design',
-    category: 'Product Systems & Apps',
-    specs: 'Design Systems · Figma · Interactive Prototypes',
-    href: '/ui-ux',
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80',
+    ...projects.find((p) => p.slug === 'travel-app')!,
     gridSpan: 'md:col-span-1 lg:col-span-1 aspect-[16/10]',
   },
 ];
@@ -238,7 +213,7 @@ const services = [
 
         <!-- Center Play Button -->
         <a
-          href="/motion/brand-ident"
+          href="/work/saad"
           class="relative z-10 flex flex-col items-center group/play cursor-pointer"
           aria-label="Play Showreel"
         >
@@ -281,34 +256,37 @@ const services = [
     <div class="flex items-end justify-between mb-10">
       <div>
         <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
-          >Index</span
+          >Portfolio</span
         >
-        <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">
-          Selected Disciplines
-        </h2>
+        <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">Selected Works</h2>
       </div>
-      <span class="text-xs font-mono text-neutral-500 hidden sm:block"> [ 05 DISCIPLINES // MOTION-FIRST ] </span>
+      <a
+        href="/work"
+        class="text-xs font-mono text-sky-600 dark:text-sky-400 hover:underline uppercase tracking-wider font-semibold"
+      >
+        [ View All Works ({projects.length}) → ]
+      </a>
     </div>
 
     <!-- The Bento Grid with 3D Tilt & Video Hover -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {
-        disciplines.map((item) => (
+        selectedWorks.map((item, idx) => (
           <a
-            href={item.href}
-            data-hover-video-container={item.video ? 'true' : undefined}
+            href={`/work/${item.slug}`}
+            data-hover-video-container={item.videoPreview ? 'true' : undefined}
             class={`group relative overflow-hidden rounded-2xl border border-neutral-200/80 dark:border-white/10 bg-neutral-950 flex flex-col justify-between p-6 transition-all duration-500 hover:border-sky-400/80 dark:hover:border-sky-400/80 shadow-md hover:shadow-2xl ${item.gridSpan} intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700`}
           >
             <div class="absolute inset-0 z-0 overflow-hidden">
               <img
-                src={item.image}
+                src={item.thumbnail}
                 alt={item.title}
                 class="w-full h-full object-cover opacity-50 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700 ease-out"
                 loading="lazy"
               />
-              {item.video && (
+              {item.videoPreview && (
                 <video
-                  src={item.video}
+                  src={item.videoPreview}
                   muted
                   loop
                   playsinline
@@ -322,7 +300,7 @@ const services = [
             <div class="relative z-10 flex items-center justify-between">
               <div class="inline-flex items-center gap-2">
                 <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/90 backdrop-blur-md border border-white/15 uppercase tracking-wider font-semibold">
-                  {item.num}
+                  0{idx + 1}
                 </span>
                 <span class="text-[11px] font-mono uppercase tracking-wider text-neutral-300 font-medium">
                   {item.category}
@@ -359,10 +337,10 @@ const services = [
         <h2 class="text-2xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">How I Can Help</h2>
       </div>
       <a
-        href="/services"
+        href="/about#services"
         class="text-xs font-mono text-sky-600 dark:text-sky-400 hover:underline uppercase tracking-wider font-semibold hidden sm:block"
       >
-        [ View All Capabilities → ]
+        [ View Capabilities in About → ]
       </a>
     </div>
 

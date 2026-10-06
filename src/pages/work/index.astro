@@ -1,0 +1,242 @@
+---
+export const prerender = true;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { projects } from '~/data/projects';
+
+const metadata = {
+  title: 'Work — Selected Projects & Case Studies | Mouad Rouini',
+  description:
+    'Explore selected works in motion design, 3D CGI lookdev, cinematography, and brand systems by Mouad Rouini.',
+};
+
+const filterTabs = [
+  { key: 'all', label: 'All Works' },
+  { key: 'motion', label: 'Motion Design' },
+  { key: '3d', label: '3D & Lookdev' },
+  { key: 'cinematography', label: 'Cinematography' },
+  { key: 'brand', label: 'Brand & UI' },
+];
+---
+
+<Layout metadata={metadata}>
+  <section class="relative pt-20 pb-12 md:pt-32 md:pb-16 max-w-6xl mx-auto px-4 sm:px-6">
+    <!-- Header -->
+    <div class="max-w-3xl mb-12">
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-6 shadow-sm"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span>
+        <span
+          class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+        >
+          Selected Archive // 2024–2026
+        </span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-bold text-neutral-900 dark:text-white tracking-tight leading-[1.08] mb-5">
+        Crafted with rhythm, light & precision.
+      </h1>
+
+      <p class="text-base md:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+        A curated showcase of commercial title sequences, 3D lookdev simulations, kinetic brand systems, and cinematic
+        color grading passes.
+      </p>
+    </div>
+
+    <!-- Filter Tabs (Interactive without reload) -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar" id="work-filters">
+      {
+        filterTabs.map((tab, idx) => {
+          const count =
+            tab.key === 'all'
+              ? projects.length
+              : tab.key === 'brand'
+                ? projects.filter((p) => p.categoryKey === 'brand' || p.categoryKey === 'ui-ux').length
+                : projects.filter((p) => p.categoryKey === tab.key).length;
+
+          return (
+            <button
+              type="button"
+              data-filter={tab.key}
+              class={`filter-btn px-4 py-2 rounded-full text-xs font-mono font-medium transition-all duration-300 whitespace-nowrap cursor-pointer flex items-center gap-2 ${
+                idx === 0
+                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-black shadow-sm ring-2 ring-neutral-900/10 dark:ring-white/20'
+                  : 'bg-white/80 dark:bg-neutral-900/70 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-white/10 hover:border-neutral-400 dark:hover:border-neutral-600'
+              }`}
+            >
+              <span>{tab.label}</span>
+              <span class="text-[10px] opacity-75">[{count}]</span>
+            </button>
+          );
+        })
+      }
+    </div>
+
+    <!-- Projects Grid -->
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-7">
+      {
+        projects.map((project) => {
+          const filterCategory =
+            project.categoryKey === 'brand' || project.categoryKey === 'ui-ux' ? 'brand' : project.categoryKey;
+
+          return (
+            <article
+              data-category={filterCategory}
+              class="project-card group relative overflow-hidden rounded-2xl border border-neutral-200/80 dark:border-white/10 bg-neutral-950 flex flex-col justify-between transition-all duration-500 hover:border-sky-400/80 shadow-md hover:shadow-2xl aspect-[16/10]"
+            >
+              <a href={`/work/${project.slug}`} class="absolute inset-0 z-20" aria-label={`View ${project.title}`} />
+
+              <div class="absolute inset-0 z-0 overflow-hidden">
+                <img
+                  src={project.thumbnail}
+                  alt={project.title}
+                  class="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out"
+                  loading="lazy"
+                />
+
+                {project.videoPreview && (
+                  <video
+                    src={project.videoPreview}
+                    muted
+                    loop
+                    playsinline
+                    preload="none"
+                    class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-85 transition-opacity duration-500 pointer-events-none"
+                  />
+                )}
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30 group-hover:from-black/85 transition-colors duration-500" />
+              </div>
+
+              <div class="relative z-10 p-6 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono px-2.5 py-1 rounded bg-white/15 text-white backdrop-blur-md border border-white/15 uppercase tracking-wider font-semibold">
+                    {project.category}
+                  </span>
+                  <span class="text-[11px] font-mono text-neutral-300 hidden sm:inline-block">{project.year}</span>
+                </div>
+
+                <div class="w-8 h-8 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xs group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300">
+                  ↗
+                </div>
+              </div>
+
+              <div class="relative z-10 p-6 pt-0">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2 group-hover:text-sky-300 transition-colors duration-300">
+                  {project.title}
+                </h2>
+                <div class="flex items-center justify-between gap-4 text-xs font-mono text-neutral-300">
+                  <span>{project.role}</span>
+                  <span class="text-neutral-400 hidden sm:inline">{project.specs}</span>
+                </div>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-neutral-200 dark:border-white/10">
+    <div
+      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg"
+    >
+      <div class="max-w-xl">
+        <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
+          Looking for custom motion or 3D visuals?
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-300 text-sm">
+          Let's discuss concepts, technical requirements, and delivery milestones.
+        </p>
+      </div>
+      <a
+        href="/contact"
+        class="flex-shrink-0 px-7 py-3.5 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs tracking-wider uppercase hover:opacity-90 transition-all shadow-md"
+      >
+        Start a Project →
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function initWorkFilter() {
+    const filterContainer = document.getElementById('work-filters');
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+    if (!filterContainer || !cards.length) return;
+
+    const buttons = filterContainer.querySelectorAll<HTMLButtonElement>('.filter-btn');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filterKey = btn.getAttribute('data-filter') || 'all';
+
+        // Update active button state
+        buttons.forEach((b) => {
+          b.classList.remove(
+            'bg-neutral-900',
+            'text-white',
+            'dark:bg-white',
+            'dark:text-black',
+            'shadow-sm',
+            'ring-2',
+            'ring-neutral-900/10',
+            'dark:ring-white/20'
+          );
+          b.classList.add(
+            'bg-white/80',
+            'dark:bg-neutral-900/70',
+            'text-neutral-600',
+            'dark:text-neutral-400',
+            'border',
+            'border-neutral-200',
+            'dark:border-white/10'
+          );
+        });
+
+        btn.classList.remove(
+          'bg-white/80',
+          'dark:bg-neutral-900/70',
+          'text-neutral-600',
+          'dark:text-neutral-400',
+          'border',
+          'border-neutral-200',
+          'dark:border-white/10'
+        );
+        btn.classList.add(
+          'bg-neutral-900',
+          'text-white',
+          'dark:bg-white',
+          'dark:text-black',
+          'shadow-sm',
+          'ring-2',
+          'ring-neutral-900/10',
+          'dark:ring-white/20'
+        );
+
+        // Filter cards smoothly
+        cards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          if (filterKey === 'all' || category === filterKey) {
+            card.style.display = 'flex';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1)';
+            }, 10);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.96)';
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 250);
+          }
+        });
+      });
+    });
+  }
+
+  initWorkFilter();
+  document.addEventListener('astro:page-load', initWorkFilter);
+</script>

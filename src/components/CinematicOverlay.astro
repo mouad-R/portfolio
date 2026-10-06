@@ -227,9 +227,7 @@
         cursor.style.boxShadow = isDark() ? '0 0 8px rgba(56, 189, 248, 0.6)' : 'none';
       }
 
-      const projectCards = document.querySelectorAll(
-        '#selected a, a[href*="/cinematography/"], a[href*="/motion/"], a[href*="/3d/"], a[href*="/graphic-design/"], a[href*="/ui-ux/"]'
-      );
+      const projectCards = document.querySelectorAll('#selected a, a[href*="/work/"], .project-card');
 
       projectCards.forEach((card) => {
         card.addEventListener('mouseenter', () => {
@@ -276,7 +274,7 @@
     }
 
     // 2. 3D Perspective Tilt on Bento & Portfolio Cards
-    const tiltCards = document.querySelectorAll<HTMLElement>('#selected a');
+    const tiltCards = document.querySelectorAll<HTMLElement>('#selected a, .project-card');
     tiltCards.forEach((card) => {
       let rect: DOMRect | null = null;
 

@@ -1,0 +1,197 @@
+---
+export const prerender = true;
+
+import Layout from '~/layouts/PageLayout.astro';
+import { projects, type Project } from '~/data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project, index) => {
+    const prevProject = index > 0 ? projects[index - 1] : projects[projects.length - 1];
+    const nextProject = index < projects.length - 1 ? projects[index + 1] : projects[0];
+
+    return {
+      params: { slug: project.slug },
+      props: { project, prevProject, nextProject },
+    };
+  });
+}
+
+interface Props {
+  project: Project;
+  prevProject: Project;
+  nextProject: Project;
+}
+
+const { project, prevProject, nextProject } = Astro.props;
+
+const metadata = {
+  title: `${project.title} — Mouad Rouini`,
+  description: project.description,
+};
+---
+
+<Layout metadata={metadata}>
+  <article class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-28">
+    <!-- Breadcrumb / Back Link -->
+    <div class="mb-10">
+      <a
+        href="/work"
+        class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+      >
+        <span>←</span>
+        <span>Back to All Works</span>
+      </a>
+    </div>
+
+    <!-- Project Header -->
+    <header class="mb-14 border-b border-neutral-200 dark:border-neutral-800 pb-10">
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-4 shadow-sm"
+      >
+        <span class="text-[11px] font-mono text-sky-600 dark:text-sky-400 uppercase tracking-widest font-semibold">
+          {project.category}
+        </span>
+      </div>
+
+      <h1 class="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-white tracking-tight mt-2 mb-6">
+        {project.title}
+      </h1>
+
+      <div
+        class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-neutral-200 dark:border-neutral-900 text-xs font-mono"
+      >
+        <div>
+          <span class="text-neutral-500 dark:text-neutral-400 block uppercase">Role</span>
+          <span class="text-neutral-900 dark:text-neutral-100 mt-1 block font-semibold">{project.role}</span>
+        </div>
+        <div>
+          <span class="text-neutral-500 dark:text-neutral-400 block uppercase">Year</span>
+          <span class="text-neutral-900 dark:text-neutral-100 mt-1 block font-semibold">{project.year}</span>
+        </div>
+        <div class="col-span-2">
+          <span class="text-neutral-500 dark:text-neutral-400 block uppercase">Technical Specs</span>
+          <span class="text-neutral-900 dark:text-neutral-100 mt-1 block font-semibold">{project.specs}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Overview Text -->
+    <section class="max-w-3xl mb-16 text-neutral-700 dark:text-neutral-300 text-lg leading-relaxed font-normal">
+      <p>{project.description}</p>
+    </section>
+
+    <!-- Project Media Showcase -->
+    <section class="space-y-12">
+      {
+        project.media.map((item) => (
+          <div class="w-full rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800">
+            {item.type === 'youtube' && (
+              <div class="relative w-full aspect-video bg-black">
+                <iframe
+                  class="w-full h-full"
+                  src={item.src}
+                  title={project.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                />
+              </div>
+            )}
+
+            {item.type === 'video' && (
+              <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+                <video
+                  src={item.src}
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  preload="auto"
+                  class="smart-video w-full h-full object-contain pointer-events-none"
+                />
+              </div>
+            )}
+
+            {item.type === 'image' && (
+              <div class="relative w-full overflow-hidden">
+                <img
+                  src={item.src}
+                  alt={item.caption || project.title}
+                  class="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+                {item.caption && (
+                  <div class="p-4 bg-neutral-950/90 border-t border-white/10 text-xs font-mono text-neutral-400">
+                    {item.caption}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- Next / Previous Project Navigation -->
+    <nav class="mt-24 pt-12 border-t border-neutral-200 dark:border-neutral-800 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <a
+        href={`/work/${prevProject.slug}`}
+        class="group p-6 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/60 dark:bg-neutral-900/40 hover:border-sky-500/50 transition-all flex flex-col justify-between"
+      >
+        <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2">
+          ← Previous Project
+        </span>
+        <span
+          class="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors"
+        >
+          {prevProject.title}
+        </span>
+      </a>
+
+      <a
+        href={`/work/${nextProject.slug}`}
+        class="group p-6 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/60 dark:bg-neutral-900/40 hover:border-sky-500/50 transition-all flex flex-col justify-between sm:items-end text-left sm:text-right"
+      >
+        <span class="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2">
+          Next Project →
+        </span>
+        <span
+          class="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors"
+        >
+          {nextProject.title}
+        </span>
+      </a>
+    </nav>
+  </article>
+</Layout>
+
+<script>
+  function initSmartVideos() {
+    const videos = document.querySelectorAll<HTMLVideoElement>('video.smart-video');
+    if (!videos.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.muted = true;
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    videos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      observer.observe(video);
+    });
+  }
+
+  initSmartVideos();
+  document.addEventListener('astro:page-load', initSmartVideos);
+</script>

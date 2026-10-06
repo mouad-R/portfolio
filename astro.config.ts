@@ -34,6 +34,21 @@ export default defineConfig({
     },
   },
 
+  redirects: {
+    '/services': '/about#services',
+    '/process': '/about#pipeline',
+    '/cinematography': '/work',
+    '/motion': '/work',
+    '/3d': '/work',
+    '/graphic-design': '/work',
+    '/ui-ux': '/work',
+    '/cinematography/saad': '/work/saad',
+    '/motion/brand-ident': '/work/brand-ident',
+    '/3d/cyber-capsule': '/work/cyber-capsule',
+    '/graphic-design/lux-packaging': '/work/lux-packaging',
+    '/ui-ux/travel-app': '/work/travel-app',
+  },
+
   // Prefetch links as they enter the viewport for snappier navigations
   // (works together with <ClientRouter />, which enables prefetch by default).
   prefetch: {

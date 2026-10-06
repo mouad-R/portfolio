@@ -4,10 +4,96 @@ export const prerender = true;
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
-  title: 'About — Mouad Rouini | Senior Motion Designer & Visual Director',
+  title: 'About & Capabilities — Mouad Rouini | Senior Motion Designer & Visual Director',
   description:
-    'Learn about Mouad Rouini — a Senior Motion Designer & Visual Director based in Algiers, specialized in broadcast identities, 3D CGI, and cinematic post-production.',
+    'Learn about Mouad Rouini — creative philosophy, capabilities, production pipeline, tools, and career journey in motion design and visual direction.',
 };
+
+const capabilities = [
+  {
+    num: '01',
+    category: 'Motion Design',
+    title: 'Kinetic Branding & Broadcast Packages',
+    desc: 'Dynamic brand identities, kinetic typography, promotional teasers, and broadcast packages crafted with seamless pacing, musical rhythm, and high-energy impact.',
+    tags: ['2D/3D Kinetic Typography', 'Brand Identity in Motion', 'Commercial Campaigns', 'After Effects · 60 FPS'],
+  },
+  {
+    num: '02',
+    category: '3D & CGI',
+    title: 'Product Visualization & Lookdev',
+    desc: 'Photorealistic materials, studio lighting simulation, and cinematic camera choreography built for commercial packaging, spatial concepts, and luxury brand assets.',
+    tags: [
+      'Photorealistic Packaging',
+      'Procedural Shading',
+      'Studio Lighting Simulation',
+      'Cinema 4D · Octane / Redshift',
+    ],
+  },
+  {
+    num: '03',
+    category: 'Post-Production',
+    title: 'Cinematography & Color Suite',
+    desc: 'Precision montage editing and cinematic color grading utilizing custom film emulation transforms and strict delivery standards for broadcast and web.',
+    tags: ['Commercial Pacing & Montage', 'DaVinci Resolve Studio', 'ACES Color Science', 'Sound Synchronization'],
+  },
+  {
+    num: '04',
+    category: 'Creative Leadership',
+    title: 'Creative Direction & Supervision',
+    desc: 'Supervising media pipelines from initial pitch to final master, leveraging state-of-the-art visual workflows for rapid pre-visualization and flawless delivery.',
+    tags: ['Pipeline Supervision', 'Rapid Pre-Vis & Storyboarding', 'Styleframe Concepting', 'Technical Feasibility'],
+  },
+];
+
+const pipelineStages = [
+  {
+    step: '01',
+    phase: 'Discovery & Creative Direction',
+    timeline: 'Phase 1 · Foundation',
+    desc: 'Deconstructing the brand narrative, target audience, and key visual objectives. We establish strict creative guardrails, reference reels, and cinematic moodboards before opening animation software.',
+    deliverables: ['Creative Brief Alignment', 'Moodboards & Reference Reels', 'Visual Tonality Guide'],
+    tools: ['Figma', 'Miro', 'Frame.io'],
+  },
+  {
+    step: '02',
+    phase: 'Lookdev & Styleframes',
+    timeline: 'Phase 2 · Concept Art',
+    desc: 'Translating concepts into high-resolution key styleframes. We define color palettes, typography anatomy, lighting schemes, and procedural material shaders to lock the visual identity early.',
+    deliverables: ['Production Styleframes', '3D Shading & Texture Tests', 'Kinetic Typography Specimens'],
+    tools: ['Cinema 4D', 'Octane / Redshift', 'Photoshop'],
+  },
+  {
+    step: '03',
+    phase: 'Choreography & Motion Production',
+    timeline: 'Phase 3 · Animation',
+    desc: 'Bringing styleframes to life at 60 FPS. Every frame is paced to audio rhythm, with strict attention to easing curves, secondary motion dynamics, camera depth of field, and procedural simulations.',
+    deliverables: ['Motion Animatic / Rough Cut', 'Full 3D / 2D Asset Simulation', 'Sound Sync Polish'],
+    tools: ['After Effects', 'Cinema 4D', 'Redshift'],
+  },
+  {
+    step: '04',
+    phase: 'Color Grade, Mastering & Delivery',
+    timeline: 'Phase 4 · Post-Production',
+    desc: 'The final cinematic polish. Applying ACES color transforms in DaVinci Resolve, clean grain structuring, audio mastering, and exporting broadcast-ready and multi-aspect web deliverables.',
+    deliverables: ['DaVinci Resolve ACES Suite', 'ProRes 4444 / 422 HQ Masters', 'Web & Social Cutdowns (16:9, 9:16)'],
+    tools: ['DaVinci Resolve Studio', 'Media Encoder'],
+  },
+];
+
+const principles = [
+  {
+    title: 'Rhythm Over Noise',
+    desc: 'Motion should feel musical and intentional. Every transition, bounce, and cut is timed to create subconscious visual satisfaction.',
+  },
+  {
+    title: 'Production Transparency',
+    desc: 'Regular review drops on Frame.io at every milestone ensure you are never surprised by the direction or final delivery.',
+  },
+  {
+    title: 'Precision Craftsmanship',
+    desc: 'Zero tolerance for sloppy easing, aliased edges, or clipped highlights. Delivered at standard 4K/UHD broadcast fidelity.',
+  },
+];
 
 const timeline = [
   {
@@ -18,7 +104,7 @@ const timeline = [
   {
     year: '2021',
     title: 'First Commercial Projects',
-    desc: 'Delivered first broadcast packages and kinetic branding projects for local agencies and startups.',
+    desc: 'Delivered first broadcast packages and kinetic branding projects for regional agencies and clients.',
   },
   {
     year: '2023',
@@ -26,47 +112,57 @@ const timeline = [
     desc: 'Integrated Cinema 4D, Octane Render, and Redshift into the pipeline — specializing in photorealistic product visualization.',
   },
   {
-    year: '2025',
+    year: '2025–Now',
     title: 'Full-Pipeline Visual Direction',
-    desc: 'Now offering end-to-end creative direction: concept → storyboard → production → color grading → final delivery.',
+    desc: 'Directing complete campaigns: concept → styleframes → 3D/motion production → color grading → master delivery.',
   },
 ];
 
 const tools = [
-  { category: 'Motion & Animation', items: ['After Effects', 'Cinema 4D', 'Lottie'] },
+  { category: 'Motion & Animation', items: ['After Effects', 'Cinema 4D', 'Lottie / Bodymovin'] },
   { category: '3D & Rendering', items: ['Octane Render', 'Redshift', 'Blender'] },
-  { category: 'Color & Edit', items: ['DaVinci Resolve', 'Premiere Pro', 'ACES Pipeline'] },
+  { category: 'Color & Edit', items: ['DaVinci Resolve Studio', 'ACES Pipeline', 'Premiere Pro'] },
   { category: 'Design & Prototype', items: ['Figma', 'Illustrator', 'Photoshop'] },
 ];
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero -->
-  <section class="relative pt-20 pb-16 md:pt-32 md:pb-20 max-w-5xl mx-auto px-4 sm:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-start">
-      <!-- Text -->
-      <div class="md:col-span-3">
-        <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-4 font-bold"
-          >About Me</span
+  <!-- Hero Section -->
+  <section class="relative pt-20 pb-16 md:pt-32 md:pb-24 max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+      <!-- Bio Text -->
+      <div class="md:col-span-7">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-300/40 bg-white/70 dark:border-white/10 dark:bg-neutral-900/60 backdrop-blur-md mb-6 shadow-sm"
         >
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span
+            class="text-[11px] font-mono text-neutral-800 dark:text-neutral-300 uppercase tracking-widest font-medium"
+          >
+            Senior Motion Designer & Visual Director
+          </span>
+        </div>
+
         <h1
           class="text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white tracking-tight leading-tight mb-6"
         >
-          Creative problem‑solver with a passion for motion&nbsp;&&nbsp;light.
+          Creative problem‑solver with a passion for <span class="text-sky-600 dark:text-sky-400">motion & light.</span>
         </h1>
-        <div class="space-y-4 text-neutral-600 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+
+        <div class="space-y-4 text-neutral-600 dark:text-neutral-300 text-base leading-relaxed font-normal">
           <p>
-            I'm <strong class="text-neutral-900 dark:text-white">Mouad Rouini</strong> — a Senior Motion Designer & Visual
-            Director based in Algiers, Algeria. I specialize in crafting rhythm‑driven motion graphics, broadcast identities,
-            and high‑fidelity CGI visuals that bridge dynamic 2D/3D animation with cinematic post‑production.
+            I'm <strong class="text-neutral-900 dark:text-white font-semibold">Mouad Rouini</strong> — based in Algiers, Algeria.
+            I specialize in crafting rhythm‑driven motion graphics, commercial identities, and high‑fidelity CGI visuals that
+            bridge dynamic 2D/3D animation with cinematic post‑production.
           </p>
           <p>
             My work spans commercial title sequences, kinetic typography systems, photorealistic product renders, and
-            full‑pipeline color grading — always with an obsessive focus on pacing, detail, and visual storytelling.
+            full‑pipeline color grading — always with an obsessive focus on pacing, musical rhythm, and visual
+            storytelling.
           </p>
           <p>
-            I believe great motion design is more than movement — it's rhythm, emotion, and precision working together
-            to make brands unforgettable.
+            I believe great motion design is more than movement — it is intention, emotion, and technical rigor working
+            together to make brands unforgettable.
           </p>
         </div>
 
@@ -78,50 +174,233 @@ const tools = [
             Work With Me →
           </a>
           <a
-            href="/#selected"
+            href="/work"
             class="px-6 py-3 rounded-xl border border-neutral-300/80 dark:border-white/15 text-neutral-900 dark:text-white font-medium text-xs tracking-wider uppercase hover:border-neutral-500 transition-all"
           >
-            View Portfolio ↓
+            Explore Projects ↓
           </a>
         </div>
       </div>
 
-      <!-- Photo placeholder -->
-      <div class="md:col-span-2">
+      <!-- Profile Card -->
+      <div class="md:col-span-5">
         <div
-          class="aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center"
+          class="rounded-3xl overflow-hidden border border-neutral-200/80 dark:border-white/10 bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl p-8 shadow-xl"
         >
-          <div class="text-center px-6">
+          <div class="flex items-center gap-4 mb-6 pb-6 border-b border-neutral-200 dark:border-white/10">
             <div
-              class="w-20 h-20 rounded-full bg-neutral-200 dark:bg-neutral-800 mx-auto mb-4 flex items-center justify-center"
+              class="w-16 h-16 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-mono font-bold text-xl shadow-md ring-4 ring-sky-500/20"
             >
-              <span class="text-2xl">MR</span>
+              MR
             </div>
-            <p class="text-xs text-neutral-500 font-mono uppercase tracking-wider">Professional Photo</p>
-            <p class="text-[10px] text-neutral-400 mt-1">Replace with your headshot</p>
+            <div>
+              <h2 class="text-lg font-bold text-neutral-900 dark:text-white">Mouad Rouini</h2>
+              <p class="text-xs font-mono text-neutral-500 dark:text-neutral-400">
+                Algiers, Algeria · Remote Worldwide
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-4 text-xs font-mono">
+            <div class="flex items-center justify-between py-1.5 border-b border-neutral-100 dark:border-white/5">
+              <span class="text-neutral-500 dark:text-neutral-400 uppercase">Primary Focus</span>
+              <span class="text-neutral-900 dark:text-neutral-200 font-semibold">Motion & Visual Direction</span>
+            </div>
+            <div class="flex items-center justify-between py-1.5 border-b border-neutral-100 dark:border-white/5">
+              <span class="text-neutral-500 dark:text-neutral-400 uppercase">Experience</span>
+              <span class="text-neutral-900 dark:text-neutral-200 font-semibold">6+ Years</span>
+            </div>
+            <div class="flex items-center justify-between py-1.5 border-b border-neutral-100 dark:border-white/5">
+              <span class="text-neutral-500 dark:text-neutral-400 uppercase">Availability</span>
+              <span class="text-emerald-500 font-semibold flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Open for Commissions
+              </span>
+            </div>
+            <div class="flex items-center justify-between py-1.5">
+              <span class="text-neutral-500 dark:text-neutral-400 uppercase">Direct Email</span>
+              <a href="mailto:contact@mouadrouini.space" class="text-sky-600 dark:text-sky-400 hover:underline">
+                contact@mouadrouini.space
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Timeline -->
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
-    <div class="mb-10">
-      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
-        >Journey</span
-      >
-      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">Career Timeline</h2>
+  <!-- Capabilities Section (Services) -->
+  <section id="services" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-12">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-2 font-bold">
+        Disciplines
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Core Capabilities & Deliverables
+      </h2>
     </div>
 
-    <div class="relative">
-      <!-- Vertical line -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+      {
+        capabilities.map((srv) => (
+          <div class="p-8 rounded-2xl bg-white/80 dark:bg-neutral-900/70 border border-neutral-200/90 dark:border-white/10 hover:border-sky-500/50 transition-all shadow-sm hover:shadow-lg flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 font-bold block mb-3">
+                {srv.num} // {srv.category}
+              </span>
+              <h3 class="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight mb-4">{srv.title}</h3>
+              <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed mb-6 font-normal">{srv.desc}</p>
+            </div>
+
+            <ul class="text-xs text-neutral-700 dark:text-neutral-300 space-y-2 border-t border-neutral-200 dark:border-white/10 pt-4 font-mono">
+              {srv.tags.map((tag) => (
+                <li class="flex items-center gap-2">
+                  <span class="text-sky-500 font-bold">+</span>
+                  <span>{tag}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Production Pipeline Section (Process) -->
+  <section id="pipeline" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="max-w-3xl mb-12">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-2 font-bold">
+        Methodology
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight mb-4">
+        Production Pipeline: Concept to Master
+      </h2>
+      <p class="text-sm md:text-base text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+        A structured, reliable four-stage production workflow designed for agencies, commercial studios, and ambitious
+        brands.
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      {
+        pipelineStages.map((stage) => (
+          <div class="group grid grid-cols-1 md:grid-cols-12 gap-8 items-start p-7 rounded-2xl bg-neutral-50/80 dark:bg-neutral-900/50 border border-neutral-200/80 dark:border-white/10 hover:border-sky-500/50 transition-all duration-300">
+            <div class="md:col-span-3">
+              <span class="text-3xl font-mono font-bold text-sky-600 dark:text-sky-400 block mb-1">//{stage.step}</span>
+              <span class="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                {stage.timeline}
+              </span>
+            </div>
+
+            <div class="md:col-span-9 space-y-5">
+              <div>
+                <h3 class="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">{stage.phase}</h3>
+                <p class="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">{stage.desc}</p>
+              </div>
+
+              <div class="pt-3 border-t border-neutral-200 dark:border-white/10">
+                <span class="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 block mb-2 font-semibold">
+                  Milestone Deliverables:
+                </span>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono text-neutral-700 dark:text-neutral-300">
+                  {stage.deliverables.map((item) => (
+                    <li class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <span class="text-[11px] font-mono text-neutral-400 uppercase mr-1">Tools:</span>
+                {stage.tools.map((tool) => (
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-800 dark:text-neutral-300">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Principles & Standards -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-10">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-2 font-bold">
+        Standards
+      </span>
+      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Core Production Principles
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        principles.map((principle) => (
+          <div class="p-7 rounded-2xl bg-white/70 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-white/10 flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-neutral-900 dark:text-white tracking-tight mb-2">{principle.title}</h3>
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-normal">
+                {principle.desc}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Tools & Technologies Stack -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-10">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold">
+        Stack
+      </span>
+      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Software & Hardware Toolkit
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        tools.map((group) => (
+          <div class="p-6 rounded-2xl bg-white/60 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200 dark:border-white/10">
+            <h3 class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 font-bold mb-4">
+              {group.category}
+            </h3>
+            <ul class="space-y-2">
+              {group.items.map((tool) => (
+                <li class="text-sm text-neutral-700 dark:text-neutral-300 font-medium">{tool}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Career Timeline -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
+    <div class="mb-10">
+      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold">
+        Timeline
+      </span>
+      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Experience & Milestones
+      </h2>
+    </div>
+
+    <div class="relative max-w-3xl">
       <div class="absolute left-[7px] top-2 bottom-2 w-px bg-neutral-200 dark:bg-neutral-800"></div>
 
-      <div class="space-y-10">
+      <div class="space-y-8">
         {
           timeline.map((item, i) => (
-            <div class="relative pl-8 intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
+            <div class="relative pl-8">
               <div
                 class:list={[
                   'absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2',
@@ -142,39 +421,10 @@ const tools = [
     </div>
   </section>
 
-  <!-- Tools & Stack -->
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-16 border-t border-neutral-200 dark:border-white/10">
-    <div class="mb-10">
-      <span class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 block mb-1.5 font-bold"
-        >Stack</span
-      >
-      <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
-        Tools & Technologies
-      </h2>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {
-        tools.map((group) => (
-          <div class="p-6 rounded-2xl bg-white/60 dark:bg-neutral-900/60 backdrop-blur-xl border border-neutral-200 dark:border-white/10 intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700">
-            <h3 class="text-xs font-mono uppercase tracking-widest text-sky-600 dark:text-sky-400 font-bold mb-4">
-              {group.category}
-            </h3>
-            <ul class="space-y-2">
-              {group.items.map((tool) => (
-                <li class="text-sm text-neutral-700 dark:text-neutral-300 font-medium">{tool}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+  <!-- CTA Banner -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
     <div
-      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg intersect-once intersect:opacity-100 intersect:translate-y-0 opacity-0 translate-y-6 duration-700"
+      class="rounded-2xl p-8 md:p-12 bg-white/60 dark:bg-neutral-900/50 backdrop-blur-xl border border-sky-200/60 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-lg"
     >
       <div class="max-w-xl">
         <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white tracking-tight mb-2">
